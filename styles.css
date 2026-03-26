@@ -64,7 +64,7 @@
   border-radius:99px;
   background:var(--bg2);
   border:1px solid var(--line2);
-  cursor:none;
+  
   transition:background .3s,border-color .3s;
 }
 .theme-sw-thumb{
@@ -88,33 +88,10 @@ body{
   background:var(--bg);
   color:var(--text);
   overflow-x:hidden;
-  cursor:none;
+  
   transition:background .35s,color .35s;
 }
 a{text-decoration:none;color:inherit}
-
-/* ══════════════════════════════════════
-   CURSOR
-══════════════════════════════════════ */
-.cur-dot{
-  position:fixed;top:0;left:0;z-index:9999;
-  width:7px;height:7px;border-radius:50%;
-  background:var(--red);pointer-events:none;
-  transform:translate(-50%,-50%);
-  transition:width .2s,height .2s;
-}
-.cur-ring{
-  position:fixed;top:0;left:0;z-index:9998;
-  width:34px;height:34px;border-radius:50%;
-  border:1px solid rgba(212,43,43,.45);
-  pointer-events:none;
-  transform:translate(-50%,-50%);
-  transition:width .25s,height .25s,border-color .2s;
-}
-body:has(a:hover) .cur-dot,
-body:has(button:hover) .cur-dot{width:12px;height:12px}
-body:has(a:hover) .cur-ring,
-body:has(button:hover) .cur-ring{width:50px;height:50px;border-color:var(--red)}
 
 /* ══════════════════════════════════════
    NAV
@@ -156,7 +133,7 @@ nav.scrolled{
   letter-spacing:.07em;text-transform:uppercase;
   padding:9px 22px;border-radius:var(--r);
   background:var(--red);color:#fff;border:none;
-  cursor:none;transition:opacity .2s,transform .15s;
+  transition:opacity .2s,transform .15s;
 }
 .nav-cta:hover{opacity:.85;transform:translateY(-1px)}
 .hamburger{
@@ -243,7 +220,7 @@ h1.hero-title .outline{
   letter-spacing:.07em;text-transform:uppercase;
   padding:13px 28px;border-radius:var(--r);
   background:var(--red);color:#fff;border:none;
-  cursor:none;transition:all .2s;display:inline-block;
+  transition:all .2s;display:inline-block;
 }
 .btn-r:hover{opacity:.85;transform:translateY(-2px);box-shadow:0 8px 28px rgba(212,43,43,.3)}
 .btn-ghost{
@@ -251,7 +228,7 @@ h1.hero-title .outline{
   letter-spacing:.07em;text-transform:uppercase;
   padding:13px 28px;border-radius:var(--r);
   background:transparent;color:var(--cream);
-  border:1px solid var(--line2);cursor:none;
+  border:1px solid var(--line2);
   transition:all .2s;display:inline-block;
 }
 .btn-ghost:hover{border-color:var(--cream);transform:translateY(-2px)}
@@ -526,7 +503,7 @@ section{padding:8rem 3rem}
   text-transform:uppercase;padding:7px 16px;
   border-radius:99px;border:1px solid var(--line2);
   background:transparent;color:var(--muted);
-  cursor:none;transition:all .2s;
+  transition:all .2s;
 }
 .pf:hover,.pf.active{background:var(--red);color:#fff;border-color:var(--red)}
 
@@ -542,7 +519,7 @@ section{padding:8rem 3rem}
 .pc{
   border-radius:var(--r-lg);overflow:hidden;
   border:1px solid var(--line);background:var(--bg2);
-  cursor:none;position:relative;
+  position:relative;
 }
 .pc-imgs{
   position:relative;
@@ -778,14 +755,14 @@ section{padding:8rem 3rem}
 .f-in::placeholder,.f-ta::placeholder{color:var(--dim)}
 .f-in:focus,.f-sel:focus,.f-ta:focus{border-color:rgba(212,43,43,.4)}
 .f-ta{resize:none;min-height:125px;line-height:1.6}
-.f-sel{cursor:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b6560' fill='none' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+.f-sel{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b6560' fill='none' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
 .f-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 .f-sub{
   font-family:var(--sans);font-size:.83rem;font-weight:700;
   letter-spacing:.06em;text-transform:uppercase;
   padding:14px;border-radius:var(--r);
   background:var(--red);color:#fff;border:none;
-  cursor:none;transition:all .2s;width:100%;
+  transition:all .2s;width:100%;
 }
 .f-sub:hover{opacity:.88;transform:translateY(-2px);box-shadow:0 8px 26px rgba(212,43,43,.3)}
 
@@ -897,7 +874,6 @@ footer small{font-size:.76rem;color:var(--dim)}
   .f-row{grid-template-columns:1fr}
   footer{flex-direction:column;align-items:flex-start}
   body{cursor:auto}
-  .cur-dot,.cur-ring{display:none}
 }
 
 /* ── model-viewer sizing (scene3d.js) ── */
