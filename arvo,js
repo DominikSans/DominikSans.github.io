@@ -1,0 +1,244 @@
+/**
+ * ARVO Studio — arvo.js
+ * Inspired by Quantix template logic (TemplateMo)
+ * Nav scroll · Mobile side panel · Counter animation · Staggered reveal
+ */
+
+(function () {
+  'use strict';
+
+  /* ═══════════════════════════════════════
+     NAVBAR — transparent → solid on scroll
+  ═══════════════════════════════════════ */
+  const navbar = document.getElementById('mainNav');
+
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  /* ═══════════════════════════════════════
+     MOBILE NAV — slide-in panel from right
+  ═══════════════════════════════════════ */
+  const navToggle = document.getElementById('ham');
+  const navLinks  = document.getElementById('navLinks');
+  const overlay   = document.getElementById('nav-overlay');
+
+  function openMenu() {
+    navToggle.classList.add('active');
+    navLinks.classList.add('open');
+    overlay.classList.add('visible');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMenu() {
+    navToggle.classList.remove('active');
+    navLinks.classList.remove('open');
+    overlay.classList.remove('visible');
+    document.body.style.overflow = '';
+  }
+
+  navToggle && navToggle.addEventListener('click', () => {
+    navLinks.classList.contains('open') ? closeMenu() : openMenu();
+  });
+
+  // Close when clicking a link
+  navLinks && navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  // Close when clicking the overlay
+  overlay && overlay.addEventListener('click', closeMenu);
+
+  /* ═══════════════════════════════════════
+     NAV ACTIVE LINK — highlight on scroll
+  ═══════════════════════════════════════ */
+  const sections  = document.querySelectorAll('section[id]');
+  const navAnchors = document.querySelectorAll('.nav-links a');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 110) current = s.id;
+    });
+    navAnchors.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  }, { passive: true });
+
+  /* ═══════════════════════════════════════
+     COUNTER ANIMATION — Quantix-style
+     Usage: <span class="stat-number"
+               data-target="60"
+               data-suffix="+"
+               data-prefix=""
+               data-decimal="0"
+               data-comma="false">60+</span>
+  ═══════════════════════════════════════ */
+  function animateCounter(el) {
+    const target   = parseFloat(el.dataset.target);
+    const suffix   = el.dataset.suffix  || '';
+    const prefix   = el.dataset.prefix  || '';
+    const decimals = parseInt(el.dataset.decimal) || 0;
+    const useComma = el.dataset.comma === 'true';
+    const duration = 1800;
+    const start    = performance.now();
+
+    function tick(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased    = 1 - Math.pow(1 - progress, 3);  // cubic ease-out
+      let val        = eased * target;
+      val = decimals > 0 ? val.toFixed(decimals) : Math.round(val);
+      if (useComma) val = Number(val).toLocaleString();
+      el.textContent = prefix + val + suffix;
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  /* ═══════════════════════════════════════
+     SCROLL REVEAL — staggered siblings
+     Replaces the old .rv system
+  ═══════════════════════════════════════ */
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!prefersReducedMotion) {
+
+    // Reveal observer — stagger delay by sibling index
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const siblings = entry.target.parentElement
+          .querySelectorAll('.fade-up:not(.visible)');
+        const idx = Array.from(siblings).indexOf(entry.target);
+        setTimeout(
+          () => entry.target.classList.add('visible'),
+          Math.max(0, idx) * 90
+        );
+        revealObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -24px 0px' });
+
+    document.querySelectorAll('.fade-up').forEach(el => revealObserver.observe(el));
+
+    // Counter observer
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        animateCounter(entry.target);
+        counterObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.stat-number[data-target]').forEach(el => {
+      counterObserver.observe(el);
+    });
+
+  } else {
+    // Reduced motion — show everything instantly, set counter final values
+    document.querySelectorAll('.fade-up').forEach(el => el.classList.add('visible'));
+    document.querySelectorAll('.stat-number[data-target]').forEach(el => {
+      const t = parseFloat(el.dataset.target);
+      const s = el.dataset.suffix  || '';
+      const p = el.dataset.prefix  || '';
+      const d = parseInt(el.dataset.decimal) || 0;
+      let v   = d > 0 ? t.toFixed(d) : t;
+      if (el.dataset.comma === 'true') v = Number(v).toLocaleString();
+      el.textContent = p + v + s;
+    });
+  }
+
+  /* ═══════════════════════════════════════
+     PORTFOLIO FILTER TABS
+  ═══════════════════════════════════════ */
+  document.querySelectorAll('.pf').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.pf').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  /* ═══════════════════════════════════════
+     3D TILT — studio photo
+  ═══════════════════════════════════════ */
+  const tiltFrame = document.getElementById('tiltFrame');
+  const tiltWrap  = tiltFrame && tiltFrame.parentElement;
+
+  tiltWrap && tiltWrap.addEventListener('mousemove', e => {
+    const r = tiltWrap.getBoundingClientRect();
+    const x = (e.clientX - r.left)  / r.width  - 0.5;
+    const y = (e.clientY - r.top)   / r.height - 0.5;
+    tiltFrame.style.transform =
+      `perspective(700px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg)`;
+  });
+  tiltWrap && tiltWrap.addEventListener('mouseleave', () => {
+    tiltFrame.style.transform = '';
+  });
+
+  /* ═══════════════════════════════════════
+     3D TILT — service cards
+  ═══════════════════════════════════════ */
+  document.querySelectorAll('.srv').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left)  / r.width  - 0.5;
+      const y = (e.clientY - r.top)   / r.height - 0.5;
+      card.style.transform =
+        `perspective(600px) rotateY(${x * 5}deg) rotateX(${-y * 5}deg) translateY(-3px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+
+  /* ═══════════════════════════════════════
+     CUSTOM CURSOR
+  ═══════════════════════════════════════ */
+  const cd = document.getElementById('cd');
+  const cr = document.getElementById('cr');
+
+  if (cd && cr && window.innerWidth > 768) {
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX;
+      my = e.clientY;
+    });
+
+    (function cursorLoop() {
+      cd.style.left = mx + 'px';
+      cd.style.top  = my + 'px';
+      rx += (mx - rx) * 0.1;
+      ry += (my - ry) * 0.1;
+      cr.style.left = rx + 'px';
+      cr.style.top  = ry + 'px';
+      requestAnimationFrame(cursorLoop);
+    })();
+  }
+
+  /* ═══════════════════════════════════════
+     THEME TOGGLE
+  ═══════════════════════════════════════ */
+  const themeToggle = document.getElementById('themeToggle');
+  const root        = document.documentElement;
+
+  const saved       = localStorage.getItem('arvo-theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const initLight   = saved ? saved === 'light' : !prefersDark;
+
+  if (initLight) {
+    root.setAttribute('data-theme', 'light');
+    if (themeToggle) themeToggle.checked = true;
+  }
+
+  themeToggle && themeToggle.addEventListener('change', () => {
+    if (themeToggle.checked) {
+      root.setAttribute('data-theme', 'light');
+      localStorage.setItem('arvo-theme', 'light');
+    } else {
+      root.removeAttribute('data-theme');
+      localStorage.setItem('arvo-theme', 'dark');
+    }
+  });
+
+})();
