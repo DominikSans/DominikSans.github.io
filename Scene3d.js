@@ -17,7 +17,7 @@
   'use strict';
 
   /* ── Configuración ── */
-  const MODEL_SRC         = './modelo.glb';   // ← cambia esto por tu archivo
+  const MODEL_SRC         = './model.glb';    // ← nombre de tu archivo
   const SHADOW_INTENSITY  = 1.2;
   const SHADOW_SOFTNESS   = 0.6;
   const AUTO_ROTATE_DELAY = 0;                // ms antes de rotar solo
