@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARVO Studio — Minecraft Configuration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════
+   DESIGN TOKENS
+══════════════════════════════════════ */
+:root {
+  --bg:       #090909;
+  --bg1:      #0f0f0f;
+  --bg2:      #141414;
+  --card:     #111111;
+  --cream:    #f0ead8;
+  --red:      #d42b2b;
+  --red-dim:  rgba(212,43,43,0.12);
+  --red-line: rgba(212,43,43,0.28);
+  --line:     rgba(255,255,255,0.07);
+  --line2:    rgba(255,255,255,0.13);
+  --text:     #f0ead8;
+  --muted:    #6b6560;
+  --dim:      #333;
+  --bebas:    'Bebas Neue', Impact, sans-serif;
+  --sans:     'Space Grotesk', system-ui, sans-serif;
+  --r:        12px;
+  --r-lg:     20px;
+}
+
+/* ══════════════════════════════════════
+   LIGHT THEME TOKENS
+══════════════════════════════════════ */
+[data-theme="light"]{
+  --bg:       #f5f0e6;
+  --bg1:      #ede8d8;
+  --bg2:      #e6dfc8;
+  --card:     #faf6ee;
+  --cream:    #100e0b;
+  --red:      #c42222;
+  --red-dim:  rgba(196,34,34,0.09);
+  --red-line: rgba(196,34,34,0.24);
+  --line:     rgba(0,0,0,0.08);
+  --line2:    rgba(0,0,0,0.15);
+  --text:     #100e0b;
+  --muted:    #7a7268;
+  --dim:      #b0a898;
+}
+[data-theme="light"] nav{background:rgba(245,240,230,.92)}
+[data-theme="light"] nav.open .nav-links{background:var(--bg)}
+[data-theme="light"] .hero-glow{background:radial-gradient(circle,rgba(196,34,34,.05) 0%,transparent 65%)}
+[data-theme="light"] .gf rect.face-bg{fill:rgba(196,34,34,.025)}
+[data-theme="light"] .geo-ring{border-color:rgba(196,34,34,.12)}
+[data-theme="light"] h1.hero-title .outline{-webkit-text-stroke:1.5px var(--cream)}
+
+/* ══════════════════════════════════════
+   THEME SWITCH
+══════════════════════════════════════ */
+.theme-sw{
+  position:relative;width:46px;height:26px;flex-shrink:0;
+}
+.theme-sw input{opacity:0;width:0;height:0;position:absolute}
+.theme-sw-track{
+  position:absolute;inset:0;
+  border-radius:99px;
+  background:var(--bg2);
+  border:1px solid var(--line2);
+  cursor:none;
+  transition:background .3s,border-color .3s;
+}
+.theme-sw-thumb{
+  position:absolute;top:3px;left:3px;
+  width:18px;height:18px;border-radius:50%;
+  background:var(--red);
+  transition:transform .3s,background .3s;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;line-height:1;pointer-events:none;
+  box-shadow:0 1px 4px rgba(0,0,0,.25);
+}
+.theme-sw input:checked ~ .theme-sw-thumb{transform:translateX(20px)}
+/* Icons inside thumb */
+.theme-sw-thumb::before{content:'🌙'}
+.theme-sw input:checked ~ .theme-sw-thumb::before{content:'☀️'}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;transition:background .35s}
+body{
+  font-family:var(--sans);
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  cursor:none;
+  transition:background .35s,color .35s;
+}
+a{text-decoration:none;color:inherit}
+
+/* ══════════════════════════════════════
+   CURSOR
+══════════════════════════════════════ */
+.cur-dot{
+  position:fixed;top:0;left:0;z-index:9999;
+  width:7px;height:7px;border-radius:50%;
+  background:var(--red);pointer-events:none;
+  transform:translate(-50%,-50%);
+  transition:width .2s,height .2s;
+}
+.cur-ring{
+  position:fixed;top:0;left:0;z-index:9998;
+  width:34px;height:34px;border-radius:50%;
+  border:1px solid rgba(212,43,43,.45);
+  pointer-events:none;
+  transform:translate(-50%,-50%);
+  transition:width .25s,height .25s,border-color .2s;
+}
+body:has(a:hover) .cur-dot,
+body:has(button:hover) .cur-dot{width:12px;height:12px}
+body:has(a:hover) .cur-ring,
+body:has(button:hover) .cur-ring{width:50px;height:50px;border-color:var(--red)}
+
+/* ══════════════════════════════════════
+   NAV
+══════════════════════════════════════ */
+nav{
+  position:fixed;inset:0 0 auto 0;z-index:500;
+  height:66px;display:flex;align-items:center;
+  justify-content:space-between;padding:0 3rem;
+  background:rgba(9,9,9,.9);
+  border-bottom:1px solid var(--line);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  transition:border-color .3s;
+}
+.nav-logo{
+  font-family:var(--bebas);font-size:1.5rem;
+  letter-spacing:.18em;color:var(--cream);
+}
+.nav-logo span{color:var(--red)}
+.nav-links{
+  display:flex;gap:2.5rem;list-style:none;
+  position:absolute;left:50%;transform:translateX(-50%);
+}
+.nav-links a{
+  font-size:.75rem;font-weight:600;
+  letter-spacing:.11em;text-transform:uppercase;
+  color:var(--muted);transition:color .2s;
+}
+.nav-links a:hover,.nav-links a.active{color:var(--cream)}
+.nav-right{display:flex;align-items:center;gap:1rem}
+.nav-cta{
+  font-family:var(--sans);font-size:.76rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;
+  padding:9px 22px;border-radius:var(--r);
+  background:var(--red);color:#fff;border:none;
+  cursor:none;transition:opacity .2s,transform .15s;
+}
+.nav-cta:hover{opacity:.85;transform:translateY(-1px)}
+.hamburger{
+  display:none;flex-direction:column;
+  gap:5px;cursor:none;background:none;border:none;
+}
+.hamburger span{width:22px;height:1.5px;background:var(--cream);transition:all .3s}
+
+/* ══════════════════════════════════════
+   HERO
+══════════════════════════════════════ */
+#hero{
+  min-height:100vh;
+  display:grid;grid-template-columns:1fr 1fr;
+  align-items:center;padding:8rem 3rem 4rem;
+  position:relative;overflow:hidden;
+  gap:4rem;
+}
+
+/* Subtle noise texture overlay */
+#hero::before{
+  content:'';position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events:none;opacity:.5;
+}
+
+/* Red glow top-right */
+.hero-glow{
+  position:absolute;top:-300px;right:-200px;
+  width:700px;height:700px;border-radius:50%;
+  background:radial-gradient(circle,rgba(212,43,43,.07) 0%,transparent 65%);
+  pointer-events:none;
+}
+
+.hero-left{position:relative;z-index:2}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:.7rem;font-weight:700;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--red);
+  margin-bottom:2rem;
+}
+.hero-eyebrow::before{content:'';width:30px;height:1px;background:var(--red)}
+
+h1.hero-title{
+  font-family:var(--bebas);
+  font-size:clamp(3.8rem,7.5vw,8rem);
+  line-height:.9;letter-spacing:.025em;
+  color:var(--cream);margin-bottom:2rem;
+}
+h1.hero-title .red{color:var(--red)}
+h1.hero-title .outline{
+  -webkit-text-stroke:1px var(--cream);
+  color:transparent;
+}
+.hero-sub{
+  font-size:.97rem;font-weight:400;
+  color:var(--muted);line-height:1.85;
+  max-width:420px;margin-bottom:3rem;
+}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap}
+.btn-r{
+  font-family:var(--sans);font-size:.8rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;
+  padding:13px 28px;border-radius:var(--r);
+  background:var(--red);color:#fff;border:none;
+  cursor:none;transition:all .2s;display:inline-block;
+}
+.btn-r:hover{opacity:.85;transform:translateY(-2px);box-shadow:0 8px 28px rgba(212,43,43,.3)}
+.btn-ghost{
+  font-family:var(--sans);font-size:.8rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;
+  padding:13px 28px;border-radius:var(--r);
+  background:transparent;color:var(--cream);
+  border:1px solid var(--line2);cursor:none;
+  transition:all .2s;display:inline-block;
+}
+.btn-ghost:hover{border-color:var(--cream);transform:translateY(-2px)}
+
+.hero-stats{
+  display:flex;gap:0;margin-top:4rem;
+  border-top:1px solid var(--line);padding-top:2.5rem;
+  gap:3rem;
+}
+.h-num{
+  font-family:var(--bebas);font-size:2.5rem;
+  letter-spacing:.03em;color:var(--cream);
+  line-height:1;display:block;
+}
+.h-lbl{
+  font-size:.68rem;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);margin-top:4px;display:block;
+}
+
+/* ── 3D GEOMETRIC RIGHT SIDE ── */
+.hero-right{
+  position:relative;z-index:2;
+  display:flex;align-items:center;justify-content:center;
+  height:500px;
+}
+
+/* Rotating wireframe icosahedron-style built from SVG-like lines */
+.geo-scene{
+  width:280px;height:280px;
+  perspective:900px;
+  position:relative;
+}
+.geo-wrap{
+  width:100%;height:100%;
+  transform-style:preserve-3d;
+  animation:geoSpin 18s linear infinite;
+}
+@keyframes geoSpin{
+  0%  {transform:rotateX(-15deg) rotateY(0deg)}
+  100%{transform:rotateX(-15deg) rotateY(360deg)}
+}
+
+/* 6 faces — pure geometric shapes, no text */
+.gf{
+  position:absolute;inset:0;
+  transform-style:preserve-3d;
+}
+.gf svg{width:100%;height:100%;display:block}
+
+/* Thin red grid lines inside each face instead of text */
+.gf rect.face-bg{fill:rgba(212,43,43,.025);stroke:rgba(212,43,43,.18);stroke-width:.8}
+.gf line{stroke:rgba(212,43,43,.12);stroke-width:.6}
+.gf circle{fill:none;stroke:rgba(212,43,43,.2);stroke-width:.7}
+.gf polygon{fill:none;stroke:rgba(212,43,43,.15);stroke-width:.6}
+
+.gf.front {transform:translateZ(140px)}
+.gf.back  {transform:rotateY(180deg) translateZ(140px)}
+.gf.right {transform:rotateY(90deg)  translateZ(140px)}
+.gf.left  {transform:rotateY(-90deg) translateZ(140px)}
+.gf.top   {transform:rotateX(90deg)  translateZ(140px)}
+.gf.bottom{transform:rotateX(-90deg) translateZ(140px)}
+
+/* Orbit ring */
+.geo-ring{
+  position:absolute;inset:-70px;border-radius:50%;
+  border:1px solid rgba(212,43,43,.1);
+  animation:ringRot 10s linear infinite;
+}
+.geo-ring::after{
+  content:'';position:absolute;
+  top:-3px;left:50%;
+  width:6px;height:6px;border-radius:50%;
+  background:var(--red);transform:translateX(-50%);
+  box-shadow:0 0 8px var(--red);
+}
+.geo-ring2{
+  position:absolute;inset:-40px;border-radius:50%;
+  border:1px solid rgba(240,234,216,.04);
+  animation:ringRot 6s linear infinite reverse;
+}
+@keyframes ringRot{to{transform:rotate(360deg)}}
+
+/* Small floating dots */
+.geo-dot{
+  position:absolute;width:3px;height:3px;border-radius:50%;
+  background:var(--red);opacity:.4;
+  animation:dotFloat 4s ease-in-out infinite;
+}
+@keyframes dotFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-12px)}
+}
+
+/* ══════════════════════════════════════
+   MARQUEE
+══════════════════════════════════════ */
+.marquee-bar{
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  background:var(--bg1);
+  overflow:hidden;padding:.9rem 0;
+}
+.marquee-track{
+  display:inline-flex;white-space:nowrap;
+  animation:marquee 28s linear infinite;
+}
+.m-item{
+  display:inline-flex;align-items:center;gap:1rem;
+  padding:0 2.5rem;
+  font-size:.7rem;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--dim);
+}
+.m-item .dot{
+  width:4px;height:4px;border-radius:50%;
+  background:var(--red);flex-shrink:0;
+}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+/* ══════════════════════════════════════
+   SECTION BASE
+══════════════════════════════════════ */
+section{padding:8rem 3rem}
+.container{max-width:1180px;margin:0 auto}
+.s-eye{
+  font-size:.68rem;font-weight:700;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--red);
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:1.25rem;
+}
+.s-eye::before{content:'';width:24px;height:1px;background:var(--red)}
+.s-head{
+  font-family:var(--bebas);
+  font-size:clamp(2.8rem,4.5vw,5rem);
+  letter-spacing:.03em;line-height:.93;
+  color:var(--cream);margin-bottom:1.5rem;
+}
+.s-sub{
+  font-size:.97rem;color:var(--muted);
+  line-height:1.85;max-width:480px;
+}
+
+/* ══════════════════════════════════════
+   SERVICES
+══════════════════════════════════════ */
+#servicios{background:var(--bg1)}
+.srv-top{
+  display:grid;grid-template-columns:1fr 1fr;
+  align-items:end;gap:3rem;margin-bottom:5rem;
+}
+.srv-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--line);
+  border:1px solid var(--line);
+  border-radius:var(--r-lg);overflow:hidden;
+}
+.srv{
+  background:var(--card);
+  padding:2.5rem 2rem;
+  position:relative;overflow:hidden;
+  transition:background .3s;
+}
+.srv::after{
+  content:'';position:absolute;
+  bottom:0;left:0;right:0;height:2px;
+  background:var(--red);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .35s ease;
+}
+.srv:hover{background:var(--bg2)}
+.srv:hover::after{transform:scaleX(1)}
+.srv:hover{transform:perspective(600px) rotateY(1.5deg) rotateX(-1deg) translateY(-3px)}
+.srv-n{
+  font-family:var(--bebas);font-size:.85rem;
+  letter-spacing:.1em;color:var(--dim);margin-bottom:2rem;
+}
+.srv-ico{font-size:1.8rem;display:block;margin-bottom:1.25rem}
+.srv-name{
+  font-family:var(--bebas);font-size:1.45rem;
+  letter-spacing:.04em;color:var(--cream);
+  margin-bottom:1rem;line-height:1.05;
+}
+.srv-desc{
+  font-size:.875rem;color:var(--muted);
+  line-height:1.8;margin-bottom:1.5rem;
+}
+.srv-tags{display:flex;flex-wrap:wrap;gap:6px}
+.srv-tag{
+  font-size:.63rem;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;padding:4px 10px;
+  border-radius:4px;background:rgba(255,255,255,.03);
+  border:1px solid var(--line2);color:var(--muted);
+  transition:color .2s,border-color .2s;
+}
+.srv:hover .srv-tag{color:var(--red);border-color:var(--red-line)}
+
+/* ══════════════════════════════════════
+   STACK
+══════════════════════════════════════ */
+#stack{background:var(--bg)}
+.stk-header{display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;margin-bottom:4rem}
+.stk-groups{display:flex;flex-direction:column;gap:2.5rem}
+.stk-lbl{
+  font-size:.65rem;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--dim);margin-bottom:.9rem;
+}
+.stk-pills{display:flex;flex-wrap:wrap;gap:8px}
+.stk-pill{
+  font-size:.8rem;font-weight:600;
+  padding:9px 18px;border-radius:99px;
+  border:1px solid var(--line2);
+  background:var(--card);color:var(--text);
+  transition:all .2s;cursor:default;
+}
+.stk-pill:hover{
+  border-color:var(--red);
+  color:var(--red);background:var(--red-dim);
+}
+
+/* ══════════════════════════════════════
+   PORTFOLIO
+══════════════════════════════════════ */
+#portfolio{background:var(--bg1)}
+.port-top{
+  display:flex;align-items:flex-end;
+  justify-content:space-between;gap:2rem;
+  margin-bottom:3rem;flex-wrap:wrap;
+}
+.port-filters{display:flex;gap:6px;flex-wrap:wrap}
+.pf{
+  font-size:.7rem;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;padding:7px 16px;
+  border-radius:99px;border:1px solid var(--line2);
+  background:transparent;color:var(--muted);
+  cursor:none;transition:all .2s;
+}
+.pf:hover,.pf.active{background:var(--red);color:#fff;border-color:var(--red)}
+
+.port-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1.25rem;
+}
+.port-grid .sp2{grid-column:span 2}
+.port-grid .sp2v{grid-row:span 2}
+
+/* Card with image swap on hover */
+.pc{
+  border-radius:var(--r-lg);overflow:hidden;
+  border:1px solid var(--line);background:var(--bg2);
+  cursor:none;position:relative;
+}
+.pc-imgs{
+  position:relative;
+  overflow:hidden;
+  aspect-ratio:16/10;
+}
+.pc.sp2  .pc-imgs{aspect-ratio:21/9}
+.pc.sp2v .pc-imgs{aspect-ratio:unset;min-height:360px}
+.pc.tall .pc-imgs{aspect-ratio:4/5}
+
+/* Two images — swap on hover with slide */
+.pc-a,.pc-b{
+  position:absolute;inset:0;
+  display:flex;align-items:center;
+  justify-content:center;flex-direction:column;
+  gap:8px;padding:1.5rem;
+  text-align:center;
+  transition:transform .55s cubic-bezier(.77,0,.18,1);
+}
+.pc-a{
+  background:var(--bg2);
+  transform:translateY(0);z-index:1;
+}
+.pc-b{
+  background:#111010;
+  transform:translateY(100%);z-index:2;
+}
+.pc:hover .pc-a{transform:translateY(-100%)}
+.pc:hover .pc-b{transform:translateY(0)}
+/* When using real images:
+.pc-a img,.pc-b img{width:100%;height:100%;object-fit:cover;display:block}
+*/
+.ph-ico{font-size:1.8rem;opacity:.4}
+.ph-txt{font-size:.7rem;font-weight:600;color:var(--dim)}
+
+/* Info bar */
+.pc-info{
+  padding:1.25rem 1.5rem;
+  display:flex;align-items:center;
+  justify-content:space-between;gap:1rem;
+}
+.pc-name{
+  font-family:var(--bebas);font-size:1.1rem;
+  letter-spacing:.04em;color:var(--cream);
+  line-height:1;margin-bottom:3px;
+}
+.pc-type{
+  font-size:.65rem;font-weight:700;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--muted);
+}
+.pc-arr{
+  width:34px;height:34px;border-radius:50%;
+  border:1px solid var(--line2);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--muted);font-size:13px;flex-shrink:0;
+  transition:all .2s;
+}
+.pc:hover .pc-arr{
+  border-color:var(--red);color:var(--red);
+  background:var(--red-dim);
+}
+
+/* Red corner accent */
+.pc::before{
+  content:'';position:absolute;top:0;right:0;
+  width:0;height:0;border-style:solid;
+  border-width:0 32px 32px 0;
+  border-color:transparent var(--red) transparent transparent;
+  opacity:0;transition:opacity .3s;z-index:10;
+}
+.pc:hover::before{opacity:1}
+
+/* ══════════════════════════════════════
+   STUDIO / ABOUT
+══════════════════════════════════════ */
+#studio{background:var(--bg)}
+.studio-wrap{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:6rem;align-items:center;
+}
+.studio-l{position:relative}
+.studio-frame{
+  aspect-ratio:3/4;border-radius:var(--r-lg);
+  background:var(--bg2);border:1px solid var(--line);
+  overflow:hidden;position:relative;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--dim);font-size:.8rem;text-align:center;
+  transition:transform .12s ease;
+}
+/* Red edge accent line */
+.studio-frame::after{
+  content:'';position:absolute;
+  left:0;top:0;bottom:0;width:2px;
+  background:var(--red);opacity:.6;
+}
+/* Shadow offset box */
+.studio-l::after{
+  content:'';position:absolute;
+  bottom:-16px;right:-16px;
+  width:60%;height:60%;
+  border:1px solid var(--red-line);
+  border-radius:var(--r-lg);z-index:-1;
+}
+
+.studio-badge{
+  position:absolute;top:1.5rem;right:-1.5rem;
+  background:var(--red);padding:10px 16px;
+  border-radius:var(--r);
+}
+.studio-badge-txt{
+  font-family:var(--bebas);font-size:.85rem;
+  letter-spacing:.1em;color:#fff;line-height:1.3;
+  white-space:nowrap;
+}
+
+.studio-r{}
+.studio-r .s-head{margin-bottom:1.5rem}
+.studio-body{
+  font-size:.93rem;color:var(--muted);
+  line-height:1.9;margin-bottom:2.5rem;
+}
+.studio-body p+p{margin-top:1rem}
+
+.expertise{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:2.5rem}
+.exp-tag{
+  font-size:.75rem;font-weight:700;
+  background:var(--red-dim);color:var(--red);
+  border:1px solid var(--red-line);
+  padding:5px 13px;border-radius:99px;
+}
+
+.skill-list{display:flex;flex-direction:column;gap:1rem}
+.skill-row{display:flex;flex-direction:column;gap:6px}
+.skill-hd{
+  display:flex;justify-content:space-between;
+  align-items:center;
+}
+.skill-name{font-size:.82rem;font-weight:600;color:var(--cream)}
+.skill-pct{font-size:.76rem;font-weight:700;color:var(--red)}
+.skill-track{
+  height:3px;background:var(--bg2);
+  border-radius:99px;overflow:hidden;
+}
+.skill-fill{
+  height:100%;background:var(--red);
+  border-radius:99px;
+  animation:fillUp 1.5s ease forwards;
+}
+@keyframes fillUp{from{width:0!important}}
+
+/* ══════════════════════════════════════
+   PROCESS
+══════════════════════════════════════ */
+#proceso{background:var(--bg1)}
+.proc-table{margin-top:4rem}
+.proc-row{
+  display:grid;grid-template-columns:70px 1fr 1.2fr;
+  align-items:start;gap:3rem;
+  padding:2.75rem 0;border-bottom:1px solid var(--line);
+  transition:padding-left .2s,background .2s;
+}
+.proc-row:first-child{border-top:1px solid var(--line)}
+.proc-row:hover{
+  background:rgba(212,43,43,.03);
+  padding-left:1rem;margin:0 -3rem;
+  padding-right:3rem;
+  border-color:var(--red-line);
+}
+.proc-n{
+  font-family:var(--bebas);font-size:3rem;
+  letter-spacing:.03em;color:var(--line2);line-height:1;
+}
+.proc-name{
+  font-family:var(--bebas);font-size:1.75rem;
+  letter-spacing:.04em;color:var(--cream);
+  margin-bottom:.6rem;
+}
+.proc-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:.75rem}
+.proc-tag{
+  font-size:.62rem;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;padding:3px 9px;
+  background:var(--red-dim);color:var(--red);
+  border:1px solid var(--red-line);border-radius:4px;
+}
+.proc-desc{font-size:.88rem;color:var(--muted);line-height:1.85;padding-top:4px}
+
+/* ══════════════════════════════════════
+   CONTACT
+══════════════════════════════════════ */
+#contacto{background:var(--bg)}
+.contact-wrap{
+  display:grid;grid-template-columns:1fr 1.15fr;
+  gap:6rem;align-items:start;
+}
+.contact-l .s-head{margin-bottom:1rem}
+.contact-intro{
+  font-size:.93rem;color:var(--muted);
+  line-height:1.85;margin-bottom:3rem;
+}
+.cc-list{display:flex;flex-direction:column}
+.cc{
+  display:flex;align-items:center;gap:1.25rem;
+  padding:1.1rem 0;border-bottom:1px solid var(--line);
+  transition:padding-left .2s;
+}
+.cc:hover{padding-left:8px}
+.cc-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--red);flex-shrink:0;
+}
+.cc-type{
+  font-size:.65rem;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--dim);min-width:70px;
+}
+.cc-val{
+  font-size:.92rem;font-weight:600;color:var(--cream);
+  transition:color .2s;
+}
+.cc:hover .cc-val{color:var(--red)}
+
+.c-form{display:flex;flex-direction:column;gap:1.1rem}
+.f-lbl{
+  font-size:.67rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);
+  display:block;margin-bottom:7px;
+}
+.f-in,.f-sel,.f-ta{
+  width:100%;font-family:var(--sans);font-size:.88rem;
+  padding:13px 16px;background:var(--bg1);
+  border:1px solid var(--line);border-radius:var(--r);
+  color:var(--cream);outline:none;transition:border-color .2s;
+}
+.f-in::placeholder,.f-ta::placeholder{color:var(--dim)}
+.f-in:focus,.f-sel:focus,.f-ta:focus{border-color:rgba(212,43,43,.4)}
+.f-ta{resize:none;min-height:125px;line-height:1.6}
+.f-sel{cursor:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b6560' fill='none' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.f-sub{
+  font-family:var(--sans);font-size:.83rem;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;
+  padding:14px;border-radius:var(--r);
+  background:var(--red);color:#fff;border:none;
+  cursor:none;transition:all .2s;width:100%;
+}
+.f-sub:hover{opacity:.88;transform:translateY(-2px);box-shadow:0 8px 26px rgba(212,43,43,.3)}
+
+/* ══════════════════════════════════════
+   FOOTER
+══════════════════════════════════════ */
+footer{
+  background:var(--bg1);border-top:1px solid var(--line);
+  padding:2rem 3rem;
+  display:flex;align-items:center;
+  justify-content:space-between;flex-wrap:wrap;gap:1rem;
+}
+.f-brand{
+  font-family:var(--bebas);font-size:1.3rem;
+  letter-spacing:.16em;color:var(--cream);
+}
+.f-brand span{color:var(--red)}
+footer small{font-size:.76rem;color:var(--dim)}
+.f-links{display:flex;gap:2rem}
+.f-links a{
+  font-size:.72rem;font-weight:600;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--dim);transition:color .2s;
+}
+.f-links a:hover{color:var(--red)}
+
+/* ══════════════════════════════════════
+   REVEAL
+══════════════════════════════════════ */
+.rv{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:none}
+.d1{transition-delay:.1s}
+.d2{transition-delay:.2s}
+.d3{transition-delay:.3s}
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+@media(max-width:1024px){
+  #hero{grid-template-columns:1fr;padding-top:9rem}
+  .hero-right{height:340px}
+  .geo-scene{width:200px;height:200px}
+  .gf.front {transform:translateZ(100px)}
+  .gf.back  {transform:rotateY(180deg) translateZ(100px)}
+  .gf.right {transform:rotateY(90deg)  translateZ(100px)}
+  .gf.left  {transform:rotateY(-90deg) translateZ(100px)}
+  .gf.top   {transform:rotateX(90deg)  translateZ(100px)}
+  .gf.bottom{transform:rotateX(-90deg) translateZ(100px)}
+  .srv-grid{grid-template-columns:repeat(2,1fr)}
+  .srv-top{grid-template-columns:1fr}
+  .studio-wrap{grid-template-columns:1fr;gap:3rem}
+  .studio-l{max-width:320px}
+  .contact-wrap{grid-template-columns:1fr;gap:3rem}
+  .port-grid{grid-template-columns:1fr 1fr}
+  .port-grid .sp2{grid-column:span 2}
+  .port-grid .sp2v{grid-row:auto}
+  .proc-row{grid-template-columns:60px 1fr}
+  .proc-desc{grid-column:2}
+}
+@media(max-width:768px){
+  nav{padding:0 1.5rem}
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  #hero{padding:7rem 1.5rem 3rem;gap:2rem}
+  section{padding:5rem 1.5rem}
+  .srv-grid{grid-template-columns:1fr}
+  .port-grid{grid-template-columns:1fr}
+  .port-grid .sp2{grid-column:span 1}
+  .hero-stats{gap:1.5rem;flex-wrap:wrap}
+  .proc-row{grid-template-columns:1fr;gap:.75rem}
+  .proc-n{display:none}
+  .f-row{grid-template-columns:1fr}
+  footer{flex-direction:column;align-items:flex-start}
+  body{cursor:auto}
+  .cur-dot,.cur-ring{display:none}
+}
+nav.open .nav-links{
+  display:flex;flex-direction:column;gap:0;
+  position:fixed;inset:66px 0 0 0;
+  background:var(--bg);padding:2rem 1.5rem;
+  border-top:1px solid var(--line);z-index:400;
+}
+nav.open .nav-links a{font-size:1rem;padding:1rem 0;border-bottom:1px solid var(--line);color:var(--cream)}
+</style>
+</head>
+<body>
+
+<div class="cur-dot" id="cd"></div>
+<div class="cur-ring" id="cr"></div>
+
+<!-- ══ NAV ══ -->
+<nav id="mainNav">
+  <div class="nav-logo">ARVO<span>.</span></div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#stack">Stack</a></li>
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#studio">Studio</a></li>
+    <li><a href="#proceso">Proceso</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <div class="nav-right">
+    <label class="theme-sw" title="Cambiar tema">
+      <input type="checkbox" id="themeToggle">
+      <span class="theme-sw-track"></span>
+      <span class="theme-sw-thumb"></span>
+    </label>
+    <button class="hamburger" id="ham" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="#contacto" class="nav-cta">Contratar</a>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section id="hero">
+  <div class="hero-glow"></div>
+
+  <div class="hero-left">
+    <div class="hero-eyebrow rv">Minecraft Configuration Studio</div>
+    <h1 class="hero-title rv d1">
+      CONFIGS<br>QUE <span class="red">DEJAN</span><br><span class="outline">HUELLA</span>
+    </h1>
+    <p class="hero-sub rv d2">
+      Studio especializado en MythicMobs, BetonQuest, Typewriter y configuración avanzada de servidores Minecraft. Liderado por Dominik.
+    </p>
+    <div class="hero-btns rv d3">
+      <a href="#portfolio" class="btn-r">Ver portfolio</a>
+      <a href="#servicios" class="btn-ghost">Servicios</a>
+    </div>
+    <div class="hero-stats rv">
+      <div><span class="h-num">60+</span><span class="h-lbl">Proyectos</span></div>
+      <div><span class="h-num">30+</span><span class="h-lbl">Clientes</span></div>
+      <div><span class="h-num">1.16–1.21</span><span class="h-lbl">Versiones</span></div>
+    </div>
+  </div>
+
+  <!-- 3D geometric element — purely visual, no text -->
+  <div class="hero-right">
+    <div class="geo-ring"></div>
+    <div class="geo-ring2"></div>
+
+    <!-- floating dots -->
+    <div class="geo-dot" style="top:18%;left:8%;animation-delay:0s"></div>
+    <div class="geo-dot" style="top:72%;right:12%;animation-delay:1.2s"></div>
+    <div class="geo-dot" style="top:40%;right:5%;animation-delay:2.5s"></div>
+
+    <div class="geo-scene">
+      <div class="geo-wrap">
+
+        <!-- FRONT — diagonal cross lines -->
+        <div class="gf front">
+          <svg viewBox="0 0 280 280"><rect class="face-bg" x="0" y="0" width="280" height="280" rx="0"/>
+            <line x1="0" y1="0" x2="280" y2="280"/>
+            <line x1="280" y1="0" x2="0" y2="280"/>
+            <circle cx="140" cy="140" r="60"/>
+            <circle cx="140" cy="140" r="30"/>
+            <line x1="140" y1="20" x2="140" y2="260"/>
+            <line x1="20" y1="140" x2="260" y2="140"/>
+          </svg>
+        </div>
+
+        <!-- BACK — concentric squares -->
+        <div class="gf back">
+          <svg viewBox="0 0 280 280"><rect class="face-bg" x="0" y="0" width="280" height="280"/>
+            <rect x="20" y="20" width="240" height="240" rx="4"/>
+            <rect x="55" y="55" width="170" height="170" rx="4"/>
+            <rect x="90" y="90" width="100" height="100" rx="4"/>
+            <rect x="120" y="120" width="40" height="40" rx="2"/>
+          </svg>
+        </div>
+
+        <!-- RIGHT — triangle grid -->
+        <div class="gf right">
+          <svg viewBox="0 0 280 280"><rect class="face-bg" x="0" y="0" width="280" height="280"/>
+            <polygon points="140,20 260,240 20,240"/>
+            <polygon points="140,70 220,210 60,210"/>
+            <polygon points="140,115 195,185 85,185"/>
+            <line x1="140" y1="20" x2="140" y2="240"/>
+          </svg>
+        </div>
+
+        <!-- LEFT — dot grid -->
+        <div class="gf left">
+          <svg viewBox="0 0 280 280"><rect class="face-bg" x="0" y="0" width="280" height="280"/>
+            <circle cx="70"  cy="70"  r="5"/>
+            <circle cx="140" cy="70"  r="5"/>
+            <circle cx="210" cy="70"  r="5"/>
+            <circle cx="70"  cy="140" r="5"/>
+            <circle cx="140" cy="140" r="8"/>
+            <circle cx="210" cy="140" r="5"/>
+            <circle cx="70"  cy="210" r="5"/>
+            <circle cx="140" cy="210" r="5"/>
+            <circle cx="210" cy="210" r="5"/>
+            <line x1="70" y1="70" x2="210" y2="70"/>
+            <line x1="70" y1="140" x2="210" y2="140"/>
+            <line x1="70" y1="210" x2="210" y2="210"/>
+            <line x1="70" y1="70" x2="70" y2="210"/>
+            <line x1="140" y1="70" x2="140" y2="210"/>
+            <line x1="210" y1="70" x2="210" y2="210"/>
+          </svg>
+        </div>
+
+        <!-- TOP — radial lines -->
+        <div class="gf top">
+          <svg viewBox="0 0 280 280"><rect class="face-bg" x="0" y="0" width="280" height="280"/>
+            <line x1="140" y1="140" x2="140" y2="20"/>
+            <line x1="140" y1="140" x2="260" y2="140"/>
+            <line x1="140" y1="140" x2="140" y2="260"/>
+            <line x1="140" y1="140" x2="20"  y2="140"/>
+            <line x1="140" y1="140" x2="55"  y2="55"/>
+            <line x1="140" y1="140" x2="225" y2="55"/>
+            <line x1="140" y1="140" x2="225" y2="225"/>
+            <line x1="140" y1="140" x2="55"  y2="225"/>
+            <circle cx="140" cy="140" r="45"/>
+            <circle cx="140" cy="140" r="10"/>
+          </svg>
+        </div>
+
+        <!-- BOTTOM — hex pattern -->
+        <div class="gf bottom">
+          <svg viewBox="0 0 280 280"><rect class="face-bg" x="0" y="0" width="280" height="280"/>
+            <polygon points="140,40 190,70 190,130 140,160 90,130 90,70"/>
+            <polygon points="140,80 168,95 168,125 140,140 112,125 112,95"/>
+            <line x1="90"  y1="70"  x2="40"  y2="40"/>
+            <line x1="190" y1="70"  x2="240" y2="40"/>
+            <line x1="190" y1="130" x2="240" y2="160"/>
+            <line x1="140" y1="160" x2="140" y2="230"/>
+            <line x1="90"  y1="130" x2="40"  y2="160"/>
+          </svg>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MARQUEE ══ -->
+<div class="marquee-bar">
+  <div class="marquee-track">
+    <span class="m-item"><span class="dot"></span>MythicMobs</span>
+    <span class="m-item"><span class="dot"></span>BetonQuest</span>
+    <span class="m-item"><span class="dot"></span>Typewriter</span>
+    <span class="m-item"><span class="dot"></span>ModelEngine</span>
+    <span class="m-item"><span class="dot"></span>ItemsAdder</span>
+    <span class="m-item"><span class="dot"></span>Oraxen</span>
+    <span class="m-item"><span class="dot"></span>MMOCore</span>
+    <span class="m-item"><span class="dot"></span>Blockbench</span>
+    <span class="m-item"><span class="dot"></span>LuckPerms</span>
+    <span class="m-item"><span class="dot"></span>WorldGuard</span>
+    <span class="m-item"><span class="dot"></span>Velocity</span>
+    <span class="m-item"><span class="dot"></span>Paper · Spigot</span>
+    <span class="m-item"><span class="dot"></span>MythicMobs</span>
+    <span class="m-item"><span class="dot"></span>BetonQuest</span>
+    <span class="m-item"><span class="dot"></span>Typewriter</span>
+    <span class="m-item"><span class="dot"></span>ModelEngine</span>
+    <span class="m-item"><span class="dot"></span>ItemsAdder</span>
+    <span class="m-item"><span class="dot"></span>Oraxen</span>
+    <span class="m-item"><span class="dot"></span>MMOCore</span>
+    <span class="m-item"><span class="dot"></span>Blockbench</span>
+    <span class="m-item"><span class="dot"></span>LuckPerms</span>
+    <span class="m-item"><span class="dot"></span>WorldGuard</span>
+    <span class="m-item"><span class="dot"></span>Velocity</span>
+    <span class="m-item"><span class="dot"></span>Paper · Spigot</span>
+  </div>
+</div>
+
+<!-- ══ SERVICES ══ -->
+<section id="servicios">
+  <div class="container">
+    <div class="srv-top">
+      <div>
+        <div class="s-eye rv">Qué ofrecemos</div>
+        <h2 class="s-head rv">SERVICIOS</h2>
+      </div>
+      <p class="s-sub rv">Cada entrega incluye documentación completa, testing en servidor real y soporte post-entrega. Sin plantillas genéricas.</p>
+    </div>
+    <div class="srv-grid rv">
+
+      <div class="srv">
+        <div class="srv-n">01</div>
+        <span class="srv-ico">⚔️</span>
+        <h3 class="srv-name">MYTHICMOBS</h3>
+        <p class="srv-desc">Mobs y bosses con skills complejas, IA personalizada, efectos y drops únicos. Desde criaturas de campo hasta bosses de nivel MMORPG con phases y mechanics avanzadas.</p>
+        <div class="srv-tags">
+          <span class="srv-tag">Custom Skills</span>
+          <span class="srv-tag">Targeters</span>
+          <span class="srv-tag">Drop Tables</span>
+          <span class="srv-tag">AI Control</span>
+          <span class="srv-tag">ModelEngine</span>
+          <span class="srv-tag">Factions</span>
+          <span class="srv-tag">Spawners</span>
+        </div>
+      </div>
+
+      <div class="srv">
+        <div class="srv-n">02</div>
+        <span class="srv-ico">📜</span>
+        <h3 class="srv-name">BETONQUEST</h3>
+        <p class="srv-desc">Sistema de quests completo con diálogos ramificados, objetivos encadenados y recompensas dinámicas. Narrativa inmersiva con Citizens y MythicMobs integrados.</p>
+        <div class="srv-tags">
+          <span class="srv-tag">Quest Chains</span>
+          <span class="srv-tag">NPC Dialogs</span>
+          <span class="srv-tag">Conditions</span>
+          <span class="srv-tag">Events</span>
+          <span class="srv-tag">Variables</span>
+          <span class="srv-tag">Citizens</span>
+        </div>
+      </div>
+
+      <div class="srv">
+        <div class="srv-n">03</div>
+        <span class="srv-ico">🎬</span>
+        <h3 class="srv-name">TYPEWRITER</h3>
+        <p class="srv-desc">Experiencias cinematográficas de nueva generación. Cutscenes, diálogos animados, branching stories y NPCs inteligentes configurados vía panel visual web.</p>
+        <div class="srv-tags">
+          <span class="srv-tag">Cinematics</span>
+          <span class="srv-tag">Camera Paths</span>
+          <span class="srv-tag">Branching</span>
+          <span class="srv-tag">MythicMobs</span>
+          <span class="srv-tag">FancyNPCs</span>
+          <span class="srv-tag">Dynamic Vars</span>
+        </div>
+      </div>
+
+      <div class="srv">
+        <div class="srv-n">04</div>
+        <span class="srv-ico">📦</span>
+        <h3 class="srv-name">PLUGINS CUSTOM</h3>
+        <p class="srv-desc">Configuración avanzada de plugins complejos: ItemsAdder, Oraxen, MMOCore, MMOItems, AureliumSkills, EcoItems, CustomFishing, PlaceholderAPI y más.</p>
+        <div class="srv-tags">
+          <span class="srv-tag">ItemsAdder</span>
+          <span class="srv-tag">Oraxen</span>
+          <span class="srv-tag">MMOCore</span>
+          <span class="srv-tag">MMOItems</span>
+          <span class="srv-tag">AureliumSkills</span>
+          <span class="srv-tag">mcMMO</span>
+          <span class="srv-tag">EcoItems</span>
+        </div>
+      </div>
+
+      <div class="srv">
+        <div class="srv-n">05</div>
+        <span class="srv-ico">⚙️</span>
+        <h3 class="srv-name">SERVER SETUP</h3>
+        <p class="srv-desc">Configuración completa desde cero: permisos, economía, protección de mundos, optimización de TPS y setup de redes BungeeCord / Velocity multi-servidor.</p>
+        <div class="srv-tags">
+          <span class="srv-tag">LuckPerms</span>
+          <span class="srv-tag">EssentialsX</span>
+          <span class="srv-tag">WorldGuard</span>
+          <span class="srv-tag">Paper</span>
+          <span class="srv-tag">Velocity</span>
+          <span class="srv-tag">Anti-Cheat</span>
+          <span class="srv-tag">Optimization</span>
+        </div>
+      </div>
+
+      <div class="srv">
+        <div class="srv-n">06</div>
+        <span class="srv-ico">🎨</span>
+        <h3 class="srv-name">TEXTURAS & 3D</h3>
+        <p class="srv-desc">Resource packs y modelos 3D de mobs en Blockbench con animaciones completas. GUI, HUD custom, CIT con OptiFine y overlays de armaduras.</p>
+        <div class="srv-tags">
+          <span class="srv-tag">Blockbench</span>
+          <span class="srv-tag">ModelEngine</span>
+          <span class="srv-tag">OptiFine CIT</span>
+          <span class="srv-tag">HUD/GUI</span>
+          <span class="srv-tag">16x–64x</span>
+          <span class="srv-tag">Pixel Art</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ STACK ══ -->
+<section id="stack">
+  <div class="container">
+    <div class="stk-header">
+      <div>
+        <div class="s-eye rv">Tecnologías</div>
+        <h2 class="s-head rv">STACK</h2>
+      </div>
+      <p class="s-sub rv">Plugins y herramientas con los que trabajamos de forma habitual en cada proyecto.</p>
+    </div>
+    <div class="stk-groups rv">
+      <div>
+        <div class="stk-lbl">Quests & Narrativa</div>
+        <div class="stk-pills">
+          <span class="stk-pill">BetonQuest</span>
+          <span class="stk-pill">Typewriter</span>
+          <span class="stk-pill">Citizens</span>
+          <span class="stk-pill">FancyNPCs</span>
+          <span class="stk-pill">ZNPCsPlus</span>
+          <span class="stk-pill">Denizen</span>
+        </div>
+      </div>
+      <div>
+        <div class="stk-lbl">Mobs & Combate</div>
+        <div class="stk-pills">
+          <span class="stk-pill">MythicMobs</span>
+          <span class="stk-pill">ModelEngine</span>
+          <span class="stk-pill">MythicAchievements</span>
+          <span class="stk-pill">LibsDisguises</span>
+          <span class="stk-pill">WeaponMechanics</span>
+          <span class="stk-pill">AdvancedPets</span>
+        </div>
+      </div>
+      <div>
+        <div class="stk-lbl">Items & RPG</div>
+        <div class="stk-pills">
+          <span class="stk-pill">ItemsAdder</span>
+          <span class="stk-pill">Oraxen</span>
+          <span class="stk-pill">MMOCore</span>
+          <span class="stk-pill">MMOItems</span>
+          <span class="stk-pill">AureliumSkills</span>
+          <span class="stk-pill">mcMMO</span>
+          <span class="stk-pill">EcoItems</span>
+          <span class="stk-pill">Nova</span>
+        </div>
+      </div>
+      <div>
+        <div class="stk-lbl">Servidor & Admin</div>
+        <div class="stk-pills">
+          <span class="stk-pill">Paper / Spigot</span>
+          <span class="stk-pill">Velocity</span>
+          <span class="stk-pill">BungeeCord</span>
+          <span class="stk-pill">LuckPerms</span>
+          <span class="stk-pill">WorldGuard</span>
+          <span class="stk-pill">WorldEdit</span>
+          <span class="stk-pill">EssentialsX</span>
+          <span class="stk-pill">PlaceholderAPI</span>
+          <span class="stk-pill">Vault</span>
+          <span class="stk-pill">Spark</span>
+        </div>
+      </div>
+      <div>
+        <div class="stk-lbl">Diseño & Assets</div>
+        <div class="stk-pills">
+          <span class="stk-pill">Blockbench</span>
+          <span class="stk-pill">Photoshop</span>
+          <span class="stk-pill">GIMP</span>
+          <span class="stk-pill">Aseprite</span>
+          <span class="stk-pill">OptiFine CIT/CEM</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PORTFOLIO ══ -->
+<section id="portfolio">
+  <div class="container">
+    <div class="port-top">
+      <div>
+        <div class="s-eye rv">Trabajos</div>
+        <h2 class="s-head rv">PORTFOLIO</h2>
+      </div>
+      <div class="port-filters rv">
+        <button class="pf active">Todo</button>
+        <button class="pf">MythicMobs</button>
+        <button class="pf">BetonQuest</button>
+        <button class="pf">Typewriter</button>
+        <button class="pf">Texturas</button>
+        <button class="pf">Servidores</button>
+      </div>
+    </div>
+    <div class="port-grid rv">
+
+      <div class="pc sp2">
+        <div class="pc-imgs">
+          <div class="pc-a"><span class="ph-ico">📷</span><span class="ph-txt">Imagen A del proyecto<br><small style="opacity:.6">Reemplaza con &lt;img&gt;</small></span></div>
+          <div class="pc-b"><span class="ph-ico">✦</span><span class="ph-txt">Segunda imagen</span></div>
+        </div>
+        <div class="pc-info">
+          <div><div class="pc-name">RPG World — Aeloria</div><div class="pc-type">MythicMobs · BetonQuest · Typewriter</div></div>
+          <div class="pc-arr">↗</div>
+        </div>
+      </div>
+
+      <div class="pc sp2v tall">
+        <div class="pc-imgs">
+          <div class="pc-a"><span class="ph-ico">📷</span><span class="ph-txt">Screenshot A</span></div>
+          <div class="pc-b"><span class="ph-ico">✦</span><span class="ph-txt">Screenshot B</span></div>
+        </div>
+        <div class="pc-info">
+          <div><div class="pc-name">Boss Dragón de Hielo</div><div class="pc-type">MythicMobs · ModelEngine</div></div>
+          <div class="pc-arr">↗</div>
+        </div>
+      </div>
+
+      <div class="pc">
+        <div class="pc-imgs">
+          <div class="pc-a"><span class="ph-ico">📷</span><span class="ph-txt">Screenshot A</span></div>
+          <div class="pc-b"><span class="ph-ico">✦</span><span class="ph-txt">Screenshot B</span></div>
+        </div>
+        <div class="pc-info">
+          <div><div class="pc-name">Quest — Los Guardianes</div><div class="pc-type">BetonQuest</div></div>
+          <div class="pc-arr">↗</div>
+        </div>
+      </div>
+
+      <div class="pc">
+        <div class="pc-imgs">
+          <div class="pc-a"><span class="ph-ico">📷</span><span class="ph-txt">Screenshot A</span></div>
+          <div class="pc-b"><span class="ph-ico">✦</span><span class="ph-txt">Screenshot B</span></div>
+        </div>
+        <div class="pc-info">
+          <div><div class="pc-name">Cinematic SkyBlock</div><div class="pc-type">Typewriter</div></div>
+          <div class="pc-arr">↗</div>
+        </div>
+      </div>
+
+      <div class="pc">
+        <div class="pc-imgs">
+          <div class="pc-a"><span class="ph-ico">📷</span><span class="ph-txt">Screenshot A</span></div>
+          <div class="pc-b"><span class="ph-ico">✦</span><span class="ph-txt">Screenshot B</span></div>
+        </div>
+        <div class="pc-info">
+          <div><div class="pc-name">Resource Pack Medieval</div><div class="pc-type">Texturas · OptiFine</div></div>
+          <div class="pc-arr">↗</div>
+        </div>
+      </div>
+
+      <div class="pc">
+        <div class="pc-imgs">
+          <div class="pc-a"><span class="ph-ico">📷</span><span class="ph-txt">Screenshot A</span></div>
+          <div class="pc-b"><span class="ph-ico">✦</span><span class="ph-txt">Screenshot B</span></div>
+        </div>
+        <div class="pc-info">
+          <div><div class="pc-name">Mob 3D — Golem Arcano</div><div class="pc-type">Blockbench · ModelEngine</div></div>
+          <div class="pc-arr">↗</div>
+        </div>
+      </div>
+
+      <div class="pc">
+        <div class="pc-imgs">
+          <div class="pc-a"><span class="ph-ico">📷</span><span class="ph-txt">Screenshot A</span></div>
+          <div class="pc-b"><span class="ph-ico">✦</span><span class="ph-txt">Screenshot B</span></div>
+        </div>
+        <div class="pc-info">
+          <div><div class="pc-name">Red Survival + SkyBlock</div><div class="pc-type">Velocity · Server Setup</div></div>
+          <div class="pc-arr">↗</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ STUDIO ══ -->
+<section id="studio">
+  <div class="container">
+    <div class="studio-wrap">
+      <div class="studio-l rv">
+        <div class="studio-frame" id="tiltFrame">
+          <!-- <img src="tu-foto.jpg" alt="Dominik" style="width:100%;height:100%;object-fit:cover"> -->
+          📷 Tu foto o skin aquí
+        </div>
+        <div class="studio-badge">
+          <div class="studio-badge-txt">SOLO<br>STUDIO</div>
+        </div>
+      </div>
+      <div class="studio-r">
+        <div class="s-eye rv">El Studio</div>
+        <h2 class="s-head rv">ARVO<span style="color:var(--red)">.</span><br>por Dominik</h2>
+        <div class="studio-body rv">
+          <p>Soy Dominik, fundador y único integrante de ARVO. Llevo X años configurando servidores Minecraft, especializándome en el ecosistema de plugins RPG y en crear experiencias que los jugadores recuerdan.</p>
+          <p>Lo que empezó como administrar mis propios servidores se convirtió en una especialización real: dominar MythicMobs al nivel de crear bosses de MMORPG, construir sistemas de quests complejos con BetonQuest y producir cinematics con Typewriter que sorprenden desde el primer login.</p>
+          <p>Trabajas directamente conmigo — sin intermediarios, sin plantillas — desde el brief hasta la entrega con documentación completa.</p>
+        </div>
+        <div class="expertise rv">
+          <span class="exp-tag">MythicMobs Expert</span>
+          <span class="exp-tag">BetonQuest</span>
+          <span class="exp-tag">Typewriter</span>
+          <span class="exp-tag">ModelEngine</span>
+          <span class="exp-tag">ItemsAdder</span>
+          <span class="exp-tag">Server Optimization</span>
+          <span class="exp-tag">Blockbench</span>
+        </div>
+        <div class="skill-list rv">
+          <div class="skill-row">
+            <div class="skill-hd"><span class="skill-name">MythicMobs</span><span class="skill-pct">97%</span></div>
+            <div class="skill-track"><div class="skill-fill" style="width:97%"></div></div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-hd"><span class="skill-name">BetonQuest</span><span class="skill-pct">91%</span></div>
+            <div class="skill-track"><div class="skill-fill" style="width:91%"></div></div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-hd"><span class="skill-name">Typewriter</span><span class="skill-pct">88%</span></div>
+            <div class="skill-track"><div class="skill-fill" style="width:88%"></div></div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-hd"><span class="skill-name">Server Config & Optimization</span><span class="skill-pct">94%</span></div>
+            <div class="skill-track"><div class="skill-fill" style="width:94%"></div></div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-hd"><span class="skill-name">Blockbench / Texturas</span><span class="skill-pct">84%</span></div>
+            <div class="skill-track"><div class="skill-fill" style="width:84%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROCESS ══ -->
+<section id="proceso">
+  <div class="container">
+    <div class="s-eye rv">Cómo trabajamos</div>
+    <h2 class="s-head rv">PROCESO</h2>
+    <div class="proc-table rv">
+      <div class="proc-row">
+        <div class="proc-n">01</div>
+        <div>
+          <div class="proc-name">BRIEF</div>
+          <div class="proc-tags"><span class="proc-tag">Discovery</span><span class="proc-tag">Scope</span></div>
+        </div>
+        <div class="proc-desc">Me cuentas tu visión: tipo de servidor, plugins, referencias y presupuesto. Analizo qué solución encaja mejor y propongo el alcance exacto del proyecto.</div>
+      </div>
+      <div class="proc-row">
+        <div class="proc-n">02</div>
+        <div>
+          <div class="proc-name">ARQUITECTURA</div>
+          <div class="proc-tags"><span class="proc-tag">Planning</span><span class="proc-tag">Design</span></div>
+        </div>
+        <div class="proc-desc">Diseño la estructura completa: conexión de plugins, flujos de quests, skills de mobs y árbol de permisos. Todo documentado antes de escribir una línea de YAML.</div>
+      </div>
+      <div class="proc-row">
+        <div class="proc-n">03</div>
+        <div>
+          <div class="proc-name">DESARROLLO</div>
+          <div class="proc-tags"><span class="proc-tag">Build</span><span class="proc-tag">QA</span></div>
+        </div>
+        <div class="proc-desc">Configuro todo en un servidor de pruebas propio. Testing exhaustivo de compatibilidad, performance y bugs. Acceso al servidor de test y avances por Discord.</div>
+      </div>
+      <div class="proc-row">
+        <div class="proc-n">04</div>
+        <div>
+          <div class="proc-name">ENTREGA</div>
+          <div class="proc-tags"><span class="proc-tag">Delivery</span><span class="proc-tag">Support</span></div>
+        </div>
+        <div class="proc-desc">Archivos organizados, documentación completa y guía de instalación. Soporte post-entrega incluido para ajustes, dudas y actualizaciones de versión.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTACT ══ -->
+<section id="contacto">
+  <div class="container">
+    <div class="contact-wrap">
+      <div class="contact-l">
+        <div class="s-eye rv">Hablemos</div>
+        <h2 class="s-head rv">INICIAR<br>PROYECTO</h2>
+        <p class="contact-intro rv">¿Tu servidor necesita llevar la experiencia al siguiente nivel? Cuéntanos qué necesitas — respondemos en menos de 24 horas.</p>
+        <div class="cc-list rv">
+          <a href="#" class="cc">
+            <span class="cc-dot"></span>
+            <span class="cc-type">Discord</span>
+            <span class="cc-val">Dominik#0000</span>
+          </a>
+          <a href="mailto:tu@email.com" class="cc">
+            <span class="cc-dot"></span>
+            <span class="cc-type">Email</span>
+            <span class="cc-val">tu@email.com</span>
+          </a>
+          <a href="#" class="cc">
+            <span class="cc-dot"></span>
+            <span class="cc-type">Twitter / X</span>
+            <span class="cc-val">@TuUsuario</span>
+          </a>
+          <a href="#" class="cc">
+            <span class="cc-dot"></span>
+            <span class="cc-type">BuiltByBit</span>
+            <span class="cc-val">ARVO Studio</span>
+          </a>
+        </div>
+      </div>
+      <div class="rv">
+        <div class="c-form">
+          <div class="f-row">
+            <div><label class="f-lbl">Nombre / Nick</label><input class="f-in" type="text" placeholder="Tu nombre"></div>
+            <div><label class="f-lbl">Contacto</label><input class="f-in" type="text" placeholder="Discord o email"></div>
+          </div>
+          <div>
+            <label class="f-lbl">Servicio</label>
+            <select class="f-sel">
+              <option value="">Selecciona un servicio...</option>
+              <option>MythicMobs — Mobs y bosses</option>
+              <option>BetonQuest — Sistema de quests</option>
+              <option>Typewriter — Cinematics y diálogos</option>
+              <option>Plugins custom — Configuración avanzada</option>
+              <option>Server Setup — Configuración completa</option>
+              <option>Texturas y Resource Pack</option>
+              <option>Modelos 3D (Blockbench / ModelEngine)</option>
+              <option>Paquete completo</option>
+            </select>
+          </div>
+          <div>
+            <label class="f-lbl">Versión de Minecraft</label>
+            <select class="f-sel">
+              <option>1.21.x (Recomendada)</option>
+              <option>1.20.x</option>
+              <option>1.19.x</option>
+              <option>1.18.x</option>
+              <option>1.17.x</option>
+              <option>1.16.x</option>
+            </select>
+          </div>
+          <div>
+            <label class="f-lbl">Descripción del proyecto</label>
+            <textarea class="f-ta" placeholder="Tipo de servidor, qué necesitas exactamente, referencias, plazos, presupuesto aproximado..."></textarea>
+          </div>
+          <button class="f-sub">Enviar mensaje →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="f-brand">ARVO<span>.</span></div>
+  <small>© 2025 ARVO Studio · Liderado por Dominik</small>
+  <div class="f-links">
+    <a href="#servicios">Servicios</a>
+    <a href="#portfolio">Portfolio</a>
+    <a href="#studio">Studio</a>
+    <a href="#contacto">Contacto</a>
+  </div>
+</footer>
+
+<script>
+/* ── THEME TOGGLE ── */
+const toggle = document.getElementById('themeToggle');
+const root   = document.documentElement;
+
+// Apply saved preference or system preference
+const saved = localStorage.getItem('arvo-theme');
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+const initDark = saved ? saved === 'dark' : prefersDark;
+
+if(!initDark){
+  root.setAttribute('data-theme','light');
+  toggle.checked = true;
+} // dark is default (no attribute needed — :root already dark)
+
+toggle.addEventListener('change', () => {
+  if(toggle.checked){
+    root.setAttribute('data-theme','light');
+    localStorage.setItem('arvo-theme','light');
+  } else {
+    root.removeAttribute('data-theme');
+    localStorage.setItem('arvo-theme','dark');
+  }
+});
+
+/* ── CURSOR ── */
+const cd = document.getElementById('cd');
+const cr = document.getElementById('cr');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+(function loop(){
+  if(cd){cd.style.left=mx+'px';cd.style.top=my+'px'}
+  rx+=(mx-rx)*.1;ry+=(my-ry)*.1;
+  if(cr){cr.style.left=rx+'px';cr.style.top=ry+'px'}
+  requestAnimationFrame(loop)
+})();
+
+/* ── HAMBURGER ── */
+const ham=document.getElementById('ham');
+const nav=document.getElementById('mainNav');
+ham&&ham.addEventListener('click',()=>{
+  nav.classList.toggle('open');
+  const sp=ham.querySelectorAll('span');
+  if(nav.classList.contains('open')){
+    sp[0].style.transform='rotate(45deg) translate(5px,5px)';
+    sp[1].style.opacity='0';
+    sp[2].style.transform='rotate(-45deg) translate(5px,-5px)';
+  } else {
+    sp.forEach(s=>{s.style.transform='';s.style.opacity=''});
+  }
+});
+document.querySelectorAll('#navLinks a').forEach(a=>{
+  a.addEventListener('click',()=>{
+    nav.classList.remove('open');
+    ham.querySelectorAll('span').forEach(s=>{s.style.transform='';s.style.opacity=''});
+  });
+});
+
+/* ── SCROLL REVEAL ── */
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')});
+},{threshold:.08});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+/* ── NAV ACTIVE ── */
+const sections=document.querySelectorAll('section[id]');
+const navLinks=document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  sections.forEach(s=>{if(window.scrollY>=s.offsetTop-100)cur=s.id});
+  navLinks.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur));
+  nav.style.boxShadow=window.scrollY>10?'0 1px 30px rgba(0,0,0,.6)':'none';
+},{passive:true});
+
+/* ── PORTFOLIO FILTERS ── */
+document.querySelectorAll('.pf').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.pf').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+
+/* ── 3D TILT — studio photo ── */
+const tf=document.getElementById('tiltFrame');
+const tl=tf?.parentElement;
+tl&&tl.addEventListener('mousemove',e=>{
+  const r=tl.getBoundingClientRect();
+  const x=(e.clientX-r.left)/r.width-.5;
+  const y=(e.clientY-r.top)/r.height-.5;
+  tf.style.transform=`perspective(700px) rotateY(${x*10}deg) rotateX(${-y*10}deg)`;
+});
+tl&&tl.addEventListener('mouseleave',()=>{tf.style.transform=''});
+
+/* ── 3D TILT — service cards ── */
+document.querySelectorAll('.srv').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width-.5;
+    const y=(e.clientY-r.top)/r.height-.5;
+    card.style.transform=`perspective(600px) rotateY(${x*5}deg) rotateX(${-y*5}deg) translateY(-3px)`;
+  });
+  card.addEventListener('mouseleave',()=>{card.style.transform=''});
+});
+</script>
+</body>
+</html>
