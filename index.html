@@ -3,19 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ARVO Studio — Minecraft Configuration</title>
+<title>Arvo Studio</title>
+<link rel="icon" type="image/svg+xml" href="logo_negative.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-
-
 <!-- ══ NAV ══ -->
 <nav id="mainNav">
   <div class="nav-logo">
-    <img src="logo.jpg" alt="ARVO" style="height:38px;width:38px;object-fit:contain;border-radius:6px;display:block;">
+    <img src="logo_negative.svg" alt="ARVO" id="navLogo" style="height:48px;width:48px;object-fit:contain;display:block;">
   </div>
   <ul class="nav-links" id="navLinks">
     <li><a href="#servicios">Servicios</a></li>
@@ -41,20 +40,14 @@
 <!-- Nav overlay backdrop -->
 <div id="nav-overlay"></div>
 
-<!-- Mobile nav overlay — outside nav to avoid backdrop-filter stacking issues -->
-<div id="mob-nav">
-  <a href="#servicios">Servicios</a>
-  <a href="#stack">Stack</a>
-  <a href="#portfolio">Portfolio</a>
-  <a href="#studio">Studio</a>
-  <a href="#proceso">Proceso</a>
-  <a href="#contacto">Contacto</a>
-  <a href="#contacto" class="mob-cta">Contratar</a>
-</div>
+<!-- ══ HERO ══ -->
 <section id="hero">
   <div class="hero-glow"></div>
-
   <div class="hero-left">
+    <div class="hero-badge fade-up">
+      <span class="hero-badge-dot"></span>
+      Disponible para proyectos
+    </div>
     <div class="hero-eyebrow fade-up">Minecraft Configuration Studio</div>
     <h1 class="hero-title fade-up d1">
       ARVO <span class="red">STUDIO</span>
@@ -72,27 +65,8 @@
       <div><span class="h-num">1.16–1.21</span><span class="h-lbl">Versiones</span></div>
     </div>
   </div>
-
-  <!-- 3D model-viewer mount — scene3d.js inyecta el <model-viewer> aquí -->
-  <div class="hero-right" id="scene3d-mount">
-    <div class="mc-glow"></div>
-    <!-- Particles -->
-    <div class="mc-particle" style="top:20%;left:15%;animation-delay:0s;animation-duration:3.5s"></div>
-    <div class="mc-particle" style="top:55%;left:10%;animation-delay:1.1s;animation-duration:4.2s;width:3px;height:3px"></div>
-    <div class="mc-particle" style="top:65%;right:12%;animation-delay:2.3s;animation-duration:3.8s"></div>
-    <div class="mc-particle" style="top:30%;right:8%;animation-delay:0.7s;animation-duration:4.5s;width:4px;height:4px;background:#5c9e22"></div>
-    <!-- CSS Minecraft block — visible mientras carga el .glb o si no hay modelo -->
-    <div class="mc-css-fallback mc-scene">
-      <div class="mc-block">
-        <div class="mc-face mc-face-top"></div>
-        <div class="mc-face mc-face-front"></div>
-        <div class="mc-face mc-face-back"></div>
-        <div class="mc-face mc-face-right"></div>
-        <div class="mc-face mc-face-left"></div>
-        <div class="mc-face mc-face-bottom"></div>
-      </div>
-    </div>
-  </div>
+  <!-- 3D model-viewer mount -->
+  <div class="hero-right" id="scene3d-mount"></div>
 </section>
 
 <!-- ══ MARQUEE ══ -->
@@ -140,52 +114,45 @@
       <div class="srv">
         <div class="srv-n">01</div>
         <div class="srv-logo-wrap">
-          <img class="srv-logo" src="https://github.com/MythicCraft.png" alt="MythicMobs" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="srv-ico-fb" style="display:none">⚔️</span>
+          <img class="srv-logo" src="https://github.com/MythicCraft.png" alt="MythicMobs" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <span class="srv-ico-fb" style="display:none">⚔️</span>
         </div>
         <h3 class="srv-name">MYTHICMOBS</h3>
         <p class="srv-desc">Mobs y bosses con skills complejas, IA personalizada, efectos y drops únicos. Desde criaturas de campo hasta bosses de nivel MMORPG con phases y mechanics avanzadas.</p>
         <div class="srv-tags">
-          <span class="srv-tag">Custom Skills</span>
-          <span class="srv-tag">Targeters</span>
-          <span class="srv-tag">Drop Tables</span>
-          <span class="srv-tag">AI Control</span>
-          <span class="srv-tag">ModelEngine</span>
-          <span class="srv-tag">Factions</span>
-          <span class="srv-tag">Spawners</span>
+          <span class="srv-tag">Custom Skills</span><span class="srv-tag">Targeters</span>
+          <span class="srv-tag">Drop Tables</span><span class="srv-tag">AI Control</span>
+          <span class="srv-tag">ModelEngine</span><span class="srv-tag">Factions</span><span class="srv-tag">Spawners</span>
         </div>
       </div>
 
       <div class="srv">
         <div class="srv-n">02</div>
         <div class="srv-logo-wrap">
-          <img class="srv-logo" src="https://github.com/BetonQuest.png" alt="BetonQuest" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="srv-ico-fb" style="display:none">📜</span>
+          <img class="srv-logo" src="https://github.com/BetonQuest.png" alt="BetonQuest" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <span class="srv-ico-fb" style="display:none">📜</span>
         </div>
         <h3 class="srv-name">BETONQUEST</h3>
         <p class="srv-desc">Sistema de quests completo con diálogos ramificados, objetivos encadenados y recompensas dinámicas. Narrativa inmersiva con Citizens y MythicMobs integrados.</p>
         <div class="srv-tags">
-          <span class="srv-tag">Quest Chains</span>
-          <span class="srv-tag">NPC Dialogs</span>
-          <span class="srv-tag">Conditions</span>
-          <span class="srv-tag">Events</span>
-          <span class="srv-tag">Variables</span>
-          <span class="srv-tag">Citizens</span>
+          <span class="srv-tag">Quest Chains</span><span class="srv-tag">NPC Dialogs</span>
+          <span class="srv-tag">Conditions</span><span class="srv-tag">Events</span>
+          <span class="srv-tag">Variables</span><span class="srv-tag">Citizens</span>
         </div>
       </div>
 
       <div class="srv">
         <div class="srv-n">03</div>
         <div class="srv-logo-wrap">
-          <img class="srv-logo" src="https://github.com/TypeWriterMC.png" alt="Typewriter" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="srv-ico-fb" style="display:none">🎬</span>
+          <img class="srv-logo" src="https://github.com/TypeWriterMC.png" alt="Typewriter" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <span class="srv-ico-fb" style="display:none">🎬</span>
         </div>
         <h3 class="srv-name">TYPEWRITER</h3>
         <p class="srv-desc">Experiencias cinematográficas de nueva generación. Cutscenes, diálogos animados, branching stories y NPCs inteligentes configurados vía panel visual web.</p>
         <div class="srv-tags">
-          <span class="srv-tag">Cinematics</span>
-          <span class="srv-tag">Camera Paths</span>
-          <span class="srv-tag">Branching</span>
-          <span class="srv-tag">MythicMobs</span>
-          <span class="srv-tag">FancyNPCs</span>
-          <span class="srv-tag">Dynamic Vars</span>
+          <span class="srv-tag">Cinematics</span><span class="srv-tag">Camera Paths</span>
+          <span class="srv-tag">Branching</span><span class="srv-tag">MythicMobs</span>
+          <span class="srv-tag">FancyNPCs</span><span class="srv-tag">Dynamic Vars</span>
         </div>
       </div>
 
@@ -199,13 +166,9 @@
         <h3 class="srv-name">PLUGINS CUSTOM</h3>
         <p class="srv-desc">Configuración avanzada de plugins complejos: ItemsAdder, Oraxen, MMOCore, MMOItems, AureliumSkills, EcoItems, CustomFishing, PlaceholderAPI y más.</p>
         <div class="srv-tags">
-          <span class="srv-tag">ItemsAdder</span>
-          <span class="srv-tag">Oraxen</span>
-          <span class="srv-tag">MMOCore</span>
-          <span class="srv-tag">MMOItems</span>
-          <span class="srv-tag">AureliumSkills</span>
-          <span class="srv-tag">mcMMO</span>
-          <span class="srv-tag">EcoItems</span>
+          <span class="srv-tag">ItemsAdder</span><span class="srv-tag">Oraxen</span>
+          <span class="srv-tag">MMOCore</span><span class="srv-tag">MMOItems</span>
+          <span class="srv-tag">AureliumSkills</span><span class="srv-tag">mcMMO</span><span class="srv-tag">EcoItems</span>
         </div>
       </div>
 
@@ -219,30 +182,24 @@
         <h3 class="srv-name">SERVER SETUP</h3>
         <p class="srv-desc">Configuración completa desde cero: permisos, economía, protección de mundos, optimización de TPS y setup de redes BungeeCord / Velocity multi-servidor.</p>
         <div class="srv-tags">
-          <span class="srv-tag">LuckPerms</span>
-          <span class="srv-tag">EssentialsX</span>
-          <span class="srv-tag">WorldGuard</span>
-          <span class="srv-tag">Paper</span>
-          <span class="srv-tag">Velocity</span>
-          <span class="srv-tag">Anti-Cheat</span>
-          <span class="srv-tag">Optimization</span>
+          <span class="srv-tag">LuckPerms</span><span class="srv-tag">EssentialsX</span>
+          <span class="srv-tag">WorldGuard</span><span class="srv-tag">Paper</span>
+          <span class="srv-tag">Velocity</span><span class="srv-tag">Anti-Cheat</span><span class="srv-tag">Optimization</span>
         </div>
       </div>
 
       <div class="srv">
         <div class="srv-n">06</div>
         <div class="srv-logo-wrap">
-          <img class="srv-logo" src="https://github.com/Ticxo.png" alt="ModelEngine" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="srv-ico-fb" style="display:none">🎨</span>
+          <img class="srv-logo" src="https://github.com/Ticxo.png" alt="ModelEngine" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <span class="srv-ico-fb" style="display:none">🎨</span>
         </div>
         <h3 class="srv-name">TEXTURAS & 3D</h3>
         <p class="srv-desc">Resource packs y modelos 3D de mobs en Blockbench con animaciones completas. GUI, HUD custom, CIT con OptiFine y overlays de armaduras.</p>
         <div class="srv-tags">
-          <span class="srv-tag">Blockbench</span>
-          <span class="srv-tag">ModelEngine</span>
-          <span class="srv-tag">OptiFine CIT</span>
-          <span class="srv-tag">HUD/GUI</span>
-          <span class="srv-tag">16x–64x</span>
-          <span class="srv-tag">Pixel Art</span>
+          <span class="srv-tag">Blockbench</span><span class="srv-tag">ModelEngine</span>
+          <span class="srv-tag">OptiFine CIT</span><span class="srv-tag">HUD/GUI</span>
+          <span class="srv-tag">16x–64x</span><span class="srv-tag">Pixel Art</span>
         </div>
       </div>
 
@@ -264,60 +221,43 @@
       <div>
         <div class="stk-lbl">Quests & Narrativa</div>
         <div class="stk-pills">
-          <span class="stk-pill">BetonQuest</span>
-          <span class="stk-pill">Typewriter</span>
-          <span class="stk-pill">Citizens</span>
-          <span class="stk-pill">FancyNPCs</span>
-          <span class="stk-pill">ZNPCsPlus</span>
-          <span class="stk-pill">Denizen</span>
+          <span class="stk-pill">BetonQuest</span><span class="stk-pill">Typewriter</span>
+          <span class="stk-pill">Citizens</span><span class="stk-pill">FancyNPCs</span>
+          <span class="stk-pill">ZNPCsPlus</span><span class="stk-pill">Denizen</span>
         </div>
       </div>
       <div>
         <div class="stk-lbl">Mobs & Combate</div>
         <div class="stk-pills">
-          <span class="stk-pill">MythicMobs</span>
-          <span class="stk-pill">ModelEngine</span>
-          <span class="stk-pill">MythicAchievements</span>
-          <span class="stk-pill">LibsDisguises</span>
-          <span class="stk-pill">WeaponMechanics</span>
-          <span class="stk-pill">AdvancedPets</span>
+          <span class="stk-pill">MythicMobs</span><span class="stk-pill">ModelEngine</span>
+          <span class="stk-pill">MythicAchievements</span><span class="stk-pill">LibsDisguises</span>
+          <span class="stk-pill">WeaponMechanics</span><span class="stk-pill">AdvancedPets</span>
         </div>
       </div>
       <div>
         <div class="stk-lbl">Items & RPG</div>
         <div class="stk-pills">
-          <span class="stk-pill">ItemsAdder</span>
-          <span class="stk-pill">Oraxen</span>
-          <span class="stk-pill">MMOCore</span>
-          <span class="stk-pill">MMOItems</span>
-          <span class="stk-pill">AureliumSkills</span>
-          <span class="stk-pill">mcMMO</span>
-          <span class="stk-pill">EcoItems</span>
-          <span class="stk-pill">Nova</span>
+          <span class="stk-pill">ItemsAdder</span><span class="stk-pill">Oraxen</span>
+          <span class="stk-pill">MMOCore</span><span class="stk-pill">MMOItems</span>
+          <span class="stk-pill">AureliumSkills</span><span class="stk-pill">mcMMO</span>
+          <span class="stk-pill">EcoItems</span><span class="stk-pill">Nova</span>
         </div>
       </div>
       <div>
         <div class="stk-lbl">Servidor & Admin</div>
         <div class="stk-pills">
-          <span class="stk-pill">Paper / Spigot</span>
-          <span class="stk-pill">Velocity</span>
-          <span class="stk-pill">BungeeCord</span>
-          <span class="stk-pill">LuckPerms</span>
-          <span class="stk-pill">WorldGuard</span>
-          <span class="stk-pill">WorldEdit</span>
-          <span class="stk-pill">EssentialsX</span>
-          <span class="stk-pill">PlaceholderAPI</span>
-          <span class="stk-pill">Vault</span>
-          <span class="stk-pill">Spark</span>
+          <span class="stk-pill">Paper / Spigot</span><span class="stk-pill">Velocity</span>
+          <span class="stk-pill">BungeeCord</span><span class="stk-pill">LuckPerms</span>
+          <span class="stk-pill">WorldGuard</span><span class="stk-pill">WorldEdit</span>
+          <span class="stk-pill">EssentialsX</span><span class="stk-pill">PlaceholderAPI</span>
+          <span class="stk-pill">Vault</span><span class="stk-pill">Spark</span>
         </div>
       </div>
       <div>
         <div class="stk-lbl">Diseño & Assets</div>
         <div class="stk-pills">
-          <span class="stk-pill">Blockbench</span>
-          <span class="stk-pill">Photoshop</span>
-          <span class="stk-pill">GIMP</span>
-          <span class="stk-pill">Aseprite</span>
+          <span class="stk-pill">Blockbench</span><span class="stk-pill">Photoshop</span>
+          <span class="stk-pill">GIMP</span><span class="stk-pill">Aseprite</span>
           <span class="stk-pill">OptiFine CIT/CEM</span>
         </div>
       </div>
@@ -346,8 +286,8 @@
 
       <div class="pc sp2">
         <div class="pc-imgs">
-          <div class="pc-a"><span class="ph-ico">📷</span><span class="ph-txt">Imagen A del proyecto<br><small style="opacity:.6">Reemplaza con &lt;img&gt;</small></span></div>
-          <div class="pc-b"><span class="ph-ico">✦</span><span class="ph-txt">Segunda imagen</span></div>
+          <div class="pc-a"><span class="ph-ico">📷</span><span class="ph-txt">Imagen A<br><small>Reemplaza con &lt;img&gt;</small></span></div>
+          <div class="pc-b"><span class="ph-ico">✦</span><span class="ph-txt">Imagen B</span></div>
         </div>
         <div class="pc-info">
           <div><div class="pc-name">RPG World — Aeloria</div><div class="pc-type">MythicMobs · BetonQuest · Typewriter</div></div>
@@ -447,12 +387,9 @@
           <p>Trabajas directamente conmigo — sin intermediarios, sin plantillas — desde el brief hasta la entrega con documentación completa.</p>
         </div>
         <div class="expertise fade-up">
-          <span class="exp-tag">MythicMobs Expert</span>
-          <span class="exp-tag">BetonQuest</span>
-          <span class="exp-tag">Typewriter</span>
-          <span class="exp-tag">ModelEngine</span>
-          <span class="exp-tag">ItemsAdder</span>
-          <span class="exp-tag">Server Optimization</span>
+          <span class="exp-tag">MythicMobs Expert</span><span class="exp-tag">BetonQuest</span>
+          <span class="exp-tag">Typewriter</span><span class="exp-tag">ModelEngine</span>
+          <span class="exp-tag">ItemsAdder</span><span class="exp-tag">Server Optimization</span>
           <span class="exp-tag">Blockbench</span>
         </div>
         <div class="skill-list fade-up">
@@ -490,34 +427,22 @@
     <div class="proc-table fade-up">
       <div class="proc-row">
         <div class="proc-n">01</div>
-        <div>
-          <div class="proc-name">BRIEF</div>
-          <div class="proc-tags"><span class="proc-tag">Discovery</span><span class="proc-tag">Scope</span></div>
-        </div>
+        <div><div class="proc-name">BRIEF</div><div class="proc-tags"><span class="proc-tag">Discovery</span><span class="proc-tag">Scope</span></div></div>
         <div class="proc-desc">Me cuentas tu visión: tipo de servidor, plugins, referencias y presupuesto. Analizo qué solución encaja mejor y propongo el alcance exacto del proyecto.</div>
       </div>
       <div class="proc-row">
         <div class="proc-n">02</div>
-        <div>
-          <div class="proc-name">ARQUITECTURA</div>
-          <div class="proc-tags"><span class="proc-tag">Planning</span><span class="proc-tag">Design</span></div>
-        </div>
+        <div><div class="proc-name">ARQUITECTURA</div><div class="proc-tags"><span class="proc-tag">Planning</span><span class="proc-tag">Design</span></div></div>
         <div class="proc-desc">Diseño la estructura completa: conexión de plugins, flujos de quests, skills de mobs y árbol de permisos. Todo documentado antes de escribir una línea de YAML.</div>
       </div>
       <div class="proc-row">
         <div class="proc-n">03</div>
-        <div>
-          <div class="proc-name">DESARROLLO</div>
-          <div class="proc-tags"><span class="proc-tag">Build</span><span class="proc-tag">QA</span></div>
-        </div>
+        <div><div class="proc-name">DESARROLLO</div><div class="proc-tags"><span class="proc-tag">Build</span><span class="proc-tag">QA</span></div></div>
         <div class="proc-desc">Configuro todo en un servidor de pruebas propio. Testing exhaustivo de compatibilidad, performance y bugs. Acceso al servidor de test y avances por Discord.</div>
       </div>
       <div class="proc-row">
         <div class="proc-n">04</div>
-        <div>
-          <div class="proc-name">ENTREGA</div>
-          <div class="proc-tags"><span class="proc-tag">Delivery</span><span class="proc-tag">Support</span></div>
-        </div>
+        <div><div class="proc-name">ENTREGA</div><div class="proc-tags"><span class="proc-tag">Delivery</span><span class="proc-tag">Support</span></div></div>
         <div class="proc-desc">Archivos organizados, documentación completa y guía de instalación. Soporte post-entrega incluido para ajustes, dudas y actualizaciones de versión.</div>
       </div>
     </div>
@@ -534,36 +459,28 @@
         <p class="contact-intro fade-up">¿Tu servidor necesita llevar la experiencia al siguiente nivel? Cuéntanos qué necesitas — respondemos en menos de 24 horas.</p>
         <div class="cc-list fade-up">
           <a href="#" class="cc">
-            <span class="cc-dot"></span>
-            <span class="cc-type">Discord</span>
-            <span class="cc-val">Dominik#0000</span>
+            <span class="cc-dot"></span><span class="cc-type">Discord</span><span class="cc-val">Dominik#0000</span>
           </a>
-          <a href="/cdn-cgi/l/email-protection#f78382b7929a969e9bd994989a" class="cc">
-            <span class="cc-dot"></span>
-            <span class="cc-type">Email</span>
-            <span class="cc-val"><span class="__cf_email__" data-cfemail="97e3e2d7f2faf6fefbb9f4f8fa">[email&#160;protected]</span></span>
+          <a href="/cdn-cgi/l/email-protection#98ecedd8fdf5f9f1f4b6fbf7f5" class="cc">
+            <span class="cc-dot"></span><span class="cc-type">Email</span><span class="cc-val"><span class="__cf_email__" data-cfemail="e79392a7828a868e8bc984888a">[email&#160;protected]</span></span>
           </a>
           <a href="#" class="cc">
-            <span class="cc-dot"></span>
-            <span class="cc-type">Twitter / X</span>
-            <span class="cc-val">@TuUsuario</span>
+            <span class="cc-dot"></span><span class="cc-type">Twitter / X</span><span class="cc-val">@TuUsuario</span>
           </a>
           <a href="#" class="cc">
-            <span class="cc-dot"></span>
-            <span class="cc-type">BuiltByBit</span>
-            <span class="cc-val">ARVO Studio</span>
+            <span class="cc-dot"></span><span class="cc-type">BuiltByBit</span><span class="cc-val">ARVO Studio</span>
           </a>
         </div>
       </div>
       <div class="fade-up">
-        <div class="c-form">
+        <form class="c-form" action="https://formspree.io/f/TUCODIGO" method="POST" id="contactForm">
           <div class="f-row">
-            <div><label class="f-lbl">Nombre / Nick</label><input class="f-in" type="text" placeholder="Tu nombre"></div>
-            <div><label class="f-lbl">Contacto</label><input class="f-in" type="text" placeholder="Discord o email"></div>
+            <div><label class="f-lbl">Nombre / Nick</label><input class="f-in" type="text" name="nombre" placeholder="Tu nombre" required></div>
+            <div><label class="f-lbl">Contacto</label><input class="f-in" type="text" name="contacto" placeholder="Discord o email" required></div>
           </div>
           <div>
             <label class="f-lbl">Servicio</label>
-            <select class="f-sel">
+            <select class="f-sel" name="servicio">
               <option value="">Selecciona un servicio...</option>
               <option>MythicMobs — Mobs y bosses</option>
               <option>BetonQuest — Sistema de quests</option>
@@ -577,7 +494,7 @@
           </div>
           <div>
             <label class="f-lbl">Versión de Minecraft</label>
-            <select class="f-sel">
+            <select class="f-sel" name="version">
               <option>1.21.x (Recomendada)</option>
               <option>1.20.x</option>
               <option>1.19.x</option>
@@ -588,10 +505,13 @@
           </div>
           <div>
             <label class="f-lbl">Descripción del proyecto</label>
-            <textarea class="f-ta" placeholder="Tipo de servidor, qué necesitas exactamente, referencias, plazos, presupuesto aproximado..."></textarea>
+            <textarea class="f-ta" name="descripcion" placeholder="Tipo de servidor, qué necesitas, referencias, plazos, presupuesto..."></textarea>
           </div>
-          <button class="f-sub">Enviar mensaje →</button>
-        </div>
+          <button class="f-sub" type="submit">Enviar mensaje →</button>
+          <p class="f-success" id="formSuccess" style="display:none;color:var(--red);font-size:.85rem;font-weight:600;margin-top:.5rem;text-align:center;">
+            ✓ Mensaje enviado — te respondo en menos de 24h.
+          </p>
+        </form>
       </div>
     </div>
   </div>
@@ -600,7 +520,7 @@
 <!-- ══ FOOTER ══ -->
 <footer>
   <div class="f-brand">
-    <img src="logo.jpg" alt="ARVO" style="height:30px;width:30px;object-fit:contain;border-radius:5px;display:block;">
+    <img src="logo_negative.svg" alt="ARVO" id="footerLogo" style="height:30px;width:30px;object-fit:contain;display:block;">
   </div>
   <small>© 2025 ARVO Studio · Liderado por Dominik</small>
   <div class="f-links">
@@ -611,11 +531,8 @@
   </div>
 </footer>
 
-<!-- Main JS -->
 <script src="arvo.js"></script>
-<!-- 3D model-viewer scene -->
 <script src="scene3d.js"></script>
-<!-- Ash particle trail -->
 <script src="particles.js"></script>
 </body>
 </html>

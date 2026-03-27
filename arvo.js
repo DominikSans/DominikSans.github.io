@@ -199,13 +199,22 @@
   const root        = document.documentElement;
 
   const saved       = localStorage.getItem('arvo-theme');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const initLight   = saved ? saved === 'light' : !prefersDark;
+const initLight = saved === 'light';
 
   if (initLight) {
     root.setAttribute('data-theme', 'light');
     if (themeToggle) themeToggle.checked = true;
+  } else {
+    root.removeAttribute('data-theme');
+    if (themeToggle) themeToggle.checked = false;
   }
+
+  /* Aplicar logo correcto al cargar */
+  const initLogo   = initLight ? 'logo_positive.svg' : 'logo_negative.svg';
+  const navLogo    = document.getElementById('navLogo');
+  const footerLogo = document.getElementById('footerLogo');
+  if (navLogo)    navLogo.src    = initLogo;
+  if (footerLogo) footerLogo.src = initLogo;
 
   themeToggle && themeToggle.addEventListener('change', () => {
     if (themeToggle.checked) {
