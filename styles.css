@@ -719,37 +719,37 @@ footer small{font-size:.76rem;color:var(--dim)}
    PLACEHOLDERS IMAGES 
 ══════════════════════════════════════ */
 .svcx-media-1{
-  background-image: url('./assets/services/mythicmobs.png');
+  background-image: url('./assets/services/mythicmobs.webp');
   background-size: cover;
   background-position: center;
 }
 
 .svcx-media-2{
-  background-image: url('./assets/services/betonquest.png');
+  background-image: url('./assets/services/betonquest.webp');
   background-size: cover;
   background-position: center;
 }
 
 .svcx-media-3{
-  background-image: url('./assets/services/typewriter.png');
+  background-image: url('./assets/services/typewriter.webp');
   background-size: cover;
   background-position: center;
 }
 
 .svcx-media-4{
-  background-image: url('./assets/services/plugins.png');
+  background-image: url('./assets/services/plugins.webp');
   background-size: cover;
   background-position: center;
 }
 
 .svcx-media-5{
-  background-image: url('./assets/services/setup.png');
+  background-image: url('./assets/services/setup.webp');
   background-size: cover;
   background-position: center;
 }
 
 .svcx-media-6{
-  background-image: url('./assets/services/textures.png');
+  background-image: url('./assets/services/textures.webp');
   background-size: cover;
   background-position: center;
 }

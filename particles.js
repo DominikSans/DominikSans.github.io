@@ -1,10 +1,16 @@
 /**
  * ARVO Studio — particles.js
- * 1. Mouse trail: ash particles on mouse move
- * 2. Ambient: tiny red dots floating up in the hero area (no mouse needed)
+ * Optimized: disabled on mobile, paused on hidden tab, reduced pool
  */
 (function () {
   'use strict';
+
+  /* Disable entirely on mobile — saves battery and eliminates lag */
+  if (window.innerWidth < 768) return;
+
+  /* Reduce pool if user prefers reduced motion */
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return;
 
   const canvas = document.createElement('canvas');
   canvas.id = 'ash-canvas';
@@ -29,75 +35,71 @@
   resize();
   window.addEventListener('resize', resize, { passive: true });
 
-  /* ── Particle pool ── */
-  const POOL      = 180;
+  /* Smaller pool — was 180, now 80 */
+  const POOL      = 80;
   const particles = [];
 
-  const TRAIL_COLORS   = ['rgba(180,180,170,','rgba(200,190,180,','rgba(160,155,150,','rgba(212,43,43,','rgba(210,200,190,'];
-  const AMBIENT_COLOR  = 'rgba(212,43,43,';
+  const TRAIL_COLORS  = ['rgba(180,180,170,','rgba(200,190,180,','rgba(160,155,150,','rgba(212,43,43,','rgba(210,200,190,'];
+  const AMBIENT_COLOR = 'rgba(212,43,43,';
 
   function spawn(x, y, ambient) {
     if (particles.length >= POOL) return;
     if (ambient) {
       particles.push({
         x, y,
-        vx:     (Math.random() - 0.5) * 0.25,
-        vy:     -(0.15 + Math.random() * 0.35),
-        size:   0.6 + Math.random() * 1.1,
-        color:  AMBIENT_COLOR,
-        alpha:  0.08 + Math.random() * 0.12,
-        decay:  0.003 + Math.random() * 0.004,
+        vx: (Math.random() - 0.5) * 0.25,
+        vy: -(0.15 + Math.random() * 0.35),
+        size: 0.6 + Math.random() * 1.1,
+        color: AMBIENT_COLOR,
+        alpha: 0.08 + Math.random() * 0.12,
+        decay: 0.003 + Math.random() * 0.004,
         wobble: (Math.random() - 0.5) * 0.02,
-        life:   1.0, ambient: true,
+        life: 1.0, ambient: true,
       });
     } else {
       const ember = Math.random() < 0.08;
       particles.push({
         x, y,
-        vx:     (Math.random() - 0.5) * 0.6,
-        vy:     -(0.3 + Math.random() * 0.7),
-        size:   ember ? 1 + Math.random() * 1.2 : 0.5 + Math.random() * 1.5,
-        color:  ember ? TRAIL_COLORS[3] : TRAIL_COLORS[Math.floor(Math.random() * 4)],
-        alpha:  0.55 + Math.random() * 0.35,
-        decay:  0.012 + Math.random() * 0.018,
+        vx: (Math.random() - 0.5) * 0.6,
+        vy: -(0.3 + Math.random() * 0.7),
+        size: ember ? 1 + Math.random() * 1.2 : 0.5 + Math.random() * 1.5,
+        color: ember ? TRAIL_COLORS[3] : TRAIL_COLORS[Math.floor(Math.random() * 4)],
+        alpha: 0.55 + Math.random() * 0.35,
+        decay: 0.012 + Math.random() * 0.018,
         wobble: (Math.random() - 0.5) * 0.04,
-        life:   1.0, ambient: false,
+        life: 1.0, ambient: false,
       });
     }
   }
 
-  /* ── Ambient spawner: hero viewport only ── */
+  /* Ambient: reduce frequency — every 400ms instead of 200ms */
   let lastAmbient = 0;
   function spawnAmbient(now) {
-    if (now - lastAmbient < 200) return;   // ~5 per second
+    if (now - lastAmbient < 400) return;
     lastAmbient = now;
     const heroH = window.innerHeight;
-    spawn(
-      Math.random() * W,
-      heroH * 0.3 + Math.random() * heroH * 0.7,
-      true
-    );
+    spawn(Math.random() * W, heroH * 0.3 + Math.random() * heroH * 0.7, true);
   }
 
-  /* ── Mouse trail ── */
-  let lx = -999, ly = -999, moveTimer = null;
+  /* Mouse trail */
+  let lx = -999, ly = -999;
   window.addEventListener('mousemove', (e) => {
     const dx = e.clientX - lx, dy = e.clientY - ly;
-    if (dx * dx + dy * dy < 4) return;
+    if (dx * dx + dy * dy < 9) return;
     lx = e.clientX; ly = e.clientY;
-    clearTimeout(moveTimer);
-    moveTimer = setTimeout(() => {}, 80);
-    for (let i = 0; i < 2; i++) {
-      spawn(
-        e.clientX + (Math.random() - 0.5) * 6,
-        e.clientY + (Math.random() - 0.5) * 6,
-        false
-      );
-    }
+    /* Spawn 1 particle instead of 2 */
+    spawn(e.clientX + (Math.random() - 0.5) * 6, e.clientY + (Math.random() - 0.5) * 6, false);
   }, { passive: true });
 
-  /* ── Render loop ── */
+  /* Pause loop when tab is hidden — saves CPU entirely */
+  let running = true;
+  document.addEventListener('visibilitychange', () => {
+    running = !document.hidden;
+    if (running) requestAnimationFrame(tick);
+  });
+
   function tick(now) {
+    if (!running) return;
     ctx.clearRect(0, 0, W, H);
     spawnAmbient(now);
 
@@ -112,7 +114,6 @@
       if (p.life <= 0 || p.y < -10) { particles.splice(i, 1); continue; }
 
       const a = p.ambient ? p.life * p.alpha * 1.5 : p.life * 0.7;
-
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
       ctx.fillStyle = p.color + Math.min(a, 0.9).toFixed(3) + ')';
@@ -120,5 +121,6 @@
     }
     requestAnimationFrame(tick);
   }
+
   requestAnimationFrame(tick);
 })();
