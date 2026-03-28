@@ -1,75 +1,85 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Arvo Studio</title>
+<title>ARVO Studio</title>
+<meta name="description" content="ARVO Studio: configuración avanzada para servidores Minecraft. MythicMobs, BetonQuest, Typewriter, setups, optimización y assets.">
 <link rel="icon" type="image/svg+xml" href="logo_negative.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="./styles.css">
 </head>
 <body>
 
-<!-- ══ NAV ══ -->
 <nav id="mainNav">
-  <div class="nav-logo">
+  <a class="nav-logo" href="#hero" aria-label="Ir al inicio">
     <img src="logo_negative.svg" alt="ARVO" id="navLogo" style="height:48px;width:48px;object-fit:contain;display:block;">
-  </div>
+  </a>
   <ul class="nav-links" id="navLinks">
-    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#servicios" data-i18n="nav.services">Services</a></li>
     <li><a href="#stack">Stack</a></li>
     <li><a href="#portfolio">Portfolio</a></li>
-    <li><a href="#studio">Studio</a></li>
-    <li><a href="#proceso">Proceso</a></li>
-    <li><a href="#contacto">Contacto</a></li>
+    <li><a href="#proceso" data-i18n="nav.process">Process</a></li>
+    <li><a href="#contacto" data-i18n="nav.contact">Contact</a></li>
   </ul>
   <div class="nav-right">
-    <label class="theme-sw" title="Cambiar tema">
-      <input type="checkbox" id="themeToggle">
+    <label class="theme-sw" title="Toggle theme">
+      <input type="checkbox" id="themeToggle" aria-label="Toggle theme">
       <span class="theme-sw-track"></span>
       <span class="theme-sw-thumb"></span>
     </label>
-    <button class="hamburger" id="ham" aria-label="Menú">
+    <button class="hamburger" id="ham" data-i18n-aria="ham.aria" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
-    <a href="#contacto" class="nav-cta">Contratar</a>
+    <a href="#contacto" class="nav-cta" data-i18n="nav.hire">Hire</a>
   </div>
 </nav>
 
-<!-- Nav overlay backdrop -->
 <div id="nav-overlay"></div>
 
-<!-- ══ HERO ══ -->
 <section id="hero">
   <div class="hero-glow"></div>
   <div class="hero-left">
     <div class="hero-badge fade-up">
       <span class="hero-badge-dot"></span>
-      Disponible para proyectos
+      <span data-i18n="hero.badge">Available for projects</span>
     </div>
-    <div class="hero-eyebrow fade-up">Minecraft Configuration Studio</div>
+    <div class="hero-eyebrow fade-up" data-i18n="hero.eyebrow">Minecraft Configuration Studio</div>
     <h1 class="hero-title fade-up d1">
       ARVO <span class="red">STUDIO</span>
     </h1>
-    <p class="hero-sub fade-up d2">
-      Studio especializado en MythicMobs, BetonQuest, Typewriter y configuración avanzada de servidores Minecraft. Liderado por Dominik.
+    <p class="hero-sub fade-up d2" data-i18n="hero.sub">
+      Studio specialized in MythicMobs, BetonQuest, Typewriter and advanced Minecraft server configuration. Technical development, clear structure and deliveries built for serious projects.
     </p>
     <div class="hero-btns fade-up d3">
-      <a href="#portfolio" class="btn-r">Ver portfolio</a>
-      <a href="#servicios" class="btn-ghost">Servicios</a>
+      <a href="#portfolio" class="btn-r" data-i18n="hero.btn1">View portfolio</a>
+      <a href="#servicios" class="btn-ghost" data-i18n="hero.btn2">Services</a>
     </div>
-    <div class="hero-stats fade-up">
-      <div><span class="h-num stat-number" data-target="60" data-suffix="+">60+</span><span class="h-lbl">Proyectos</span></div>
-      <div><span class="h-num stat-number" data-target="30" data-suffix="+">30+</span><span class="h-lbl">Clientes</span></div>
-      <div><span class="h-num">1.16–1.21</span><span class="h-lbl">Versiones</span></div>
+    <div class="hero-stats fade-up" id="heroStats">
+      <div>
+        <span class="h-num stat-number" data-target="60" data-suffix="+">60+</span>
+        <span class="h-lbl type-label" data-i18n="hero.stat1">Configs</span>
+      </div>
+      <div>
+        <span class="h-num stat-number" data-target="30" data-suffix="+">30+</span>
+        <span class="h-lbl type-label" data-i18n="hero.stat2">Clients</span>
+      </div>
+      <div>
+        <span class="h-num">1.16–1.21</span>
+        <span class="h-lbl type-label" data-i18n="hero.stat3">Versions</span>
+      </div>
+    </div>
+    <div class="hero-type-strip fade-up" aria-live="polite">
+      <span class="hts-prefix" data-i18n="hero.prefix">We build</span>
+      <span class="hts-divider"></span>
+      <span id="heroTypeText" data-words="configs that last,structure that scales,your vision executed,projects that endure,results that hold"></span><span class="tw-cursor" id="heroTypeCursor">|</span>
     </div>
   </div>
-  <!-- 3D model-viewer mount -->
-  <div class="hero-right" id="scene3d-mount"></div>
+  <div class="hero-right" id="scene3d-mount" data-i18n-aria="hero.aria" aria-label="3D studio preview"></div>
 </section>
 
-<!-- ══ MARQUEE ══ -->
 <div class="marquee-bar">
   <div class="marquee-track">
     <span class="m-item"><span class="dot"></span>MythicMobs</span>
@@ -99,165 +109,208 @@
   </div>
 </div>
 
-<!-- ══ SERVICES ══ -->
 <section id="servicios">
   <div class="container">
-    <div class="srv-top">
+    <div class="svcx-head">
       <div>
-        <div class="s-eye fade-up">Qué ofrecemos</div>
-        <h2 class="s-head fade-up">SERVICIOS</h2>
+        <div class="s-eye fade-up" data-i18n="svc.eyebrow">What we do</div>
+        <h2 class="s-head fade-up" data-i18n="svc.head">SERVICES</h2>
       </div>
-      <p class="s-sub fade-up">Cada entrega incluye documentación completa, testing en servidor real y soporte post-entrega. Sin plantillas genéricas.</p>
+      <p class="s-sub fade-up" data-i18n="svc.sub">Advanced configuration, integration and content layers built for projects that need a stronger technical foundation and a better-resolved presentation.</p>
     </div>
-    <div class="srv-grid fade-up">
+  </div>
 
-      <div class="srv">
-        <div class="srv-n">01</div>
-        <div class="srv-logo-wrap">
-          <img class="srv-logo" src="https://github.com/MythicCraft.png" alt="MythicMobs" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-          <span class="srv-ico-fb" style="display:none">⚔️</span>
-        </div>
-        <h3 class="srv-name">MYTHICMOBS</h3>
-        <p class="srv-desc">Mobs y bosses con skills complejas, IA personalizada, efectos y drops únicos. Desde criaturas de campo hasta bosses de nivel MMORPG con phases y mechanics avanzadas.</p>
-        <div class="srv-tags">
-          <span class="srv-tag">Custom Skills</span><span class="srv-tag">Targeters</span>
-          <span class="srv-tag">Drop Tables</span><span class="srv-tag">AI Control</span>
-          <span class="srv-tag">ModelEngine</span><span class="srv-tag">Factions</span><span class="srv-tag">Spawners</span>
-        </div>
+  <div class="svcx-viewport fade-up">
+    <div class="svcx-scroller" id="servicesScroller" data-i18n-aria="svc.scroller.aria" aria-label="Horizontal services carousel">
+      <div class="svcx-track" id="servicesTrack">
+
+        <article class="svcx-card" data-service-index="1">
+          <div class="svcx-media svcx-media-1"></div>
+          <div class="svcx-overlay"></div>
+          <div class="svcx-content">
+            <div class="svcx-meta">
+              <span class="svcx-no">01</span>
+              <span class="svcx-pill">Core Combat</span>
+            </div>
+            <div class="svcx-copywrap">
+              <h3 class="svcx-title">MYTHICMOBS</h3>
+              <p class="svcx-sub" data-i18n="svc1.sub">Bosses, skills and advanced behavior</p>
+              <p class="svcx-preview" data-i18n="svc1.preview">PvE combat-oriented configuration, difficulty scaling and more solid encounters for projects that need memorable and technically consistent content.</p>
+              <ul class="svcx-points">
+                <li data-i18n="svc1.li1">Skills, targeters and conditions with better internal structure</li>
+                <li data-i18n="svc1.li2">Phases, AI and drops connected to server progression</li>
+                <li data-i18n="svc1.li3">Clean integration with ModelEngine, quests and RPG systems</li>
+              </ul>
+              <div class="svcx-tags-row">
+                <span>Bosses</span><span>Skills</span><span>AI</span><span>Progression</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="svcx-card" data-service-index="02">
+          <div class="svcx-media svcx-media-2"></div>
+          <div class="svcx-overlay"></div>
+          <div class="svcx-content">
+            <div class="svcx-meta">
+              <span class="svcx-no">02</span>
+              <span class="svcx-pill">Quest Design</span>
+            </div>
+            <div class="svcx-copywrap">
+              <h3 class="svcx-title">BETONQUEST</h3>
+              <p class="svcx-sub" data-i18n="svc2.sub">Guided progression, dialogues and narrative logic</p>
+              <p class="svcx-preview" data-i18n="svc2.preview">Design and configuration of quest chains with clear progression, better-connected events and a more organized structure for projects that need to grow without becoming disorganized.</p>
+              <ul class="svcx-points">
+                <li data-i18n="svc2.li1">Quest chains, dialogues and variables better resolved</li>
+                <li data-i18n="svc2.li2">Events, NPCs and rewards linked with more coherence</li>
+                <li data-i18n="svc2.li3">Clean base to expand content over the long term</li>
+              </ul>
+              <div class="svcx-tags-row">
+                <span>Chains</span><span>Dialogs</span><span>Variables</span><span>NPCs</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="svcx-card" data-service-index="03">
+          <div class="svcx-media svcx-media-3"></div>
+          <div class="svcx-overlay"></div>
+          <div class="svcx-content">
+            <div class="svcx-meta">
+              <span class="svcx-no">03</span>
+              <span class="svcx-pill">Narrative UX</span>
+            </div>
+            <div class="svcx-copywrap">
+              <h3 class="svcx-title">TYPEWRITER</h3>
+              <p class="svcx-sub" data-i18n="svc3.sub">Scenes, presentation and guided moments</p>
+              <p class="svcx-preview" data-i18n="svc3.preview">Implementation of scenes and sequences designed to improve onboarding, reinforce server identity and make the initial experience feel much more polished.</p>
+              <ul class="svcx-points">
+                <li data-i18n="svc3.li1">Cutscenes, guided sequences and integrated storytelling</li>
+                <li data-i18n="svc3.li2">Applied in onboarding, missions and key moments</li>
+                <li data-i18n="svc3.li3">More cinematic presentation without losing technical clarity</li>
+              </ul>
+              <div class="svcx-tags-row">
+                <span>Scenes</span><span>Cinematics</span><span>Camera</span><span>Story</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="svcx-card" data-service-index="04">
+          <div class="svcx-media svcx-media-4"></div>
+          <div class="svcx-overlay"></div>
+          <div class="svcx-content">
+            <div class="svcx-meta">
+              <span class="svcx-no">04</span>
+              <span class="svcx-pill">Plugin Systems</span>
+            </div>
+            <div class="svcx-copywrap">
+              <h3 class="svcx-title" data-i18n="svc4.title">CUSTOM PLUGINS</h3>
+              <p class="svcx-sub" data-i18n="svc4.sub">Compatibility, balance and technical ecosystem</p>
+              <p class="svcx-preview" data-i18n="svc4.preview">Advanced plugin integration focused on real compatibility, system balance and an architecture that stays clear as the project grows.</p>
+              <ul class="svcx-points">
+                <li data-i18n="svc4.li1">Plugins aligned with each other and better connected</li>
+                <li data-i18n="svc4.li2">Less friction between mechanics, staff and maintenance</li>
+                <li data-i18n="svc4.li3">Technical architecture ready for organized growth</li>
+              </ul>
+              <div class="svcx-tags-row">
+                <span>Systems</span><span>Balance</span><span>Admin</span><span>Integration</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="svcx-card" data-service-index="05">
+          <div class="svcx-media svcx-media-5"></div>
+          <div class="svcx-overlay"></div>
+          <div class="svcx-content">
+            <div class="svcx-meta">
+              <span class="svcx-no">05</span>
+              <span class="svcx-pill">Server Base</span>
+            </div>
+            <div class="svcx-copywrap">
+              <h3 class="svcx-title">SERVER SETUP</h3>
+              <p class="svcx-sub" data-i18n="svc5.sub">Permissions, structure and central organization</p>
+              <p class="svcx-preview" data-i18n="svc5.preview">Base configuration for new servers or projects that need a cleaner structure, better-resolved permissions and an organization ready to scale.</p>
+              <ul class="svcx-points">
+                <li data-i18n="svc5.li1">LuckPerms, ranks, economy and base configurations</li>
+                <li data-i18n="svc5.li2">Core modules better organized from the start</li>
+                <li data-i18n="svc5.li3">Clearer technical foundation for future expansions</li>
+              </ul>
+              <div class="svcx-tags-row">
+                <span>Setup</span><span>Permissions</span><span>Core</span><span>Structure</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="svcx-card" data-service-index="6">
+          <div class="svcx-media svcx-media-6"></div>
+          <div class="svcx-overlay"></div>
+          <div class="svcx-content">
+            <div class="svcx-meta">
+              <span class="svcx-no">06</span>
+              <span class="svcx-pill">Visual Layer</span>
+            </div>
+            <div class="svcx-copywrap">
+              <h3 class="svcx-title" data-i18n="svc6.title">TEXTURES &amp; 3D</h3>
+              <p class="svcx-sub" data-i18n="svc6.sub">Assets, resource packs and visual identity</p>
+              <p class="svcx-preview" data-i18n="svc6.preview">Visual work for projects that need a more distinctive identity through items, iconography, textures and 3D resources integrated with the server style.</p>
+              <ul class="svcx-points">
+                <li data-i18n="svc6.li1">Assets aligned with the project's visual direction</li>
+                <li data-i18n="svc6.li2">Compatibility with Oraxen, ItemsAdder and resource packs</li>
+                <li data-i18n="svc6.li3">A visual layer that improves perception and consistency</li>
+              </ul>
+              <div class="svcx-tags-row">
+                <span>3D</span><span>Textures</span><span>Oraxen</span><span>Identity</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
       </div>
-
-      <div class="srv">
-        <div class="srv-n">02</div>
-        <div class="srv-logo-wrap">
-          <img class="srv-logo" src="https://github.com/BetonQuest.png" alt="BetonQuest" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-          <span class="srv-ico-fb" style="display:none">📜</span>
-        </div>
-        <h3 class="srv-name">BETONQUEST</h3>
-        <p class="srv-desc">Sistema de quests completo con diálogos ramificados, objetivos encadenados y recompensas dinámicas. Narrativa inmersiva con Citizens y MythicMobs integrados.</p>
-        <div class="srv-tags">
-          <span class="srv-tag">Quest Chains</span><span class="srv-tag">NPC Dialogs</span>
-          <span class="srv-tag">Conditions</span><span class="srv-tag">Events</span>
-          <span class="srv-tag">Variables</span><span class="srv-tag">Citizens</span>
-        </div>
-      </div>
-
-      <div class="srv">
-        <div class="srv-n">03</div>
-        <div class="srv-logo-wrap">
-          <img class="srv-logo" src="https://github.com/TypeWriterMC.png" alt="Typewriter" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-          <span class="srv-ico-fb" style="display:none">🎬</span>
-        </div>
-        <h3 class="srv-name">TYPEWRITER</h3>
-        <p class="srv-desc">Experiencias cinematográficas de nueva generación. Cutscenes, diálogos animados, branching stories y NPCs inteligentes configurados vía panel visual web.</p>
-        <div class="srv-tags">
-          <span class="srv-tag">Cinematics</span><span class="srv-tag">Camera Paths</span>
-          <span class="srv-tag">Branching</span><span class="srv-tag">MythicMobs</span>
-          <span class="srv-tag">FancyNPCs</span><span class="srv-tag">Dynamic Vars</span>
-        </div>
-      </div>
-
-      <div class="srv">
-        <div class="srv-n">04</div>
-        <div class="srv-logo-wrap">
-          <img class="srv-logo" src="https://github.com/LoneDev6.png" alt="ItemsAdder" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-          <img class="srv-logo" src="https://github.com/oraxen.png" alt="Oraxen" onerror="this.style.display='none'">
-          <span class="srv-ico-fb" style="display:none">📦</span>
-        </div>
-        <h3 class="srv-name">PLUGINS CUSTOM</h3>
-        <p class="srv-desc">Configuración avanzada de plugins complejos: ItemsAdder, Oraxen, MMOCore, MMOItems, AureliumSkills, EcoItems, CustomFishing, PlaceholderAPI y más.</p>
-        <div class="srv-tags">
-          <span class="srv-tag">ItemsAdder</span><span class="srv-tag">Oraxen</span>
-          <span class="srv-tag">MMOCore</span><span class="srv-tag">MMOItems</span>
-          <span class="srv-tag">AureliumSkills</span><span class="srv-tag">mcMMO</span><span class="srv-tag">EcoItems</span>
-        </div>
-      </div>
-
-      <div class="srv">
-        <div class="srv-n">05</div>
-        <div class="srv-logo-wrap">
-          <img class="srv-logo" src="https://github.com/LuckPerms.png" alt="LuckPerms" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-          <img class="srv-logo" src="https://github.com/PaperMC.png" alt="Paper" onerror="this.style.display='none'">
-          <span class="srv-ico-fb" style="display:none">⚙️</span>
-        </div>
-        <h3 class="srv-name">SERVER SETUP</h3>
-        <p class="srv-desc">Configuración completa desde cero: permisos, economía, protección de mundos, optimización de TPS y setup de redes BungeeCord / Velocity multi-servidor.</p>
-        <div class="srv-tags">
-          <span class="srv-tag">LuckPerms</span><span class="srv-tag">EssentialsX</span>
-          <span class="srv-tag">WorldGuard</span><span class="srv-tag">Paper</span>
-          <span class="srv-tag">Velocity</span><span class="srv-tag">Anti-Cheat</span><span class="srv-tag">Optimization</span>
-        </div>
-      </div>
-
-      <div class="srv">
-        <div class="srv-n">06</div>
-        <div class="srv-logo-wrap">
-          <img class="srv-logo" src="https://github.com/Ticxo.png" alt="ModelEngine" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-          <span class="srv-ico-fb" style="display:none">🎨</span>
-        </div>
-        <h3 class="srv-name">TEXTURAS & 3D</h3>
-        <p class="srv-desc">Resource packs y modelos 3D de mobs en Blockbench con animaciones completas. GUI, HUD custom, CIT con OptiFine y overlays de armaduras.</p>
-        <div class="srv-tags">
-          <span class="srv-tag">Blockbench</span><span class="srv-tag">ModelEngine</span>
-          <span class="srv-tag">OptiFine CIT</span><span class="srv-tag">HUD/GUI</span>
-          <span class="srv-tag">16x–64x</span><span class="srv-tag">Pixel Art</span>
-        </div>
-      </div>
-
     </div>
   </div>
 </section>
 
-<!-- ══ STACK ══ -->
 <section id="stack">
   <div class="container">
-    <div class="stk-header">
-      <div>
-        <div class="s-eye fade-up">Tecnologías</div>
-        <h2 class="s-head fade-up">STACK</h2>
-      </div>
-      <p class="s-sub fade-up">Plugins y herramientas con los que trabajamos de forma habitual en cada proyecto.</p>
-    </div>
-    <div class="stk-groups fade-up">
-      <div>
-        <div class="stk-lbl">Quests & Narrativa</div>
-        <div class="stk-pills">
-          <span class="stk-pill">BetonQuest</span><span class="stk-pill">Typewriter</span>
-          <span class="stk-pill">Citizens</span><span class="stk-pill">FancyNPCs</span>
-          <span class="stk-pill">ZNPCsPlus</span><span class="stk-pill">Denizen</span>
-        </div>
-      </div>
-      <div>
-        <div class="stk-lbl">Mobs & Combate</div>
+    <div class="s-eye fade-up" data-i18n="stack.eyebrow">Tools</div>
+    <h2 class="s-head fade-up">STACK</h2>
+    <div class="stack-wrap fade-up">
+
+      <div class="stack-col">
+        <div class="stk-head" data-i18n="stack.col1">RPG Plugins</div>
         <div class="stk-pills">
           <span class="stk-pill">MythicMobs</span><span class="stk-pill">ModelEngine</span>
-          <span class="stk-pill">MythicAchievements</span><span class="stk-pill">LibsDisguises</span>
-          <span class="stk-pill">WeaponMechanics</span><span class="stk-pill">AdvancedPets</span>
-        </div>
-      </div>
-      <div>
-        <div class="stk-lbl">Items & RPG</div>
-        <div class="stk-pills">
-          <span class="stk-pill">ItemsAdder</span><span class="stk-pill">Oraxen</span>
           <span class="stk-pill">MMOCore</span><span class="stk-pill">MMOItems</span>
-          <span class="stk-pill">AureliumSkills</span><span class="stk-pill">mcMMO</span>
-          <span class="stk-pill">EcoItems</span><span class="stk-pill">Nova</span>
+          <span class="stk-pill">AureliumSkills</span><span class="stk-pill">Citizens</span>
         </div>
       </div>
-      <div>
-        <div class="stk-lbl">Servidor & Admin</div>
+
+      <div class="stack-col">
+        <div class="stk-head" data-i18n="stack.col2">Narrative & UX</div>
         <div class="stk-pills">
-          <span class="stk-pill">Paper / Spigot</span><span class="stk-pill">Velocity</span>
-          <span class="stk-pill">BungeeCord</span><span class="stk-pill">LuckPerms</span>
-          <span class="stk-pill">WorldGuard</span><span class="stk-pill">WorldEdit</span>
-          <span class="stk-pill">EssentialsX</span><span class="stk-pill">PlaceholderAPI</span>
-          <span class="stk-pill">Vault</span><span class="stk-pill">Spark</span>
+          <span class="stk-pill">BetonQuest</span><span class="stk-pill">Typewriter</span>
+          <span class="stk-pill">FancyNPCs</span><span class="stk-pill">PlaceholderAPI</span>
+          <span class="stk-pill">Denizen</span>
         </div>
       </div>
-      <div>
-        <div class="stk-lbl">Diseño & Assets</div>
+
+      <div class="stack-col">
+        <div class="stk-head">Core Server</div>
         <div class="stk-pills">
-          <span class="stk-pill">Blockbench</span><span class="stk-pill">Photoshop</span>
-          <span class="stk-pill">GIMP</span><span class="stk-pill">Aseprite</span>
+          <span class="stk-pill">Paper</span><span class="stk-pill">Spigot</span>
+          <span class="stk-pill">Velocity</span><span class="stk-pill">LuckPerms</span>
+          <span class="stk-pill">WorldGuard</span><span class="stk-pill">EssentialsX</span>
+        </div>
+      </div>
+
+      <div class="stack-col">
+        <div class="stk-head">Visual / Assets</div>
+        <div class="stk-pills">
+          <span class="stk-pill">Blockbench</span><span class="stk-pill">ItemsAdder</span>
+          <span class="stk-pill">Oraxen</span><span class="stk-pill">Photoshop</span>
           <span class="stk-pill">OptiFine CIT/CEM</span>
         </div>
       </div>
@@ -265,274 +318,269 @@
   </div>
 </section>
 
-<!-- ══ PORTFOLIO ══ -->
 <section id="portfolio">
   <div class="container">
     <div class="port-top">
       <div>
-        <div class="s-eye fade-up">Trabajos</div>
+        <div class="s-eye fade-up" data-i18n="port.eyebrow">Work</div>
         <h2 class="s-head fade-up">PORTFOLIO</h2>
       </div>
       <div class="port-filters fade-up">
-        <button class="pf active">Todo</button>
-        <button class="pf">MythicMobs</button>
-        <button class="pf">BetonQuest</button>
-        <button class="pf">Typewriter</button>
-        <button class="pf">Texturas</button>
-        <button class="pf">Servidores</button>
+        <button class="pf active" data-filter="all" data-i18n="pf.all">All</button>
+        <button class="pf" data-filter="mythicmobs">MythicMobs</button>
+        <button class="pf" data-filter="betonquest">BetonQuest</button>
+        <button class="pf" data-filter="typewriter">Typewriter</button>
+        <button class="pf" data-filter="texturas" data-i18n="pf.textures">Textures</button>
+        <button class="pf" data-filter="servidores" data-i18n="pf.servers">Servers</button>
       </div>
     </div>
-    <div class="port-grid fade-up">
+    
+<div class="port-grid fade-up" id="portfolioGrid">
 
-      <div class="pc sp2">
-        <div class="pc-imgs">
-          <div class="pc-a"><span class="ph-ico">📷</span><span class="ph-txt">Imagen A<br><small>Reemplaza con &lt;img&gt;</small></span></div>
-          <div class="pc-b"><span class="ph-ico">✦</span><span class="ph-txt">Imagen B</span></div>
-        </div>
-        <div class="pc-info">
-          <div><div class="pc-name">RPG World — Aeloria</div><div class="pc-type">MythicMobs · BetonQuest · Typewriter</div></div>
-          <div class="pc-arr">↗</div>
-        </div>
-      </div>
-
-      <div class="pc sp2v tall">
-        <div class="pc-imgs">
-          <div class="pc-a"><span class="ph-ico">📷</span><span class="ph-txt">Screenshot A</span></div>
-          <div class="pc-b"><span class="ph-ico">✦</span><span class="ph-txt">Screenshot B</span></div>
-        </div>
-        <div class="pc-info">
-          <div><div class="pc-name">Boss Dragón de Hielo</div><div class="pc-type">MythicMobs · ModelEngine</div></div>
-          <div class="pc-arr">↗</div>
-        </div>
-      </div>
-
-      <div class="pc">
-        <div class="pc-imgs">
-          <div class="pc-a"><span class="ph-ico">📷</span><span class="ph-txt">Screenshot A</span></div>
-          <div class="pc-b"><span class="ph-ico">✦</span><span class="ph-txt">Screenshot B</span></div>
-        </div>
-        <div class="pc-info">
-          <div><div class="pc-name">Quest — Los Guardianes</div><div class="pc-type">BetonQuest</div></div>
-          <div class="pc-arr">↗</div>
-        </div>
-      </div>
-
-      <div class="pc">
-        <div class="pc-imgs">
-          <div class="pc-a"><span class="ph-ico">📷</span><span class="ph-txt">Screenshot A</span></div>
-          <div class="pc-b"><span class="ph-ico">✦</span><span class="ph-txt">Screenshot B</span></div>
-        </div>
-        <div class="pc-info">
-          <div><div class="pc-name">Cinematic SkyBlock</div><div class="pc-type">Typewriter</div></div>
-          <div class="pc-arr">↗</div>
-        </div>
-      </div>
-
-      <div class="pc">
-        <div class="pc-imgs">
-          <div class="pc-a"><span class="ph-ico">📷</span><span class="ph-txt">Screenshot A</span></div>
-          <div class="pc-b"><span class="ph-ico">✦</span><span class="ph-txt">Screenshot B</span></div>
-        </div>
-        <div class="pc-info">
-          <div><div class="pc-name">Resource Pack Medieval</div><div class="pc-type">Texturas · OptiFine</div></div>
-          <div class="pc-arr">↗</div>
-        </div>
-      </div>
-
-      <div class="pc">
-        <div class="pc-imgs">
-          <div class="pc-a"><span class="ph-ico">📷</span><span class="ph-txt">Screenshot A</span></div>
-          <div class="pc-b"><span class="ph-ico">✦</span><span class="ph-txt">Screenshot B</span></div>
-        </div>
-        <div class="pc-info">
-          <div><div class="pc-name">Mob 3D — Golem Arcano</div><div class="pc-type">Blockbench · ModelEngine</div></div>
-          <div class="pc-arr">↗</div>
-        </div>
-      </div>
-
-      <div class="pc">
-        <div class="pc-imgs">
-          <div class="pc-a"><span class="ph-ico">📷</span><span class="ph-txt">Screenshot A</span></div>
-          <div class="pc-b"><span class="ph-ico">✦</span><span class="ph-txt">Screenshot B</span></div>
-        </div>
-        <div class="pc-info">
-          <div><div class="pc-name">Red Survival + SkyBlock</div><div class="pc-type">Velocity · Server Setup</div></div>
-          <div class="pc-arr">↗</div>
-        </div>
-      </div>
-
+  <!-- RPG World — Aeloria -->
+  <div class="pc sp2" data-category="mythicmobs betonquest typewriter">
+    <div class="pc-imgs">
+      <div class="pc-a"><img src="./assets/portfolio/aeloria-a.png" alt="RPG Aeloria screenshot A" loading="lazy"></div>
+      <div class="pc-b"><img src="./assets/portfolio/aeloria-b.png" alt="RPG Aeloria screenshot B" loading="lazy"></div>
+    </div>
+    <div class="pc-info">
+      <div><div class="pc-name" data-i18n="pc1.name">RPG World — Aeloria</div><div class="pc-type">MythicMobs · BetonQuest · Typewriter</div></div>
+      <div class="pc-arr">↗</div>
     </div>
   </div>
-</section>
 
-<!-- ══ STUDIO ══ -->
-<section id="studio">
-  <div class="container">
-    <div class="studio-wrap">
-      <div class="studio-l fade-up">
-        <div class="studio-frame" id="tiltFrame">
-          <!-- <img src="tu-foto.jpg" alt="Dominik" style="width:100%;height:100%;object-fit:cover"> -->
-          📷 Tu foto o skin aquí
-        </div>
-        <div class="studio-badge">
-          <div class="studio-badge-txt">SOLO<br>STUDIO</div>
-        </div>
-      </div>
-      <div class="studio-r">
-        <div class="s-eye fade-up">El Studio</div>
-        <h2 class="s-head fade-up">ARVO<span style="color:var(--red)">.</span><br>por Dominik</h2>
-        <div class="studio-body fade-up">
-          <p>Soy Dominik, fundador y único integrante de ARVO. Llevo X años configurando servidores Minecraft, especializándome en el ecosistema de plugins RPG y en crear experiencias que los jugadores recuerdan.</p>
-          <p>Lo que empezó como administrar mis propios servidores se convirtió en una especialización real: dominar MythicMobs al nivel de crear bosses de MMORPG, construir sistemas de quests complejos con BetonQuest y producir cinematics con Typewriter que sorprenden desde el primer login.</p>
-          <p>Trabajas directamente conmigo — sin intermediarios, sin plantillas — desde el brief hasta la entrega con documentación completa.</p>
-        </div>
-        <div class="expertise fade-up">
-          <span class="exp-tag">MythicMobs Expert</span><span class="exp-tag">BetonQuest</span>
-          <span class="exp-tag">Typewriter</span><span class="exp-tag">ModelEngine</span>
-          <span class="exp-tag">ItemsAdder</span><span class="exp-tag">Server Optimization</span>
-          <span class="exp-tag">Blockbench</span>
-        </div>
-        <div class="skill-list fade-up">
-          <div class="skill-row">
-            <div class="skill-hd"><span class="skill-name">MythicMobs</span><span class="skill-pct">97%</span></div>
-            <div class="skill-track"><div class="skill-fill" style="width:97%"></div></div>
-          </div>
-          <div class="skill-row">
-            <div class="skill-hd"><span class="skill-name">BetonQuest</span><span class="skill-pct">91%</span></div>
-            <div class="skill-track"><div class="skill-fill" style="width:91%"></div></div>
-          </div>
-          <div class="skill-row">
-            <div class="skill-hd"><span class="skill-name">Typewriter</span><span class="skill-pct">88%</span></div>
-            <div class="skill-track"><div class="skill-fill" style="width:88%"></div></div>
-          </div>
-          <div class="skill-row">
-            <div class="skill-hd"><span class="skill-name">Server Config & Optimization</span><span class="skill-pct">94%</span></div>
-            <div class="skill-track"><div class="skill-fill" style="width:94%"></div></div>
-          </div>
-          <div class="skill-row">
-            <div class="skill-hd"><span class="skill-name">Blockbench / Texturas</span><span class="skill-pct">84%</span></div>
-            <div class="skill-track"><div class="skill-fill" style="width:84%"></div></div>
-          </div>
-        </div>
-      </div>
+  <!-- Boss Dragón de Hielo -->
+  <div class="pc sp2v tall" data-category="mythicmobs texturas">
+    <div class="pc-imgs">
+      <div class="pc-a"><img src="./assets/portfolio/dragon-a.png" alt="Boss Dragón de Hielo A" loading="lazy"></div>
+      <div class="pc-b"><img src="./assets/portfolio/dragon-b.png" alt="Boss Dragón de Hielo B" loading="lazy"></div>
+    </div>
+    <div class="pc-info">
+      <div><div class="pc-name" data-i18n="pc2.name">Ice Dragon Boss</div><div class="pc-type">MythicMobs · ModelEngine</div></div>
+      <div class="pc-arr">↗</div>
     </div>
   </div>
+
+  <!-- Quest — Los Guardianes -->
+  <div class="pc" data-category="betonquest">
+    <div class="pc-imgs">
+      <div class="pc-a"><img src="./assets/portfolio/guardianes-a.png" alt="Quest Los Guardianes A" loading="lazy"></div>
+      <div class="pc-b"><img src="./assets/portfolio/guardianes-b.png" alt="Quest Los Guardianes B" loading="lazy"></div>
+    </div>
+    <div class="pc-info">
+      <div><div class="pc-name" data-i18n="pc3.name">Quest — The Guardians</div><div class="pc-type">BetonQuest</div></div>
+      <div class="pc-arr">↗</div>
+    </div>
+  </div>
+
+  <!-- Cinematic SkyBlock -->
+  <div class="pc" data-category="typewriter">
+    <div class="pc-imgs">
+      <div class="pc-a"><img src="./assets/portfolio/skyblock-a.png" alt="Cinematic SkyBlock A" loading="lazy"></div>
+      <div class="pc-b"><img src="./assets/portfolio/skyblock-b.png" alt="Cinematic SkyBlock B" loading="lazy"></div>
+    </div>
+    <div class="pc-info">
+      <div><div class="pc-name" data-i18n="pc4.name">Cinematic SkyBlock</div><div class="pc-type">Typewriter</div></div>
+      <div class="pc-arr">↗</div>
+    </div>
+  </div>
+
+  <!-- Resource Pack Medieval -->
+  <div class="pc" data-category="texturas">
+    <div class="pc-imgs">
+      <div class="pc-a"><img src="./assets/portfolio/medieval-a.png" alt="Resource Pack Medieval A" loading="lazy"></div>
+      <div class="pc-b"><img src="./assets/portfolio/medieval-b.png" alt="Resource Pack Medieval B" loading="lazy"></div>
+    </div>
+    <div class="pc-info">
+      <div><div class="pc-name" data-i18n="pc5.name">Medieval Resource Pack</div><div class="pc-type" data-i18n="pc5.type">Textures · OptiFine</div></div>
+      <div class="pc-arr">↗</div>
+    </div>
+  </div>
+
+  <!-- Mob 3D — Golem Arcano -->
+  <div class="pc" data-category="texturas mythicmobs">
+    <div class="pc-imgs">
+      <div class="pc-a"><img src="./assets/portfolio/golem-a.png" alt="Golem Arcano A" loading="lazy"></div>
+      <div class="pc-b"><img src="./assets/portfolio/golem-b.png" alt="Golem Arcano B" loading="lazy"></div>
+    </div>
+    <div class="pc-info">
+      <div><div class="pc-name" data-i18n="pc6.name">3D Mob — Arcane Golem</div><div class="pc-type">Blockbench · ModelEngine</div></div>
+      <div class="pc-arr">↗</div>
+    </div>
+  </div>
+
+  <!-- Red Survival + SkyBlock -->
+  <div class="pc" data-category="servidores">
+    <div class="pc-imgs">
+      <div class="pc-a"><img src="./assets/portfolio/survival-a.png" alt="Survival SkyBlock A" loading="lazy"></div>
+      <div class="pc-b"><img src="./assets/portfolio/survival-b.png" alt="Survival SkyBlock B" loading="lazy"></div>
+    </div>
+    <div class="pc-info">
+      <div><div class="pc-name" data-i18n="pc7.name">Survival + SkyBlock Network</div><div class="pc-type" data-i18n="pc7.type">Velocity · Server Setup</div></div>
+      <div class="pc-arr">↗</div>
+    </div>
+  </div>
+
+</div>
 </section>
 
-<!-- ══ PROCESS ══ -->
 <section id="proceso">
   <div class="container">
-    <div class="s-eye fade-up">Cómo trabajamos</div>
-    <h2 class="s-head fade-up">PROCESO</h2>
+    <div class="s-eye fade-up" data-i18n="proc.eyebrow">How we work</div>
+    <h2 class="s-head fade-up" data-i18n="proc.head">PROCESS</h2>
+
     <div class="proc-table fade-up">
-      <div class="proc-row">
+      <article class="proc-row">
         <div class="proc-n">01</div>
-        <div><div class="proc-name">BRIEF</div><div class="proc-tags"><span class="proc-tag">Discovery</span><span class="proc-tag">Scope</span></div></div>
-        <div class="proc-desc">Me cuentas tu visión: tipo de servidor, plugins, referencias y presupuesto. Analizo qué solución encaja mejor y propongo el alcance exacto del proyecto.</div>
-      </div>
-      <div class="proc-row">
+        <div>
+          <div class="proc-name" data-i18n="proc1.name">Brief &amp; Scope</div>
+          <div class="proc-tags"><span class="proc-tag" data-i18n="proc1.tag1">1–2 days</span><span class="proc-tag">Scope</span></div>
+        </div>
+        <div class="proc-desc" data-i18n="proc1.desc">We review your idea, references, version, involved plugins and real objectives to define a coherent and well-grounded scope.</div>
+      </article>
+
+      <article class="proc-row">
         <div class="proc-n">02</div>
-        <div><div class="proc-name">ARQUITECTURA</div><div class="proc-tags"><span class="proc-tag">Planning</span><span class="proc-tag">Design</span></div></div>
-        <div class="proc-desc">Diseño la estructura completa: conexión de plugins, flujos de quests, skills de mobs y árbol de permisos. Todo documentado antes de escribir una línea de YAML.</div>
-      </div>
-      <div class="proc-row">
+        <div>
+          <div class="proc-name" data-i18n="proc2.name">Architecture</div>
+          <div class="proc-tags"><span class="proc-tag" data-i18n="proc2.tag1">Plan</span><span class="proc-tag" data-i18n="proc2.tag2">Structure</span></div>
+        </div>
+        <div class="proc-desc" data-i18n="proc2.desc">The solution is organized: dependencies, quest flow, mob logic, permissions, files and sensitive points before development begins.</div>
+      </article>
+
+      <article class="proc-row">
         <div class="proc-n">03</div>
-        <div><div class="proc-name">DESARROLLO</div><div class="proc-tags"><span class="proc-tag">Build</span><span class="proc-tag">QA</span></div></div>
-        <div class="proc-desc">Configuro todo en un servidor de pruebas propio. Testing exhaustivo de compatibilidad, performance y bugs. Acceso al servidor de test y avances por Discord.</div>
-      </div>
-      <div class="proc-row">
+        <div>
+          <div class="proc-name" data-i18n="proc3.name">Development &amp; Testing</div>
+          <div class="proc-tags"><span class="proc-tag" data-i18n="proc3.tag1">Build</span><span class="proc-tag" data-i18n="proc3.tag2">QA</span></div>
+        </div>
+        <div class="proc-desc" data-i18n="proc3.desc">Configuration, testing, adjustments and validation in a real environment to reduce bugs, conflicts and fragile deliveries.</div>
+      </article>
+
+      <article class="proc-row">
         <div class="proc-n">04</div>
-        <div><div class="proc-name">ENTREGA</div><div class="proc-tags"><span class="proc-tag">Delivery</span><span class="proc-tag">Support</span></div></div>
-        <div class="proc-desc">Archivos organizados, documentación completa y guía de instalación. Soporte post-entrega incluido para ajustes, dudas y actualizaciones de versión.</div>
-      </div>
+        <div>
+          <div class="proc-name" data-i18n="proc4.name">Delivery</div>
+          <div class="proc-tags"><span class="proc-tag" data-i18n="proc4.tag1">Delivery</span><span class="proc-tag" data-i18n="proc4.tag2">Docs</span></div>
+        </div>
+        <div class="proc-desc" data-i18n="proc4.desc">You receive organized files, installation notes, important observations and initial support to get the project ready to deploy.</div>
+      </article>
     </div>
   </div>
 </section>
 
-<!-- ══ CONTACT ══ -->
 <section id="contacto">
   <div class="container">
     <div class="contact-wrap">
       <div class="contact-l">
-        <div class="s-eye fade-up">Hablemos</div>
-        <h2 class="s-head fade-up">INICIAR<br>PROYECTO</h2>
-        <p class="contact-intro fade-up">¿Tu servidor necesita llevar la experiencia al siguiente nivel? Cuéntanos qué necesitas — respondemos en menos de 24 horas.</p>
+        <div class="s-eye fade-up" data-i18n="contact.eyebrow">Let's talk</div>
+        <h2 class="s-head fade-up" data-i18n="contact.head">START<br>PROJECT</h2>
+        <p class="contact-intro fade-up" data-i18n="contact.intro">If you need to improve your server structure, organize complex configurations or develop a more solid experience, we can review it together.</p>
+
+        <div class="contact-checks fade-up">
+          <div class="check-item" data-i18n="contact.check1">You want a more serious and maintainable setup</div>
+          <div class="check-item" data-i18n="contact.check2">You need better-structured quests, bosses or scenes</div>
+          <div class="check-item" data-i18n="contact.check3">Your current config works, but feels disorganized</div>
+          <div class="check-item" data-i18n="contact.check4">You're looking for direct technical development, no middlemen</div>
+        </div>
+
         <div class="cc-list fade-up">
           <a href="#" class="cc">
-            <span class="cc-dot"></span><span class="cc-type">Discord</span><span class="cc-val">Dominik#0000</span>
+            <span class="cc-dot"></span>
+            <span class="cc-type">Discord</span>
+            <span class="cc-val" data-i18n="contact.discord">Your username here</span>
           </a>
-          <a href="/cdn-cgi/l/email-protection#98ecedd8fdf5f9f1f4b6fbf7f5" class="cc">
-            <span class="cc-dot"></span><span class="cc-type">Email</span><span class="cc-val"><span class="__cf_email__" data-cfemail="e79392a7828a868e8bc984888a">[email&#160;protected]</span></span>
+          <a href="/cdn-cgi/l/email-protection#ef9b9ac28a828e8683af8b808286818680c18c8082" class="cc">
+            <span class="cc-dot"></span>
+            <span class="cc-type">Email</span>
+            <span class="cc-val"><span class="__cf_email__" data-cfemail="c1b5b4eca4aca0a8ad81a5aeaca8afa8aeefa2aeac">hopelik-rose@hotmail.com</span></span>
           </a>
           <a href="#" class="cc">
-            <span class="cc-dot"></span><span class="cc-type">Twitter / X</span><span class="cc-val">@TuUsuario</span>
-          </a>
-          <a href="#" class="cc">
-            <span class="cc-dot"></span><span class="cc-type">BuiltByBit</span><span class="cc-val">ARVO Studio</span>
+            <span class="cc-dot"></span>
+            <span class="cc-type">BuiltByBit</span>
+            <span class="cc-val" data-i18n="contact.bbb">Your profile here</span>
           </a>
         </div>
       </div>
+
       <div class="fade-up">
         <form class="c-form" action="https://formspree.io/f/TUCODIGO" method="POST" id="contactForm">
           <div class="f-row">
-            <div><label class="f-lbl">Nombre / Nick</label><input class="f-in" type="text" name="nombre" placeholder="Tu nombre" required></div>
-            <div><label class="f-lbl">Contacto</label><input class="f-in" type="text" name="contacto" placeholder="Discord o email" required></div>
+            <div>
+              <label class="f-lbl" for="nombre" data-i18n="form.lbl.name">Name / Nick</label>
+              <input class="f-in" id="nombre" type="text" name="nombre" data-i18n-ph="form.ph.name" placeholder="Your name" required>
+            </div>
+            <div>
+              <label class="f-lbl" for="contactoInput" data-i18n="form.lbl.contact">Contact</label>
+              <input class="f-in" id="contactoInput" type="text" name="contacto" data-i18n-ph="form.ph.contact" placeholder="Discord or email" required>
+            </div>
           </div>
+
+          <div class="f-row">
+            <div>
+              <label class="f-lbl" for="servicio" data-i18n="form.lbl.service">Service</label>
+              <select class="f-sel" id="servicio" name="servicio" required>
+                <option value="" data-i18n="form.opt.default">Select a service...</option>
+                <option data-i18n="form.opt.mm">MythicMobs</option>
+                <option data-i18n="form.opt.bq">BetonQuest</option>
+                <option data-i18n="form.opt.tw">Typewriter</option>
+                <option data-i18n="form.opt.plugins">Advanced plugins</option>
+                <option data-i18n="form.opt.setup">Server setup</option>
+                <option data-i18n="form.opt.tex">Textures & 3D</option>
+                <option data-i18n="form.opt.bundle">Full bundle</option>
+              </select>
+            </div>
+            <div>
+              <label class="f-lbl" for="version" data-i18n="form.lbl.version">Version</label>
+              <select class="f-sel" id="version" name="version">
+                <option>1.21.x</option>
+                <option>1.20.x</option>
+                <option>1.19.x</option>
+                <option>1.18.x</option>
+                <option>1.17.x</option>
+                <option>1.16.x</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="f-row">
+            <div>
+              <label class="f-lbl" for="budget" data-i18n="form.lbl.budget">Budget</label>
+              <input class="f-in" id="budget" type="text" name="presupuesto" data-i18n-ph="form.ph.budget" placeholder="e.g. 150–300 USD">
+            </div>
+            <div>
+              <label class="f-lbl" for="timeline" data-i18n="form.lbl.timeline">Ideal timeline</label>
+              <input class="f-in" id="timeline" type="text" name="plazo" data-i18n-ph="form.ph.timeline" placeholder="e.g. 2 weeks">
+            </div>
+          </div>
+
           <div>
-            <label class="f-lbl">Servicio</label>
-            <select class="f-sel" name="servicio">
-              <option value="">Selecciona un servicio...</option>
-              <option>MythicMobs — Mobs y bosses</option>
-              <option>BetonQuest — Sistema de quests</option>
-              <option>Typewriter — Cinematics y diálogos</option>
-              <option>Plugins custom — Configuración avanzada</option>
-              <option>Server Setup — Configuración completa</option>
-              <option>Texturas y Resource Pack</option>
-              <option>Modelos 3D (Blockbench / ModelEngine)</option>
-              <option>Paquete completo</option>
-            </select>
+            <label class="f-lbl" for="descripcion" data-i18n="form.lbl.desc">Project description</label>
+            <textarea class="f-ta" id="descripcion" name="descripcion" data-i18n-ph="form.ph.desc" placeholder="Tell me what you need, which plugins you want to integrate, references, current issues and your server's goal."></textarea>
           </div>
-          <div>
-            <label class="f-lbl">Versión de Minecraft</label>
-            <select class="f-sel" name="version">
-              <option>1.21.x (Recomendada)</option>
-              <option>1.20.x</option>
-              <option>1.19.x</option>
-              <option>1.18.x</option>
-              <option>1.17.x</option>
-              <option>1.16.x</option>
-            </select>
-          </div>
-          <div>
-            <label class="f-lbl">Descripción del proyecto</label>
-            <textarea class="f-ta" name="descripcion" placeholder="Tipo de servidor, qué necesitas, referencias, plazos, presupuesto..."></textarea>
-          </div>
-          <button class="f-sub" type="submit">Enviar mensaje →</button>
-          <p class="f-success" id="formSuccess" style="display:none;color:var(--red);font-size:.85rem;font-weight:600;margin-top:.5rem;text-align:center;">
-            ✓ Mensaje enviado — te respondo en menos de 24h.
-          </p>
+
+          <button class="f-sub" type="submit" data-i18n="form.submit">Send message</button>
+          <p class="f-success" id="formSuccess" aria-live="polite"></p>
         </form>
       </div>
     </div>
   </div>
 </section>
-
-<!-- ══ FOOTER ══ -->
 <footer>
-  <div class="f-brand">
+  <a class="f-brand" href="#hero" aria-label="Go to top">
     <img src="logo_negative.svg" alt="ARVO" id="footerLogo" style="height:30px;width:30px;object-fit:contain;display:block;">
-  </div>
-  <small>© 2025 ARVO Studio · Liderado por Dominik</small>
+  </a>
+  <small data-i18n="footer.copy">© 2026 ARVO Studio · Premium configuration for Minecraft servers</small>
   <div class="f-links">
-    <a href="#servicios">Servicios</a>
+    <a href="#servicios" data-i18n="footer.services">Services</a>
     <a href="#portfolio">Portfolio</a>
-    <a href="#studio">Studio</a>
-    <a href="#contacto">Contacto</a>
+    <a href="#contacto" data-i18n="footer.contact">Contact</a>
   </div>
 </footer>
 
-<script src="arvo.js"></script>
-<script src="scene3d.js"></script>
-<script src="particles.js"></script>
+<script src="./arvo.js"></script>
+<script src="./scene3d.js"></script>
+<script src="./particles.js"></script>
+<script src="./lang.js"></script>
 </body>
 </html>

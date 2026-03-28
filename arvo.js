@@ -1,29 +1,26 @@
 /**
  * ARVO Studio — arvo.js
- * Inspired by Quantix template logic (TemplateMo)
- * Nav scroll · Mobile side panel · Counter animation · Staggered reveal
+ * Nav scroll · Mobile side panel · Counter animation · Reveal · Portfolio filter · Type effects
  */
 
 (function () {
   'use strict';
 
-  /* ═══════════════════════════════════════
-     NAVBAR — transparent → solid on scroll
-  ═══════════════════════════════════════ */
-  const navbar = document.getElementById('mainNav');
+  const root = document.documentElement;
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* NAV */
+  const navbar = document.getElementById('mainNav');
   window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 40);
+    if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 40);
   }, { passive: true });
 
-  /* ═══════════════════════════════════════
-     MOBILE NAV — slide-in panel from right
-  ═══════════════════════════════════════ */
   const navToggle = document.getElementById('ham');
   const navLinks  = document.getElementById('navLinks');
   const overlay   = document.getElementById('nav-overlay');
 
   function openMenu() {
+    if (!navToggle || !navLinks || !overlay) return;
     navToggle.classList.add('active');
     navLinks.classList.add('open');
     overlay.classList.add('visible');
@@ -31,6 +28,7 @@
   }
 
   function closeMenu() {
+    if (!navToggle || !navLinks || !overlay) return;
     navToggle.classList.remove('active');
     navLinks.classList.remove('open');
     overlay.classList.remove('visible');
@@ -38,90 +36,151 @@
   }
 
   navToggle && navToggle.addEventListener('click', () => {
-    navLinks.classList.contains('open') ? closeMenu() : openMenu();
+    navLinks && navLinks.classList.contains('open') ? closeMenu() : openMenu();
   });
-
-  // Close when clicking a link
-  navLinks && navLinks.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', closeMenu);
-  });
-
-  // Close when clicking the overlay
+  navLinks && navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
   overlay && overlay.addEventListener('click', closeMenu);
 
-  /* ═══════════════════════════════════════
-     NAV ACTIVE LINK — highlight on scroll
-  ═══════════════════════════════════════ */
-  const sections  = document.querySelectorAll('section[id]');
+  /* NAV ACTIVE */
+  const sections = document.querySelectorAll('section[id]');
   const navAnchors = document.querySelectorAll('.nav-links a');
-
   window.addEventListener('scroll', () => {
     let current = '';
-    sections.forEach(s => {
-      if (window.scrollY >= s.offsetTop - 110) current = s.id;
+    sections.forEach(section => {
+      if (window.scrollY >= section.offsetTop - 110) current = section.id;
     });
-    navAnchors.forEach(a => {
-      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    navAnchors.forEach(anchor => {
+      anchor.classList.toggle('active', anchor.getAttribute('href') === '#' + current);
     });
   }, { passive: true });
 
-  /* ═══════════════════════════════════════
-     COUNTER ANIMATION — Quantix-style
-     Usage: <span class="stat-number"
-               data-target="60"
-               data-suffix="+"
-               data-prefix=""
-               data-decimal="0"
-               data-comma="false">60+</span>
-  ═══════════════════════════════════════ */
+  /* COUNTERS */
   function animateCounter(el) {
-    const target   = parseFloat(el.dataset.target);
-    const suffix   = el.dataset.suffix  || '';
-    const prefix   = el.dataset.prefix  || '';
-    const decimals = parseInt(el.dataset.decimal) || 0;
+    const target = parseFloat(el.dataset.target || '0');
+    const suffix = el.dataset.suffix || '';
+    const prefix = el.dataset.prefix || '';
+    const decimals = parseInt(el.dataset.decimal || '0', 10);
     const useComma = el.dataset.comma === 'true';
     const duration = 1800;
-    const start    = performance.now();
+    const start = performance.now();
 
     function tick(now) {
       const progress = Math.min((now - start) / duration, 1);
-      const eased    = 1 - Math.pow(1 - progress, 3);  // cubic ease-out
-      let val        = eased * target;
-      val = decimals > 0 ? val.toFixed(decimals) : Math.round(val);
-      if (useComma) val = Number(val).toLocaleString();
-      el.textContent = prefix + val + suffix;
+      const eased = 1 - Math.pow(1 - progress, 3);
+      let value = eased * target;
+      value = decimals > 0 ? value.toFixed(decimals) : Math.round(value);
+      if (useComma) value = Number(value).toLocaleString();
+      el.textContent = prefix + value + suffix;
       if (progress < 1) requestAnimationFrame(tick);
     }
 
     requestAnimationFrame(tick);
   }
 
-  /* ═══════════════════════════════════════
-     SCROLL REVEAL — staggered siblings
-     Replaces the old .rv system
-  ═══════════════════════════════════════ */
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* TYPE LABELS */
+  function typeText(el, text, speed = 45) {
+    if (!el) return;
+    el.classList.add('is-typing');
+    el.textContent = '';
+    let index = 0;
+    function step() {
+      el.textContent = text.slice(0, index + 1);
+      index += 1;
+      if (index < text.length) {
+        setTimeout(step, speed);
+      }
+    }
+    step();
+  }
+
+  function initHeroTypedLoop() {
+    const target = document.getElementById('heroTypeText');
+    const cursor = document.getElementById('heroTypeCursor');
+    if (!target) return;
+
+    if (prefersReducedMotion) {
+      const w = (target.dataset.words || '').split(',')[0] || '';
+      target.textContent = w.trim();
+      cursor && cursor.classList.add('done');
+      return;
+    }
+
+    let wordIndex = 0;
+    let charIndex = 0;
+    let deleting = false;
+    let timer = null;
+    let active = true;
+
+    function getWords() {
+      return (target.dataset.words || '')
+        .split(',')
+        .map(w => w.trim())
+        .filter(Boolean);
+    }
+
+    function loop() {
+      if (!active) return;
+      const words = getWords();
+      if (!words.length) return;
+      wordIndex = wordIndex % words.length;
+      const word = words[wordIndex];
+
+      if (!deleting) {
+        target.textContent = word.slice(0, charIndex + 1);
+        charIndex += 1;
+        if (charIndex === word.length) {
+          deleting = true;
+          timer = setTimeout(loop, 1100);
+          return;
+        }
+        timer = setTimeout(loop, 70);
+      } else {
+        target.textContent = word.slice(0, charIndex - 1);
+        charIndex -= 1;
+        if (charIndex === 0) {
+          deleting = false;
+          wordIndex = (wordIndex + 1) % words.length;
+          timer = setTimeout(loop, 160);
+          return;
+        }
+        timer = setTimeout(loop, 40);
+      }
+    }
+
+    loop();
+
+    /* Expose global restart — called by lang.js on language change */
+    window.arvoRestartTypewriter = function () {
+      clearTimeout(timer);
+      active = false;
+      setTimeout(() => {
+        active = true;
+        wordIndex = 0;
+        charIndex = 0;
+        deleting = false;
+        target.textContent = '';
+        loop();
+      }, 80);
+    };
+  }
+
+  /* REVEAL + COUNTERS + STAT LABELS */
+  const counterEls = document.querySelectorAll('.stat-number[data-target]');
+  const statLabels = document.querySelectorAll('.type-label');
+  const revealEls = document.querySelectorAll('.fade-up');
 
   if (!prefersReducedMotion) {
-
-    // Reveal observer — stagger delay by sibling index
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
-        const siblings = entry.target.parentElement
-          .querySelectorAll('.fade-up:not(.visible)');
+        const siblings = entry.target.parentElement?.querySelectorAll('.fade-up:not(.visible)') || [entry.target];
         const idx = Array.from(siblings).indexOf(entry.target);
-        setTimeout(
-          () => entry.target.classList.add('visible'),
-          Math.max(0, idx) * 90
-        );
+        setTimeout(() => entry.target.classList.add('visible'), Math.max(0, idx) * 90);
         revealObserver.unobserve(entry.target);
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -24px 0px' });
+    revealEls.forEach(el => revealObserver.observe(el));
 
-    document.querySelectorAll('.fade-up').forEach(el => revealObserver.observe(el));
-
-    // Counter observer
     const counterObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
@@ -129,101 +188,307 @@
         counterObserver.unobserve(entry.target);
       });
     }, { threshold: 0.5 });
+    counterEls.forEach(el => counterObserver.observe(el));
 
-    document.querySelectorAll('.stat-number[data-target]').forEach(el => {
-      counterObserver.observe(el);
-    });
-
+    const statsWrap = document.getElementById('heroStats');
+    if (statsWrap) {
+      const labelObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          statLabels.forEach((label, index) => {
+            const finalText = label.dataset.text || label.textContent.trim();
+            setTimeout(() => typeText(label, finalText, 38), index * 180);
+          });
+          labelObserver.unobserve(entry.target);
+        });
+      }, { threshold: 0.55 });
+      labelObserver.observe(statsWrap);
+    }
   } else {
-    // Reduced motion — show everything instantly, set counter final values
-    document.querySelectorAll('.fade-up').forEach(el => el.classList.add('visible'));
-    document.querySelectorAll('.stat-number[data-target]').forEach(el => {
-      const t = parseFloat(el.dataset.target);
-      const s = el.dataset.suffix  || '';
-      const p = el.dataset.prefix  || '';
-      const d = parseInt(el.dataset.decimal) || 0;
-      let v   = d > 0 ? t.toFixed(d) : t;
-      if (el.dataset.comma === 'true') v = Number(v).toLocaleString();
-      el.textContent = p + v + s;
+    revealEls.forEach(el => el.classList.add('visible'));
+    counterEls.forEach(el => {
+      const target = parseFloat(el.dataset.target || '0');
+      const suffix = el.dataset.suffix || '';
+      const prefix = el.dataset.prefix || '';
+      el.textContent = prefix + target + suffix;
+    });
+    statLabels.forEach(label => {
+      label.textContent = label.dataset.text || label.textContent.trim();
     });
   }
 
-  /* ═══════════════════════════════════════
-     PORTFOLIO FILTER TABS
-  ═══════════════════════════════════════ */
-  document.querySelectorAll('.pf').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.pf').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+  initHeroTypedLoop();
+
+  /* PORTFOLIO FILTER */
+  const filterButtons = document.querySelectorAll('.pf[data-filter]');
+  const cards = document.querySelectorAll('#portfolioGrid .pc[data-category]');
+  filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const filter = button.dataset.filter;
+      filterButtons.forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+
+      cards.forEach(card => {
+        const categories = (card.dataset.category || '').split(/\s+/).filter(Boolean);
+        const show = filter === 'all' || categories.includes(filter);
+        card.classList.toggle('is-hidden', !show);
+      });
     });
   });
 
-  /* ═══════════════════════════════════════
-     3D TILT — studio photo
-  ═══════════════════════════════════════ */
+  /* TILT */
   const tiltFrame = document.getElementById('tiltFrame');
-  const tiltWrap  = tiltFrame && tiltFrame.parentElement;
-
-  tiltWrap && tiltWrap.addEventListener('mousemove', e => {
-    const r = tiltWrap.getBoundingClientRect();
-    const x = (e.clientX - r.left)  / r.width  - 0.5;
-    const y = (e.clientY - r.top)   / r.height - 0.5;
-    tiltFrame.style.transform =
-      `perspective(700px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg)`;
+  const tiltWrap = tiltFrame && tiltFrame.parentElement;
+  tiltWrap && tiltWrap.addEventListener('mousemove', event => {
+    const rect = tiltWrap.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width - 0.5;
+    const y = (event.clientY - rect.top) / rect.height - 0.5;
+    tiltFrame.style.transform = `perspective(700px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg)`;
   });
   tiltWrap && tiltWrap.addEventListener('mouseleave', () => {
     tiltFrame.style.transform = '';
   });
 
-  /* ═══════════════════════════════════════
-     3D TILT — service cards
-  ═══════════════════════════════════════ */
+  const canHover = window.matchMedia('(hover: hover)').matches;
   document.querySelectorAll('.srv').forEach(card => {
-    card.addEventListener('mousemove', e => {
-      const r = card.getBoundingClientRect();
-      const x = (e.clientX - r.left)  / r.width  - 0.5;
-      const y = (e.clientY - r.top)   / r.height - 0.5;
-      card.style.transform =
-        `perspective(600px) rotateY(${x * 5}deg) rotateX(${-y * 5}deg) translateY(-3px)`;
+    if (!canHover || prefersReducedMotion) return;
+    card.addEventListener('mousemove', event => {
+      const rect = card.getBoundingClientRect();
+      const px = event.clientX - rect.left;
+      const py = event.clientY - rect.top;
+      const x = px / rect.width - 0.5;
+      const y = py / rect.height - 0.5;
+      card.style.setProperty('--mx', `${px}px`);
+      card.style.setProperty('--my', `${py}px`);
+      card.style.transform = `perspective(600px) rotateY(${x * 4.5}deg) rotateX(${-y * 4.5}deg) translateY(-4px)`;
     });
     card.addEventListener('mouseleave', () => {
       card.style.transform = '';
+      card.style.removeProperty('--mx');
+      card.style.removeProperty('--my');
     });
   });
 
 
-  /* ═══════════════════════════════════════
-     THEME TOGGLE
-  ═══════════════════════════════════════ */
-  const themeToggle = document.getElementById('themeToggle');
-  const root        = document.documentElement;
 
-  const saved       = localStorage.getItem('arvo-theme');
-const initLight = saved === 'light';
 
-  if (initLight) {
-    root.setAttribute('data-theme', 'light');
-    if (themeToggle) themeToggle.checked = true;
-  } else {
-    root.removeAttribute('data-theme');
-    if (themeToggle) themeToggle.checked = false;
+/* SERVICES X SLIDER */
+  const servicesViewport = document.querySelector('.svcx-viewport');
+  const servicesScroller = document.getElementById('servicesScroller');
+  const servicesTrack = document.getElementById('servicesTrack');
+
+  if (servicesScroller && servicesTrack) {
+    const originals = Array.from(servicesTrack.children).map((card) => card.cloneNode(true));
+    const originalCount = originals.length;
+    const repeatSets = 5;
+    const middleSet = Math.floor(repeatSets / 2);
+    let allCards = [];
+    let activeAbsIndex = middleSet * originalCount;
+    let snapTimer = null;
+    let wheelLock = false;
+    let wheelResetTimer = null;
+    let wheelBuffer = 0;
+    let pointerActive = false;
+    let dragStartX = 0;
+    let dragStartScroll = 0;
+
+    servicesTrack.innerHTML = '';
+    for (let setIndex = 0; setIndex < repeatSets; setIndex += 1) {
+      const fragment = document.createDocumentFragment();
+      originals.forEach((card, logicalIndex) => {
+        const clone = card.cloneNode(true);
+        clone.dataset.logicalIndex = String(logicalIndex);
+        clone.dataset.setIndex = String(setIndex);
+        if (setIndex !== middleSet) clone.setAttribute('aria-hidden', 'true');
+        fragment.appendChild(clone);
+      });
+      servicesTrack.appendChild(fragment);
+    }
+
+    allCards = Array.from(servicesTrack.querySelectorAll('.svcx-card'));
+
+    function getCardCenterLeft(card) {
+      return card.offsetLeft - ((servicesScroller.clientWidth - card.offsetWidth) / 2);
+    }
+
+    function getSetWidth() {
+      if (allCards.length < originalCount * 2) return 0;
+      return allCards[originalCount].offsetLeft - allCards[0].offsetLeft;
+    }
+
+    function getNearestAbsIndex() {
+      const viewportCenter = servicesScroller.scrollLeft + servicesScroller.clientWidth / 2;
+      let nearestIndex = activeAbsIndex;
+      let nearestDist = Infinity;
+
+      allCards.forEach((card, index) => {
+        const center = card.offsetLeft + card.offsetWidth / 2;
+        const dist = Math.abs(center - viewportCenter);
+        if (dist < nearestDist) {
+          nearestDist = dist;
+          nearestIndex = index;
+        }
+      });
+
+      return nearestIndex;
+    }
+
+    function recenterWithoutVisualJump() {
+      const currentIndex = getNearestAbsIndex();
+      const logicalIndex = Number(allCards[currentIndex]?.dataset.logicalIndex || 0);
+      const currentSet = Number(allCards[currentIndex]?.dataset.setIndex || middleSet);
+      const targetIndex = middleSet * originalCount + logicalIndex;
+
+      if (currentSet === middleSet || !allCards[targetIndex] || !allCards[currentIndex]) {
+        activeAbsIndex = currentIndex;
+        return;
+      }
+
+      const currentLeft = getCardCenterLeft(allCards[currentIndex]);
+      const targetLeft = getCardCenterLeft(allCards[targetIndex]);
+      servicesScroller.scrollLeft += targetLeft - currentLeft;
+      activeAbsIndex = targetIndex;
+    }
+
+    function goToAbsIndex(absIndex, behavior = 'smooth') {
+      const target = allCards[absIndex];
+      if (!target) return;
+      activeAbsIndex = absIndex;
+      servicesScroller.scrollTo({ left: getCardCenterLeft(target), behavior });
+    }
+
+    function syncToNearestCard(behavior = 'smooth') {
+      activeAbsIndex = getNearestAbsIndex();
+      goToAbsIndex(activeAbsIndex, behavior);
+      window.setTimeout(recenterWithoutVisualJump, behavior === 'smooth' ? 420 : 0);
+    }
+
+    function goStep(direction) {
+      activeAbsIndex = getNearestAbsIndex();
+      const nextIndex = direction === 'next' ? activeAbsIndex + 1 : activeAbsIndex - 1;
+      if (!allCards[nextIndex]) return;
+      goToAbsIndex(nextIndex, 'smooth');
+      window.setTimeout(recenterWithoutVisualJump, 420);
+    }
+
+    function normalizedWheel(event) {
+      let delta = event.deltaY;
+      if (Math.abs(event.deltaX) > Math.abs(delta)) delta = event.deltaX;
+      if (event.deltaMode === 1) delta *= 16;
+      if (event.deltaMode === 2) delta *= window.innerHeight;
+      if (!delta) return 0;
+      return Math.sign(delta);
+    }
+
+    function initPosition() {
+      allCards = Array.from(servicesTrack.querySelectorAll('.svcx-card'));
+      activeAbsIndex = middleSet * originalCount;
+      goToAbsIndex(activeAbsIndex, 'auto');
+    }
+
+    requestAnimationFrame(initPosition);
+    window.addEventListener('resize', () => requestAnimationFrame(() => syncToNearestCard('auto')));
+
+    servicesScroller.addEventListener('scroll', () => {
+      clearTimeout(snapTimer);
+      recenterWithoutVisualJump();
+      snapTimer = setTimeout(() => syncToNearestCard('smooth'), 120);
+    }, { passive: true });
+
+    const wheelTarget = servicesViewport || servicesScroller;
+    wheelTarget.addEventListener('wheel', (event) => {
+      const mostlyVertical = Math.abs(event.deltaY) >= Math.abs(event.deltaX);
+      if (!mostlyVertical) return;
+
+      event.preventDefault();
+      const delta = normalizedWheel(event);
+      if (!delta) return;
+
+      wheelBuffer += delta;
+      clearTimeout(wheelResetTimer);
+      wheelResetTimer = setTimeout(() => { wheelBuffer = 0; }, 120);
+      if (wheelLock) return;
+
+      if (wheelBuffer < 0) {
+        // scroll up -> right
+        goStep('next');
+        wheelLock = true;
+        wheelBuffer = 0;
+      } else if (wheelBuffer > 0) {
+        // scroll down -> left
+        goStep('prev');
+        wheelLock = true;
+        wheelBuffer = 0;
+      }
+
+      if (wheelLock) {
+        setTimeout(() => { wheelLock = false; }, 430);
+      }
+    }, { passive: false });
+
+    servicesScroller.addEventListener('pointerdown', (event) => {
+      pointerActive = true;
+      dragStartX = event.clientX;
+      dragStartScroll = servicesScroller.scrollLeft;
+      servicesScroller.setPointerCapture(event.pointerId);
+      servicesScroller.classList.add('is-dragging');
+    });
+
+    servicesScroller.addEventListener('pointermove', (event) => {
+      if (!pointerActive) return;
+      const delta = event.clientX - dragStartX;
+      servicesScroller.scrollLeft = dragStartScroll - delta;
+    });
+
+    const stopPointer = () => {
+      if (!pointerActive) return;
+      pointerActive = false;
+      servicesScroller.classList.remove('is-dragging');
+      syncToNearestCard('smooth');
+    };
+
+    servicesScroller.addEventListener('pointerup', stopPointer);
+    servicesScroller.addEventListener('pointercancel', stopPointer);
+    servicesScroller.addEventListener('pointerleave', stopPointer);
   }
 
-  /* Aplicar logo correcto al cargar */
-  const initLogo   = initLight ? 'logo_positive.svg' : 'logo_negative.svg';
-  const navLogo    = document.getElementById('navLogo');
+  /* THEME */
+  const themeToggle = document.getElementById('themeToggle');
+  const navLogo = document.getElementById('navLogo');
   const footerLogo = document.getElementById('footerLogo');
-  if (navLogo)    navLogo.src    = initLogo;
-  if (footerLogo) footerLogo.src = initLogo;
 
-  themeToggle && themeToggle.addEventListener('change', () => {
-    if (themeToggle.checked) {
+  function applyTheme(theme) {
+    const isLight = theme === 'light';
+    if (isLight) {
       root.setAttribute('data-theme', 'light');
       localStorage.setItem('arvo-theme', 'light');
     } else {
       root.removeAttribute('data-theme');
       localStorage.setItem('arvo-theme', 'dark');
     }
+    const logoSrc = isLight ? 'logo_positive.svg' : 'logo_negative.svg';
+    if (navLogo) navLogo.src = logoSrc;
+    if (footerLogo) footerLogo.src = logoSrc;
+    if (themeToggle) themeToggle.checked = isLight;
+  }
+
+  applyTheme(localStorage.getItem('arvo-theme') === 'light' ? 'light' : 'dark');
+  themeToggle && themeToggle.addEventListener('change', () => {
+    applyTheme(themeToggle.checked ? 'light' : 'dark');
   });
 
+  /* FORM placeholder handling */
+  const form = document.getElementById('contactForm');
+  const formSuccess = document.getElementById('formSuccess');
+  form && form.addEventListener('submit', event => {
+    if (!formSuccess) return;
+    const action = (form.getAttribute('action') || '').trim();
+    const isPlaceholder = !action || action === '#' || action.includes('TUCODIGO');
+    if (isPlaceholder) {
+      event.preventDefault();
+      formSuccess.textContent = 'Formulario en configuración.';
+      return;
+    }
+    formSuccess.textContent = 'Enviando mensaje...';
+  });
 })();
