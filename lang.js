@@ -84,7 +84,7 @@
       'form.eyebrow':'Escríbenos','form.head':'ENVÍA UN<br>MENSAJE','contact.intro':'Si necesitas mejorar la estructura de tu servidor, ordenar configuraciones complejas o desarrollar una experiencia más sólida, podemos revisarlo.',
       'contact.check1':'Quieres una configuración más seria y mantenible','contact.check2':'Necesitas misiones, jefes o escenas mejor estructuradas',
       'contact.check3':'Tu configuración actual funciona, pero se siente desordenada','contact.check4':'Buscas desarrollo técnico directo, sin intermediarios',
-      'contact.discord':'Tu usuario aquí','contact.bbb':'Tu perfil aquí',
+      'contact.discord':'dominik2581','contact.bbb':'dominika_19',
       'form.lbl.name':'Nombre / Nick','form.lbl.contact':'Contacto','form.lbl.service':'Servicio','form.lbl.version':'Versión','form.lbl.budget':'Presupuesto','form.lbl.timeline':'Plazo ideal','form.lbl.desc':'Descripción del proyecto',
       'form.ph.name':'Tu nombre','form.ph.contact':'Discord o correo','form.ph.budget':'Ej. 150–300 USD','form.ph.timeline':'Ej. 2 semanas',
       'form.ph.desc':'Cuéntame qué necesitas, qué plugins quieres integrar, referencias, problemas actuales y el objetivo de tu servidor.',
