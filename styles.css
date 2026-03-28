@@ -461,6 +461,9 @@ section{padding:8rem 3rem}
 .pc.sp2  .pc-imgs{aspect-ratio:21/9}
 .pc.sp2v .pc-imgs{aspect-ratio:unset;min-height:360px}
 .pc.tall .pc-imgs{aspect-ratio:4/5}
+/* ── Tarjeta vertical tall: imagen llena toda la tarjeta ── */
+.pc.sp2v.tall{display:flex;flex-direction:column;}
+.pc.sp2v.tall .pc-imgs{aspect-ratio:unset;min-height:0;flex:1;}
 .pc-a,.pc-b{
   position:absolute;inset:0;display:flex;align-items:center;
   justify-content:center;flex-direction:column;gap:8px;padding:1.5rem;
@@ -547,6 +550,9 @@ section{padding:8rem 3rem}
 #contacto{background:var(--bg)}
 .contact-wrap{display:grid;grid-template-columns:1fr 1.15fr;gap:6rem;align-items:start;}
 .contact-l .s-head{margin-bottom:1rem}
+.contact-r-head{margin-bottom:1.5rem;}
+.contact-r-head .s-eye{margin-bottom:1.25rem;}
+.contact-r-head .s-head{margin-bottom:0;}
 .contact-intro{font-size:.93rem;color:var(--muted);line-height:1.85;margin-bottom:3rem;}
 .cc-list{display:flex;flex-direction:column}
 .cc{display:flex;align-items:center;gap:1.25rem;padding:1.1rem 0;border-bottom:1px solid var(--line);transition:padding-left .2s;}
@@ -629,6 +635,8 @@ footer small{font-size:.76rem;color:var(--dim)}
   .port-grid{grid-template-columns:1fr 1fr}
   .port-grid .sp2{grid-column:span 2}
   .port-grid .sp2v{grid-row:auto}
+  .pc.sp2v.tall{display:block;}
+  .pc.sp2v.tall .pc-imgs{aspect-ratio:16/10;min-height:0;flex:none;}
   .proc-row{grid-template-columns:60px 1fr}
   .proc-desc{grid-column:2}
   #scene3d-mount{min-height:380px}
@@ -684,6 +692,8 @@ footer small{font-size:.76rem;color:var(--dim)}
   .port-grid{grid-template-columns:1fr}
   .port-grid .sp2{grid-column:span 1}
   .port-grid .sp2v{grid-row:auto}
+  .pc.sp2v.tall{display:block;}
+  .pc.sp2v.tall .pc-imgs{aspect-ratio:16/10;min-height:0;flex:none;}
   .studio-badge{right:0;top:1rem}
   .proc-row{grid-template-columns:1fr;gap:.5rem;padding:1.5rem 0}
   .proc-n{display:none}
@@ -696,9 +706,7 @@ footer small{font-size:.76rem;color:var(--dim)}
   #scene3d-mount{min-height:260px;overflow:hidden}
   #scene3d-mount model-viewer{inset:0;width:100%;height:100%}
 }
-[data-theme="light"] #navLogo{
-  filter: invert(1) hue-rotate(180deg);
-}
+/* logo swap handled by arvo.js — no filter needed */
 .pc-a img,
 .pc-b img {
   width: 100%;
@@ -778,18 +786,12 @@ footer small{font-size:.76rem;color:var(--dim)}
   letter-spacing:.12em;text-transform:uppercase;
   width:auto;
 }
-.hts-prefix{
-  color:var(--muted);white-space:nowrap;
-}
+.hts-prefix{color:var(--muted);white-space:nowrap;}
 .hts-divider{
   width:1px;height:11px;background:var(--line2);
   margin:0 .7rem;flex-shrink:0;border-radius:1px;
 }
-#heroTypeText{
-  color:var(--cream);
-  white-space:nowrap;
-  min-width:4ch;
-}
+#heroTypeText{color:var(--cream);white-space:nowrap;min-width:4ch;}
 .tw-cursor{display:inline-block;color:var(--red);animation:twBlink .7s step-end infinite;margin-left:1px;}
 .tw-cursor.done{display:none}
 @keyframes twBlink{0%,100%{opacity:1}50%{opacity:0}}
@@ -851,7 +853,7 @@ footer small{font-size:.76rem;color:var(--dim)}
   .pc-b{border-left:0;border-top:1px solid var(--line)}
   .hero-right{min-height:320px}
   #scene3d-mount{min-height:320px}
-  #heroTypeText{min-width:3ch}
+  #heroTypeText{min-width:3ch;}
 }
 
 /* === clases añadidas usadas en el HTML v2 === */

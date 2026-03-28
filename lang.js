@@ -40,7 +40,8 @@
       'proc2.name':'Architecture','proc2.tag1':'Plan','proc2.tag2':'Structure','proc2.desc':'The solution is organized: dependencies, quest flow, mob logic, permissions, files and sensitive points before development begins.',
       'proc3.name':'Development & Testing','proc3.tag1':'Build','proc3.tag2':'QA','proc3.desc':'Configuration, testing, adjustments and validation in a real environment to reduce bugs, conflicts and fragile deliveries.',
       'proc4.name':'Delivery','proc4.tag1':'Delivery','proc4.tag2':'Docs','proc4.desc':'You receive organized files, installation notes, important observations and initial support to get the project ready to deploy.',
-      'contact.eyebrow':"Let's talk",'contact.head':'START<br>PROJECT','contact.intro':'If you need to improve your server structure, organize complex configurations or develop a more solid experience, we can review it together.',
+      'contact.eyebrow':"Let's talk",'contact.head':'START<br>PROJECT',
+      'form.eyebrow':'Get in touch','form.head':'SEND A<br>MESSAGE','contact.intro':'If you need to improve your server structure, organize complex configurations or develop a more solid experience, we can review it together.',
       'contact.check1':'You want a more serious and maintainable setup','contact.check2':'You need better-structured quests, bosses or scenes',
       'contact.check3':'Your current config works, but feels disorganized','contact.check4':"You're looking for direct technical development, no middlemen",
       'contact.discord':'dominik2581','contact.bbb':'dominika_19',
@@ -79,7 +80,8 @@
       'proc2.name':'Arquitectura','proc2.tag1':'Plan','proc2.tag2':'Estructura','proc2.desc':'Se ordena la solución: dependencias, flujo de misiones, lógica de mobs, permisos, archivos y puntos sensibles antes de desarrollar.',
       'proc3.name':'Desarrollo y pruebas','proc3.tag1':'Construcción','proc3.tag2':'QA','proc3.desc':'Configuración, pruebas, ajustes y validación en entorno real para reducir errores, conflictos y entregas frágiles.',
       'proc4.name':'Entrega','proc4.tag1':'Entrega','proc4.tag2':'Documentación','proc4.desc':'Recibes archivos organizados, notas de instalación, observaciones importantes y soporte inicial para dejar el proyecto listo para implementar.',
-      'contact.eyebrow':'Hablemos','contact.head':'INICIAR<br>PROYECTO','contact.intro':'Si necesitas mejorar la estructura de tu servidor, ordenar configuraciones complejas o desarrollar una experiencia más sólida, podemos revisarlo.',
+      'contact.eyebrow':'Hablemos','contact.head':'INICIAR<br>PROYECTO',
+      'form.eyebrow':'Escríbenos','form.head':'ENVÍA UN<br>MENSAJE','contact.intro':'Si necesitas mejorar la estructura de tu servidor, ordenar configuraciones complejas o desarrollar una experiencia más sólida, podemos revisarlo.',
       'contact.check1':'Quieres una configuración más seria y mantenible','contact.check2':'Necesitas misiones, jefes o escenas mejor estructuradas',
       'contact.check3':'Tu configuración actual funciona, pero se siente desordenada','contact.check4':'Buscas desarrollo técnico directo, sin intermediarios',
       'contact.discord':'Tu usuario aquí','contact.bbb':'Tu perfil aquí',
@@ -96,8 +98,8 @@
   let dropOpen = false;
 
   const TYPE_WORDS = {
-    en: 'systems that last,structure that scales,your vision executed,projects that endure,results that hold',
-    es: 'sistemas que duran,estructura que escala,tu visión ejecutada,proyectos que perduran,resultados sólidos',
+    en: 'configs that last,structure that scales,your vision executed,projects that endure,results that hold',
+    es: 'configs que duran,estructura que escala,tu visión ejecutada,proyectos que perduran,resultados sólidos',
   };
 
   function applyLang(lang) {
