@@ -23,8 +23,9 @@
     const container = document.getElementById('scene3d-mount');
     if (!container) return;
 
-    const fallback = container.querySelector('.mc-css-fallback');
-    if (fallback) fallback.remove();
+    /* Remove static HTML poster — model-viewer takes over */
+    const staticPoster = container.querySelector('.scene3d-poster');
+    if (staticPoster) staticPoster.remove();
 
     const viewer = document.createElement('model-viewer');
     viewer.setAttribute('src',    MODEL_SRC);
@@ -42,14 +43,11 @@
     viewer.setAttribute('field-of-view',     '15deg');
     viewer.setAttribute('min-field-of-view', '0deg');
     viewer.setAttribute('max-field-of-view', '70deg');
-    viewer.setAttribute('interaction-prompt','none');
-    /* Shadows disabled — with 394 meshes each shadow pass is extremely expensive */
-    viewer.setAttribute('shadow-intensity',  '0');
-    viewer.setAttribute('exposure',          '1');
-    viewer.setAttribute('environment-image', 'neutral');
-
-    /* Cap pixel ratio to 1 — huge FPS gain on retina/HiDPI screens */
-    viewer.setAttribute('max-pixel-ratio', '1');
+    viewer.setAttribute('interaction-prompt', 'none');
+    viewer.setAttribute('shadow-intensity',   '0');
+    viewer.setAttribute('exposure',           '1');
+    viewer.setAttribute('environment-image',  'neutral');
+    viewer.setAttribute('max-pixel-ratio',    '1');
 
     Object.assign(viewer.style, {
       width:           '100%',
@@ -58,6 +56,7 @@
       '--poster-color':'transparent',
       opacity:         '0',
       transition:      'opacity 0.8s ease',
+      willChange:      'transform',
     });
 
     viewer.addEventListener('load', () => {
@@ -70,7 +69,7 @@
 
     container.appendChild(viewer);
 
-    /* Pause animation + rendering when hero is off-screen — saves GPU entirely */
+    /* Pause animation + rendering when hero is off-screen */
     const visObs = new IntersectionObserver((entries) => {
       const visible = entries[0].isIntersecting;
       if (viewer.pause && viewer.play) {
@@ -105,7 +104,6 @@
       if (parallaxVisible) rafId = requestAnimationFrame(lerp);
     }
 
-    /* Only run parallax loop when hero is in viewport */
     const pObs = new IntersectionObserver((entries) => {
       parallaxVisible = entries[0].isIntersecting;
       if (parallaxVisible && !rafId) rafId = requestAnimationFrame(lerp);
@@ -119,7 +117,7 @@
     const container = document.getElementById('scene3d-mount');
     if (!container) return;
 
-    /* Load model-viewer only when hero enters the viewport */
+    /* Load model-viewer when hero enters the viewport */
     const observer = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
         observer.disconnect();

@@ -1,7 +1,13 @@
 {
   "permissions": {
     "allow": [
-      "Bash(node -e \":*)"
+      "Bash(node -e \":*)",
+      "WebFetch(domain:modelviewer.dev)",
+      "WebSearch",
+      "Bash(npx --version)",
+      "Bash(npx @gltf-transform/cli@latest inspect ./skeleton_drgaon/scene.gltf)",
+      "Bash(npx gltfpack:*)",
+      "Bash(npx @gltf-transform/cli inspect ./skeleton_drgaon/scene_optimized.glb)"
     ]
   }
 }

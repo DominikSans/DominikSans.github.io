@@ -77,7 +77,10 @@
       <span id="heroTypeText" data-words="MythicMobs,BetonQuest,Typewriter,Server Setup,Assets 3D"></span><span class="tw-cursor" id="heroTypeCursor">|</span>
     </div>
   </div>
-  <div class="hero-right" id="scene3d-mount" data-i18n-aria="hero.aria" aria-label="3D studio preview"></div>
+  <div class="hero-right" id="scene3d-mount" data-i18n-aria="hero.aria" aria-label="3D studio preview">
+    <!-- Static poster visible before any JS loads — best practice for Lighthouse -->
+    <img class="scene3d-poster" src="./logo.jpg" alt="ARVO Studio preview" style="width:100%;height:100%;object-fit:contain;pointer-events:none;">
+  </div>
 </section>
 
 <div class="marquee-bar">
@@ -134,7 +137,7 @@
             </div>
             <div class="svcx-copywrap">
               <h3 class="svcx-title">MYTHICMOBS</h3>
-              <p class="svcx-sub" data-i18n="svc1.sub">Bosses, skills and advanced behavior</p>
+              <p class="svcx-sub" data-i18n="svc1.sub">Bosses, skills, and advanced behavior</p>
               <p class="svcx-preview" data-i18n="svc1.preview">PvE combat-oriented configuration, difficulty scaling, and more solid encounters for projects that need memorable and technically consistent content.</p>
               <ul class="svcx-points">
                 <li data-i18n="svc1.li1">Skills, targeters, and conditions with better internal structure</li>
@@ -158,7 +161,7 @@
             </div>
             <div class="svcx-copywrap">
               <h3 class="svcx-title">BETONQUEST</h3>
-              <p class="svcx-sub" data-i18n="svc2.sub">Guided progression, dialogues and narrative logic</p>
+              <p class="svcx-sub" data-i18n="svc2.sub">Guided progression, dialogues, and narrative logic</p>
               <p class="svcx-preview" data-i18n="svc2.preview">Design and configuration of quest chains with clear progression, better-connected events, and a more organized structure for projects that need to grow without becoming unwieldy.</p>
               <ul class="svcx-points">
                 <li data-i18n="svc2.li1">Quest chains, dialogues, and variables better resolved</li>
@@ -182,8 +185,8 @@
             </div>
             <div class="svcx-copywrap">
               <h3 class="svcx-title">TYPEWRITER</h3>
-              <p class="svcx-sub" data-i18n="svc3.sub">Scenes, presentation and guided moments</p>
-              <p class="svcx-preview" data-i18n="svc3.preview">Implementation of scenes and sequences designed to improve onboarding, reinforce server identity and make the initial experience feel much more polished.</p>
+              <p class="svcx-sub" data-i18n="svc3.sub">Scenes, presentation, and guided moments</p>
+              <p class="svcx-preview" data-i18n="svc3.preview">Implementation of scenes and sequences designed to improve onboarding, reinforce server identity, and make the initial experience feel much more polished.</p>
               <ul class="svcx-points">
                 <li data-i18n="svc3.li1">Cutscenes, guided sequences, and integrated storytelling</li>
                 <li data-i18n="svc3.li2">Applied in onboarding, missions, and key moments</li>
@@ -206,7 +209,7 @@
             </div>
             <div class="svcx-copywrap">
               <h3 class="svcx-title" data-i18n="svc4.title">CUSTOM PLUGINS</h3>
-              <p class="svcx-sub" data-i18n="svc4.sub">Compatibility, balance and technical ecosystem</p>
+              <p class="svcx-sub" data-i18n="svc4.sub">Compatibility, balance, and technical ecosystem</p>
               <p class="svcx-preview" data-i18n="svc4.preview">Advanced plugin integration focused on real compatibility, system balance, and an architecture that stays clean as the project grows.</p>
               <ul class="svcx-points">
                 <li data-i18n="svc4.li1">Plugins aligned with each other and better connected</li>
@@ -230,7 +233,7 @@
             </div>
             <div class="svcx-copywrap">
               <h3 class="svcx-title">SERVER SETUP</h3>
-              <p class="svcx-sub" data-i18n="svc5.sub">Permissions, structure and central organization</p>
+              <p class="svcx-sub" data-i18n="svc5.sub">Permissions, structure, and central organization</p>
               <p class="svcx-preview" data-i18n="svc5.preview">Base configuration for new servers or projects that need a cleaner structure, well-defined permissions, and an organization ready to scale.</p>
               <ul class="svcx-points">
                 <li data-i18n="svc5.li1">LuckPerms, ranks, economy, and base configurations</li>
@@ -254,7 +257,7 @@
             </div>
             <div class="svcx-copywrap">
               <h3 class="svcx-title" data-i18n="svc6.title">TEXTURES &amp; 3D</h3>
-              <p class="svcx-sub" data-i18n="svc6.sub">Assets, resource packs and visual identity</p>
+              <p class="svcx-sub" data-i18n="svc6.sub">Assets, resource packs, and visual identity</p>
               <p class="svcx-preview" data-i18n="svc6.preview">Visual work for projects that need a more distinctive identity through items, iconography, textures, and 3D resources integrated with the server style.</p>
               <ul class="svcx-points">
                 <li data-i18n="svc6.li1">Assets aligned with the project's visual direction</li>
@@ -556,7 +559,7 @@
 
           <div>
             <label class="f-lbl" for="descripcion" data-i18n="form.lbl.desc">Project description</label>
-            <textarea class="f-ta" id="descripcion" name="descripcion" data-i18n-ph="form.ph.desc" placeholder="Tell me what you need, which plugins you want to integrate, references, current issues and your server's goal."></textarea>
+            <textarea class="f-ta" id="descripcion" name="descripcion" data-i18n-ph="form.ph.desc" placeholder="Tell me what you need, which plugins you want to integrate, references, current issues, and your server's goal."></textarea>
           </div>
 
           <button class="f-sub" type="submit" data-i18n="form.submit">Send message</button>

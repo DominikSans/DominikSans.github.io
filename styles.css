@@ -37,7 +37,7 @@
   --muted:    #6a6a6a;
   --dim:      #aaaaaa;
 }
-[data-theme="light"] nav.scrolled{background:rgba(244,244,244,.92)}
+[data-theme="light"] nav.scrolled{background:rgba(244,244,244,.96)}
 [data-theme="light"] .hero-glow{background:radial-gradient(circle,rgba(166,47,55,.04) 0%,transparent 65%)}
 [data-theme="light"] h1.hero-title .outline{-webkit-text-stroke:1.5px var(--cream)}
 [data-theme="light"] .nav-links{background:rgba(244,244,244,.98)}
@@ -110,11 +110,12 @@ nav{
   transition:background .4s ease,border-color .4s ease,box-shadow .4s ease;
 }
 nav.scrolled{
-  background:rgba(9,9,9,.88);
+  background:rgba(9,9,9,.96);
   border-bottom-color:var(--line);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
   box-shadow:0 1px 28px rgba(0,0,0,.5);
+  /* backdrop-filter:blur(20px) removed — it blurs everything behind the nav
+     on every single frame, which is extremely expensive during scroll.
+     A near-opaque background achieves the same visual effect. */
 }
 .nav-logo{font-family:var(--bebas);font-size:1.5rem;letter-spacing:.18em;color:var(--cream);}
 .nav-logo span{color:var(--red)}
@@ -166,27 +167,28 @@ nav.scrolled{
   overflow:hidden;
   gap:2rem;
 }
-/* Noise overlay */
+/* Noise overlay — static PNG grain instead of realtime SVG feTurbulence filter.
+   The SVG filter re-renders on every repaint and is one of the heaviest
+   operations a browser can do. A tiled 200×200 PNG is visually identical
+   and costs almost nothing.
+   Generate one at: https://grainy-gradients.vercel.app/ or use any 200×200 noise PNG. */
 #hero::before{
   content:'';position:absolute;inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  background-repeat:repeat;
   pointer-events:none;opacity:.5;z-index:0;
 }
-/* Animated grid lines */
+/* Grid lines — static (no animation). The gridDrift animation with mask-image
+   caused continuous compositing on a fullscreen pseudo-element every frame. */
 #hero::after{
   content:'';position:absolute;inset:0;
   background-image:
     linear-gradient(rgba(177,58,66,.04) 1px, transparent 1px),
     linear-gradient(90deg, rgba(177,58,66,.04) 1px, transparent 1px);
   background-size:60px 60px;
-  animation:gridDrift 20s linear infinite;
   pointer-events:none;z-index:0;
   mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
   -webkit-mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
-}
-@keyframes gridDrift{
-  0%  {background-position:0 0}
-  100%{background-position:0 60px}
 }
 /* Typewriter cursor */
 .tw-cursor{

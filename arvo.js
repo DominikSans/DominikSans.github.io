@@ -486,9 +486,11 @@
     const isPlaceholder = !action || action === '#' || action.includes('TUCODIGO');
     if (isPlaceholder) {
       event.preventDefault();
-      formSuccess.textContent = 'Formulario en configuración.';
+      const lang = document.documentElement.lang || 'en';
+      formSuccess.textContent = lang === 'es' ? 'Formulario en configuración.' : 'Form not configured yet.';
       return;
     }
-    formSuccess.textContent = 'Enviando mensaje...';
+    const lang = document.documentElement.lang || 'en';
+    formSuccess.textContent = lang === 'es' ? 'Enviando mensaje...' : 'Sending message...';
   });
 })();

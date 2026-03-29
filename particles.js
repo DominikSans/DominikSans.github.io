@@ -35,8 +35,8 @@
   resize();
   window.addEventListener('resize', resize, { passive: true });
 
-  /* Smaller pool — was 180, now 80 */
-  const POOL      = 80;
+  /* Reduced pool — keep it light alongside 3D model and CSS animations */
+  const POOL      = 35;
   const particles = [];
 
   const TRAIL_COLORS  = ['rgba(180,180,170,','rgba(200,190,180,','rgba(160,155,150,','rgba(212,43,43,','rgba(210,200,190,'];
@@ -98,8 +98,14 @@
     if (running) requestAnimationFrame(tick);
   });
 
+  /* Throttle to ~30fps — half the GPU cost, visually identical for slow particles */
+  let lastFrame = 0;
+  const FRAME_INTERVAL = 33; /* ms ≈ 30fps */
+
   function tick(now) {
     if (!running) return;
+    if (now - lastFrame < FRAME_INTERVAL) { requestAnimationFrame(tick); return; }
+    lastFrame = now;
     ctx.clearRect(0, 0, W, H);
     spawnAmbient(now);
 
