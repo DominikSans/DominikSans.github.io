@@ -43,10 +43,13 @@
     viewer.setAttribute('min-field-of-view', '0deg');
     viewer.setAttribute('max-field-of-view', '70deg');
     viewer.setAttribute('interaction-prompt','none');
-    viewer.setAttribute('shadow-intensity',  '1.2');
-    viewer.setAttribute('shadow-softness',   '0.5');
+    /* Shadows disabled — with 394 meshes each shadow pass is extremely expensive */
+    viewer.setAttribute('shadow-intensity',  '0');
     viewer.setAttribute('exposure',          '1');
     viewer.setAttribute('environment-image', 'neutral');
+
+    /* Cap pixel ratio to 1 — huge FPS gain on retina/HiDPI screens */
+    viewer.setAttribute('max-pixel-ratio', '1');
 
     Object.assign(viewer.style, {
       width:           '100%',
@@ -66,6 +69,15 @@
     viewer.addEventListener('error', () => { viewer.style.opacity = '1'; });
 
     container.appendChild(viewer);
+
+    /* Pause animation + rendering when hero is off-screen — saves GPU entirely */
+    const visObs = new IntersectionObserver((entries) => {
+      const visible = entries[0].isIntersecting;
+      if (viewer.pause && viewer.play) {
+        visible ? viewer.play() : viewer.pause();
+      }
+    }, { threshold: 0.05 });
+    visObs.observe(container);
   }
 
   function initParallax() {
@@ -73,6 +85,7 @@
     if (!mount || window.innerWidth < 768 || prefersReducedMotion) return;
 
     let targetX = 0, targetY = 0, currentX = 0, currentY = 0, interacting = false;
+    let parallaxVisible = true, rafId = 0;
 
     document.addEventListener('mousemove', event => {
       if (interacting) return;
@@ -85,12 +98,21 @@
     window.addEventListener('mouseup',   () => { interacting = false; targetX = 0; targetY = 0; });
     window.addEventListener('touchend',  () => { interacting = false; targetX = 0; targetY = 0; });
 
-    (function lerp() {
+    function lerp() {
       currentX += (targetX - currentX) * 0.06;
       currentY += (targetY - currentY) * 0.06;
       mount.style.transform = `translate(${currentX.toFixed(2)}px,${currentY.toFixed(2)}px)`;
-      requestAnimationFrame(lerp);
-    })();
+      if (parallaxVisible) rafId = requestAnimationFrame(lerp);
+    }
+
+    /* Only run parallax loop when hero is in viewport */
+    const pObs = new IntersectionObserver((entries) => {
+      parallaxVisible = entries[0].isIntersecting;
+      if (parallaxVisible && !rafId) rafId = requestAnimationFrame(lerp);
+    }, { threshold: 0.05 });
+    pObs.observe(mount);
+
+    rafId = requestAnimationFrame(lerp);
   }
 
   function init() {
