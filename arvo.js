@@ -483,20 +483,39 @@
     applyTheme(themeToggle.checked ? 'light' : 'dark');
   });
 
-  /* FORM placeholder handling */
+  /* FORM — fetch-based submit with loading / success / error states */
   const form = document.getElementById('contactForm');
   const formSuccess = document.getElementById('formSuccess');
-  form && form.addEventListener('submit', event => {
+  const submitBtn = form && form.querySelector('.f-sub');
+
+  form && form.addEventListener('submit', async event => {
+    event.preventDefault();
     if (!formSuccess) return;
-    const action = (form.getAttribute('action') || '').trim();
-    const isPlaceholder = !action || action === '#' || action.includes('TUCODIGO');
-    if (isPlaceholder) {
-      event.preventDefault();
-      const lang = document.documentElement.lang || 'en';
-      formSuccess.textContent = lang === 'es' ? 'Formulario en configuración.' : 'Form not configured yet.';
-      return;
-    }
     const lang = document.documentElement.lang || 'en';
-    formSuccess.textContent = lang === 'es' ? 'Enviando mensaje...' : 'Sending message...';
+
+    /* Disable button + show loading */
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.classList.add('is-loading'); }
+    formSuccess.className = 'f-success';
+    formSuccess.textContent = lang === 'es' ? 'Enviando mensaje…' : 'Sending message…';
+
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' },
+      });
+      if (res.ok) {
+        formSuccess.classList.add('f-success--ok');
+        formSuccess.textContent = lang === 'es' ? '¡Mensaje enviado! Te responderé pronto.' : "Message sent! I'll get back to you soon.";
+        form.reset();
+      } else {
+        throw new Error(res.status);
+      }
+    } catch {
+      formSuccess.classList.add('f-success--err');
+      formSuccess.textContent = lang === 'es' ? 'Error al enviar. Inténtalo de nuevo o contáctame por Discord.' : 'Failed to send. Please try again or reach me on Discord.';
+    } finally {
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.classList.remove('is-loading'); }
+    }
   });
 })();
