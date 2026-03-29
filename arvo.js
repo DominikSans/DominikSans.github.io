@@ -277,10 +277,12 @@
   const servicesScroller = document.getElementById('servicesScroller');
   const servicesTrack = document.getElementById('servicesTrack');
 
+  const isTouchDevice = window.matchMedia('(max-width: 960px)').matches;
+
   if (servicesScroller && servicesTrack) {
     const originals = Array.from(servicesTrack.children).map((card) => card.cloneNode(true));
     const originalCount = originals.length;
-    const repeatSets = 5;
+    const repeatSets = isTouchDevice ? 1 : 5;
     const middleSet = Math.floor(repeatSets / 2);
     let allCards = [];
     let activeAbsIndex = middleSet * originalCount;
@@ -389,67 +391,71 @@
     requestAnimationFrame(initPosition);
     window.addEventListener('resize', () => requestAnimationFrame(() => syncToNearestCard('auto')));
 
-    servicesScroller.addEventListener('scroll', () => {
-      clearTimeout(snapTimer);
-      recenterWithoutVisualJump();
-      snapTimer = setTimeout(() => syncToNearestCard('smooth'), 120);
-    }, { passive: true });
+    /*
+     * On touch/mobile (≤960px): CSS scroll-snap handles everything natively.
+     * On desktop: custom wheel + pointer drag with infinite loop recentering.
+     */
+    if (!isTouchDevice) {
+      servicesScroller.addEventListener('scroll', () => {
+        clearTimeout(snapTimer);
+        if (!pointerActive) recenterWithoutVisualJump();
+        snapTimer = setTimeout(() => { if (!pointerActive) syncToNearestCard('smooth'); }, 120);
+      }, { passive: true });
 
-    const wheelTarget = servicesViewport || servicesScroller;
-    wheelTarget.addEventListener('wheel', (event) => {
-      const mostlyVertical = Math.abs(event.deltaY) >= Math.abs(event.deltaX);
-      if (!mostlyVertical) return;
+      const wheelTarget = servicesViewport || servicesScroller;
+      wheelTarget.addEventListener('wheel', (event) => {
+        const mostlyVertical = Math.abs(event.deltaY) >= Math.abs(event.deltaX);
+        if (!mostlyVertical) return;
 
-      event.preventDefault();
-      const delta = normalizedWheel(event);
-      if (!delta) return;
+        event.preventDefault();
+        const delta = normalizedWheel(event);
+        if (!delta) return;
 
-      wheelBuffer += delta;
-      clearTimeout(wheelResetTimer);
-      wheelResetTimer = setTimeout(() => { wheelBuffer = 0; }, 120);
-      if (wheelLock) return;
+        wheelBuffer += delta;
+        clearTimeout(wheelResetTimer);
+        wheelResetTimer = setTimeout(() => { wheelBuffer = 0; }, 120);
+        if (wheelLock) return;
 
-      if (wheelBuffer < 0) {
-        // scroll up -> right
-        goStep('next');
-        wheelLock = true;
-        wheelBuffer = 0;
-      } else if (wheelBuffer > 0) {
-        // scroll down -> left
-        goStep('prev');
-        wheelLock = true;
-        wheelBuffer = 0;
-      }
+        if (wheelBuffer < 0) {
+          goStep('next');
+          wheelLock = true;
+          wheelBuffer = 0;
+        } else if (wheelBuffer > 0) {
+          goStep('prev');
+          wheelLock = true;
+          wheelBuffer = 0;
+        }
 
-      if (wheelLock) {
-        setTimeout(() => { wheelLock = false; }, 430);
-      }
-    }, { passive: false });
+        if (wheelLock) {
+          setTimeout(() => { wheelLock = false; }, 430);
+        }
+      }, { passive: false });
 
-    servicesScroller.addEventListener('pointerdown', (event) => {
-      pointerActive = true;
-      dragStartX = event.clientX;
-      dragStartScroll = servicesScroller.scrollLeft;
-      servicesScroller.setPointerCapture(event.pointerId);
-      servicesScroller.classList.add('is-dragging');
-    });
+      servicesScroller.addEventListener('pointerdown', (event) => {
+        pointerActive = true;
+        dragStartX = event.clientX;
+        dragStartScroll = servicesScroller.scrollLeft;
+        servicesScroller.setPointerCapture(event.pointerId);
+        servicesScroller.classList.add('is-dragging');
+      });
 
-    servicesScroller.addEventListener('pointermove', (event) => {
-      if (!pointerActive) return;
-      const delta = event.clientX - dragStartX;
-      servicesScroller.scrollLeft = dragStartScroll - delta;
-    });
+      servicesScroller.addEventListener('pointermove', (event) => {
+        if (!pointerActive) return;
+        const delta = event.clientX - dragStartX;
+        servicesScroller.scrollLeft = dragStartScroll - delta;
+      });
 
-    const stopPointer = () => {
-      if (!pointerActive) return;
-      pointerActive = false;
-      servicesScroller.classList.remove('is-dragging');
-      syncToNearestCard('smooth');
-    };
+      const stopPointer = () => {
+        if (!pointerActive) return;
+        pointerActive = false;
+        servicesScroller.classList.remove('is-dragging');
+        syncToNearestCard('smooth');
+      };
 
-    servicesScroller.addEventListener('pointerup', stopPointer);
-    servicesScroller.addEventListener('pointercancel', stopPointer);
-    servicesScroller.addEventListener('pointerleave', stopPointer);
+      servicesScroller.addEventListener('pointerup', stopPointer);
+      servicesScroller.addEventListener('pointercancel', stopPointer);
+      servicesScroller.addEventListener('pointerleave', stopPointer);
+    }
   }
 
   /* THEME */
