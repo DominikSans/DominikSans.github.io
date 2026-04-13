@@ -31,6 +31,9 @@
     'hero.stat3':   'Versions',
     'hero.aria':    '3D studio preview',
     'hero.prefix':  'We build',
+    'hero.note1':   'Direct technical communication',
+    'hero.note2':   'Structured delivery',
+    'hero.note3':   'Version-aware builds',
 
     /* Services — header */
     'svc.eyebrow':      'What we do',
@@ -86,9 +89,11 @@
     'stack.eyebrow': 'Tools',
     'stack.col1':    'RPG Plugins',
     'stack.col2':    'Narrative & UX',
+    'stack.intro':   'A focused toolkit chosen for reliable integrations, cleaner scaling, and a better final player experience.',
 
     /* Portfolio */
     'port.eyebrow': 'Work',
+    'port.intro':   'A selection of systems, encounters, and visual layers shaped to feel solid both technically and in presentation.',
     'pf.all':       'All',
     'pf.textures':  'Textures',
     'pf.servers':   'Servers',
@@ -105,6 +110,7 @@
     /* Process */
     'proc.eyebrow': 'How we work',
     'proc.head':    'PROCESS',
+    'proc.intro':   'The workflow is designed to reduce ambiguity, keep files organized, and make deliveries easier to maintain later.',
     'proc1.name':   'Brief & Scope',
     'proc1.tag1':   '1–2 days',
     'proc1.desc':   'We review your idea, references, version, involved plugins, and real objectives to define a coherent and well-grounded scope.',
@@ -156,6 +162,9 @@
     'form.opt.tex':     'Textures & 3D',
     'form.opt.bundle':  'Full bundle',
     'form.submit':      'Send message',
+    'form.meta1':       'Clear scope',
+    'form.meta2':       'Reply-oriented briefing',
+    'form.meta3':       'English / Spanish',
 
     /* Footer */
     'footer.copy':     '© 2026 ARVO Studio · Premium configuration for Minecraft servers',
@@ -183,6 +192,9 @@
     'hero.stat3':   'Versiones',
     'hero.aria':    'Vista previa 3D del estudio',
     'hero.prefix':  'Construimos',
+    'hero.note1':   'Comunicación técnica directa',
+    'hero.note2':   'Entrega estructurada',
+    'hero.note3':   'Configs según versión',
 
     /* Services — header */
     'svc.eyebrow':      'Qué hacemos',
@@ -238,9 +250,11 @@
     'stack.eyebrow': 'Herramientas',
     'stack.col1':    'Plugins RPG',
     'stack.col2':    'Narrativa y UX',
+    'stack.intro':   'Un conjunto de herramientas elegido para integraciones más fiables, mejor escalado y una experiencia final más pulida.',
 
     /* Portfolio */
     'port.eyebrow': 'Trabajos',
+    'port.intro':   'Una selección de sistemas, encuentros y capas visuales pensadas para sentirse sólidas tanto a nivel técnico como de presentación.',
     'pf.all':       'Todo',
     'pf.textures':  'Texturas',
     'pf.servers':   'Servidores',
@@ -257,6 +271,7 @@
     /* Process */
     'proc.eyebrow': 'Cómo trabajamos',
     'proc.head':    'PROCESO',
+    'proc.intro':   'El flujo está pensado para reducir ambigüedad, mantener archivos ordenados y facilitar entregas más sostenibles a futuro.',
     'proc1.name':   'Resumen y alcance',
     'proc1.tag1':   '1–2 días',
     'proc1.desc':   'Revisamos tu idea, referencias, versión, plugins implicados y objetivos reales para definir un alcance coherente y bien fundamentado.',
@@ -308,6 +323,9 @@
     'form.opt.tex':     'Texturas y 3D',
     'form.opt.bundle':  'Paquete completo',
     'form.submit':      'Enviar mensaje',
+    'form.meta1':       'Alcance claro',
+    'form.meta2':       'Brief pensado para responder',
+    'form.meta3':       'Español / Inglés',
 
     /* Footer */
     'footer.copy':     '© 2026 ARVO Studio · Configuración premium para servidores Minecraft',
