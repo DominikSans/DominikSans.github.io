@@ -617,20 +617,19 @@ section { padding:clamp(3.5rem,6vw,8rem) 3rem }
   opacity:0; transform:scale(.985) translateY(8px);
   filter:saturate(.8); pointer-events:none;
 }
-/* Dual-image grid inside card */
+/* Dual-image overlay inside card */
 .pc-imgs {
-  position:relative; display:grid; grid-template-columns:1.15fr .85fr;
+  position:relative;
   min-height:260px;
   background:linear-gradient(180deg,rgba(181,45,69,.035),rgba(255,255,255,.01));
 }
 .pc.tall .pc-imgs { min-height:420px }
 .pc-a,.pc-b {
-  min-height:100%; display:grid; place-items:center; text-align:center; gap:.5rem;
+  position:absolute; inset:0;
   color:var(--dim);
   background:linear-gradient(180deg,rgba(255,255,255,.024),rgba(255,255,255,.01));
   transition:transform .55s cubic-bezier(.22,1,.36,1),opacity .45s ease,filter .45s ease;
 }
-.pc-b               { border-left:1px solid var(--line) }
 .pc:hover .pc-a     { transform:scale(1.04); filter:brightness(.72) saturate(.82) }
 .pc:hover .pc-b     { transform:scale(1); opacity:1 }
 .pc-a img,.pc-b img {
