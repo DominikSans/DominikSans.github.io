@@ -236,42 +236,6 @@
     });
   });
 
-  /* TILT */
-  const tiltFrame = document.getElementById('tiltFrame');
-  const tiltWrap = tiltFrame && tiltFrame.parentElement;
-  tiltWrap && tiltWrap.addEventListener('mousemove', event => {
-    const rect = tiltWrap.getBoundingClientRect();
-    const x = (event.clientX - rect.left) / rect.width - 0.5;
-    const y = (event.clientY - rect.top) / rect.height - 0.5;
-    tiltFrame.style.transform = `perspective(700px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg)`;
-  });
-  tiltWrap && tiltWrap.addEventListener('mouseleave', () => {
-    tiltFrame.style.transform = '';
-  });
-
-  const canHover = window.matchMedia('(hover: hover)').matches;
-  document.querySelectorAll('.srv').forEach(card => {
-    if (!canHover || prefersReducedMotion) return;
-    card.addEventListener('mousemove', event => {
-      const rect = card.getBoundingClientRect();
-      const px = event.clientX - rect.left;
-      const py = event.clientY - rect.top;
-      const x = px / rect.width - 0.5;
-      const y = py / rect.height - 0.5;
-      card.style.setProperty('--mx', `${px}px`);
-      card.style.setProperty('--my', `${py}px`);
-      card.style.transform = `perspective(600px) rotateY(${x * 4.5}deg) rotateX(${-y * 4.5}deg) translateY(-4px)`;
-    });
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = '';
-      card.style.removeProperty('--mx');
-      card.style.removeProperty('--my');
-    });
-  });
-
-
-
-
 /* SERVICES X SLIDER */
   const servicesViewport = document.querySelector('.svcx-viewport');
   const servicesScroller = document.getElementById('servicesScroller');
@@ -282,7 +246,7 @@
   if (servicesScroller && servicesTrack) {
     const originals = Array.from(servicesTrack.children).map((card) => card.cloneNode(true));
     const originalCount = originals.length;
-    const repeatSets = isTouchDevice ? 1 : 5;
+    const repeatSets = isTouchDevice ? 1 : 3;
     const middleSet = Math.floor(repeatSets / 2);
     let allCards = [];
     let activeAbsIndex = middleSet * originalCount;
@@ -311,11 +275,6 @@
 
     function getCardCenterLeft(card) {
       return card.offsetLeft - ((servicesScroller.clientWidth - card.offsetWidth) / 2);
-    }
-
-    function getSetWidth() {
-      if (allCards.length < originalCount * 2) return 0;
-      return allCards[originalCount].offsetLeft - allCards[0].offsetLeft;
     }
 
     function getNearestAbsIndex() {
@@ -481,6 +440,31 @@
   applyTheme(localStorage.getItem('arvo-theme') === 'light' ? 'light' : 'dark');
   themeToggle && themeToggle.addEventListener('change', () => {
     applyTheme(themeToggle.checked ? 'light' : 'dark');
+  });
+
+  /* CONTACT SHORTCUTS */
+  document.querySelectorAll('.cc-copy[data-copy]').forEach(button => {
+    button.addEventListener('click', async () => {
+      const value = button.dataset.copy || '';
+      if (!value) return;
+      const lang = document.documentElement.lang || 'en';
+      const label = button.querySelector('.cc-val');
+      const original = button.dataset.originalValue || label?.textContent || value;
+      button.dataset.originalValue = original;
+
+      try {
+        await navigator.clipboard.writeText(value);
+        button.classList.add('is-copied');
+        if (label) label.textContent = lang === 'es' ? 'Copiado al portapapeles' : 'Copied to clipboard';
+      } catch {
+        if (label) label.textContent = value;
+      }
+
+      window.setTimeout(() => {
+        button.classList.remove('is-copied');
+        if (label) label.textContent = original;
+      }, 1800);
+    });
   });
 
   /* FORM — fetch-based submit with loading / success / error states */

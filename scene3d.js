@@ -3,7 +3,7 @@
 
   const MODEL_SRC  = './skeleton_drgaon/scene.gltf';
   const WALK_ANIM  = 'animation.tvsc.skeleton_dragon.walk';
-  const POSTER_SRC = './logo.jpg';
+  const POSTER_SRC = './assets/portfolio/aeloria-a.webp';
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   let loaded = false;
