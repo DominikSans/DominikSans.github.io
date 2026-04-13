@@ -8,6 +8,7 @@
 
   const root = document.documentElement;
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const hasGsap = typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined';
   /* NAV */
   const navbar = document.getElementById('mainNav');
   window.addEventListener('scroll', () => {
@@ -217,6 +218,66 @@
   }
 
   initHeroTypedLoop();
+
+  function initGsapEnhancements() {
+    if (!hasGsap || prefersReducedMotion) return;
+
+    const { gsap, ScrollTrigger } = window;
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.fromTo('.hero-right',
+      { autoAlpha: 0, x: 24, scale: 0.985 },
+      {
+        autoAlpha: 1,
+        x: 0,
+        scale: 1,
+        duration: 1.05,
+        ease: 'power3.out',
+        delay: 0.12,
+        clearProps: 'transform,opacity,visibility',
+      }
+    );
+
+    gsap.fromTo('.hero-notes .hero-note',
+      { autoAlpha: 0, y: 18 },
+      {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.55,
+        ease: 'power2.out',
+        stagger: 0.08,
+        delay: 0.3,
+        clearProps: 'transform,opacity,visibility',
+      }
+    );
+
+    gsap.to('.hero-glow', {
+      yPercent: 5,
+      xPercent: -4,
+      duration: 5.2,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut',
+    });
+
+    gsap.utils.toArray('.stack-col').forEach((card, index) => {
+      gsap.from(card, {
+        y: 28,
+        autoAlpha: 0,
+        duration: 0.65,
+        ease: 'power2.out',
+        delay: index * 0.04,
+        clearProps: 'transform,opacity,visibility',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 88%',
+          once: true,
+        },
+      });
+    });
+  }
+
+  initGsapEnhancements();
 
   /* PORTFOLIO FILTER */
   const filterButtons = document.querySelectorAll('.pf[data-filter]');
