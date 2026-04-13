@@ -8,6 +8,7 @@
 
   const root = document.documentElement;
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const hasGsap = typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined';
 
   /* NAV */
   const navbar = document.getElementById('mainNav');
@@ -169,7 +170,7 @@
   const statLabels = document.querySelectorAll('.type-label');
   const revealEls = document.querySelectorAll('.fade-up');
 
-  if (!prefersReducedMotion) {
+  if (!prefersReducedMotion && !hasGsap) {
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
@@ -204,7 +205,7 @@
       }, { threshold: 0.55 });
       labelObserver.observe(statsWrap);
     }
-  } else {
+  } else if (prefersReducedMotion) {
     revealEls.forEach(el => el.classList.add('visible'));
     counterEls.forEach(el => {
       const target = parseFloat(el.dataset.target || '0');
@@ -217,7 +218,89 @@
     });
   }
 
+  function initGsapEnhancements() {
+    if (!hasGsap || prefersReducedMotion) return;
+
+    const { gsap, ScrollTrigger } = window;
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.fromTo('#hero .fade-up',
+      { y: 30, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.85,
+        ease: 'power3.out',
+        stagger: 0.08,
+        delay: 0.08,
+      }
+    );
+
+    gsap.fromTo('.hero-right',
+      { x: 32, opacity: 0, scale: 0.98 },
+      { x: 0, opacity: 1, scale: 1, duration: 1, ease: 'power3.out', delay: 0.18 }
+    );
+
+    gsap.to('.hero-glow', {
+      yPercent: 6,
+      xPercent: -3,
+      duration: 5.5,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut',
+    });
+
+    gsap.utils.toArray('.stack-col').forEach((card, index) => {
+      gsap.from(card, {
+        scrollTrigger: { trigger: card, start: 'top 84%' },
+        y: 36,
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power3.out',
+        delay: index * 0.05,
+      });
+    });
+
+    gsap.utils.toArray('#portfolioGrid .pc').forEach((card, index) => {
+      gsap.from(card, {
+        scrollTrigger: { trigger: card, start: 'top 88%' },
+        y: 42,
+        opacity: 0,
+        duration: 0.72,
+        ease: 'power3.out',
+        delay: index * 0.03,
+      });
+    });
+
+    gsap.utils.toArray('.proc-row').forEach((row, index) => {
+      gsap.from(row, {
+        scrollTrigger: { trigger: row, start: 'top 88%' },
+        x: index % 2 === 0 ? -22 : 22,
+        opacity: 0,
+        duration: 0.75,
+        ease: 'power2.out',
+      });
+    });
+
+    gsap.from('.contact-l', {
+      scrollTrigger: { trigger: '#contacto', start: 'top 78%' },
+      y: 36,
+      opacity: 0,
+      duration: 0.82,
+      ease: 'power3.out',
+    });
+
+    gsap.from('.c-form', {
+      scrollTrigger: { trigger: '.c-form', start: 'top 84%' },
+      y: 36,
+      opacity: 0,
+      duration: 0.82,
+      ease: 'power3.out',
+    });
+  }
+
   initHeroTypedLoop();
+  initGsapEnhancements();
 
   /* PORTFOLIO FILTER */
   const filterButtons = document.querySelectorAll('.pf[data-filter]');

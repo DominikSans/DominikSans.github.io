@@ -149,6 +149,7 @@ nav.scrolled{
      on every single frame, which is extremely expensive during scroll.
      A near-opaque background achieves the same visual effect. */
 }
+[data-theme="light"] nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,.08)}
 .nav-logo{font-family:var(--bebas);font-size:1.5rem;letter-spacing:.18em;color:var(--cream);}
 .nav-logo span{color:var(--red)}
 .nav-links{
@@ -665,6 +666,14 @@ footer small{
   .theme-sw{flex-shrink:0}
 }
 
+@media (max-width:1100px) and (max-height:760px){
+  nav{height:60px;padding:0 1rem}
+  .nav-logo img{height:42px !important;width:42px !important}
+  .nav-links{padding:72px 24px 24px}
+  .lang-btn{min-width:38px;padding:4px 7px}
+  .theme-sw{transform:scale(.94);transform-origin:center}
+}
+
 /* ══════════════════════════════════════
    RESPONSIVE — 768px
 ══════════════════════════════════════ */
@@ -859,6 +868,12 @@ footer small{
   padding:1.35rem;border:1px solid var(--line);border-radius:var(--r-lg);
   background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
   box-shadow:0 16px 34px rgba(0,0,0,.12);
+  position:relative;overflow:hidden;
+}
+.stack-col::before{
+  content:'';position:absolute;inset:0 0 auto 0;height:1px;
+  background:linear-gradient(90deg, transparent, rgba(177,58,66,.65), transparent);
+  opacity:.65;
 }
 .stk-head{font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:1rem}
 
