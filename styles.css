@@ -405,10 +405,16 @@ section{padding:clamp(3.5rem,6vw,8rem) 3rem}
 .port-grid .sp2v{grid-row:span 2}
 .pc{
   border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);background:var(--bg2);position:relative;
-  transition:transform .35s cubic-bezier(.4,0,.2,1),box-shadow .35s cubic-bezier(.4,0,.2,1),border-color .35s;
+  transition:transform .35s cubic-bezier(.4,0,.2,1),box-shadow .35s cubic-bezier(.4,0,.2,1),border-color .35s,opacity .26s ease,filter .26s ease;
   box-shadow:0 14px 34px rgba(0,0,0,.18);
 }
 .pc:hover{transform:translateY(-6px);box-shadow:0 24px 56px rgba(0,0,0,.32);border-color:var(--red-line)}
+.pc.is-leaving{
+  opacity:0;
+  transform:scale(.985) translateY(8px);
+  filter:saturate(.8);
+  pointer-events:none;
+}
 .pc-imgs{position:relative;overflow:hidden;aspect-ratio:16/10;}
 .pc.sp2  .pc-imgs{aspect-ratio:21/9}
 .pc.sp2v .pc-imgs{aspect-ratio:unset;min-height:360px}
@@ -881,8 +887,10 @@ footer small{
   overscroll-behavior-x:contain;
   scroll-snap-type:none;
   touch-action:pan-y;
+  cursor:grab;
 }
 .svcx-scroller::-webkit-scrollbar{display:none}
+.svcx-scroller.is-dragging{cursor:grabbing}
 .svcx-track{display:flex;gap:1.5rem;width:max-content;align-items:stretch}
 .svcx-card{
   position:relative;

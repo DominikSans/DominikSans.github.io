@@ -222,6 +222,7 @@
   /* PORTFOLIO FILTER */
   const filterButtons = document.querySelectorAll('.pf[data-filter]');
   const cards = document.querySelectorAll('#portfolioGrid .pc[data-category]');
+  const hideTimers = new WeakMap();
   filterButtons.forEach(button => {
     button.addEventListener('click', () => {
       const filter = button.dataset.filter;
@@ -229,9 +230,25 @@
       button.classList.add('active');
 
       cards.forEach(card => {
+        const timer = hideTimers.get(card);
+        if (timer) {
+          clearTimeout(timer);
+          hideTimers.delete(card);
+        }
         const categories = (card.dataset.category || '').split(/\s+/).filter(Boolean);
         const show = filter === 'all' || categories.includes(filter);
-        card.classList.toggle('is-hidden', !show);
+        if (show) {
+          card.classList.remove('is-hidden');
+          requestAnimationFrame(() => card.classList.remove('is-leaving'));
+          return;
+        }
+
+        card.classList.add('is-leaving');
+        const hideTimer = window.setTimeout(() => {
+          card.classList.add('is-hidden');
+          hideTimers.delete(card);
+        }, 220);
+        hideTimers.set(card, hideTimer);
       });
     });
   });
@@ -244,6 +261,7 @@
   const isTouchDevice = window.matchMedia('(max-width: 960px)').matches;
 
   if (servicesScroller && servicesTrack) {
+    servicesScroller.tabIndex = 0;
     const originals = Array.from(servicesTrack.children).map((card) => card.cloneNode(true));
     const originalCount = originals.length;
     const repeatSets = isTouchDevice ? 1 : 3;
@@ -414,6 +432,15 @@
       servicesScroller.addEventListener('pointerup', stopPointer);
       servicesScroller.addEventListener('pointercancel', stopPointer);
       servicesScroller.addEventListener('pointerleave', stopPointer);
+      servicesScroller.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowRight') {
+          event.preventDefault();
+          goStep('next');
+        } else if (event.key === 'ArrowLeft') {
+          event.preventDefault();
+          goStep('prev');
+        }
+      });
     }
   }
 
