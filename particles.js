@@ -39,8 +39,8 @@
   const POOL      = 35;
   const particles = [];
 
-  const TRAIL_COLORS  = ['rgba(180,180,170,','rgba(200,190,180,','rgba(160,155,150,','rgba(212,43,43,','rgba(210,200,190,'];
-  const AMBIENT_COLOR = 'rgba(212,43,43,';
+  const TRAIL_COLORS  = ['rgba(180,174,164,','rgba(200,192,178,','rgba(160,152,140,','rgba(212,133,58,','rgba(210,198,182,'];
+  const AMBIENT_COLOR = 'rgba(212,133,58,';
 
   function spawn(x, y, ambient) {
     if (particles.length >= POOL) return;
