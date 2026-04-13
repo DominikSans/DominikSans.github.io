@@ -275,6 +275,22 @@
         },
       });
     });
+
+    gsap.utils.toArray('#portfolioGrid .pc').forEach((card, index) => {
+      gsap.from(card, {
+        y: 30,
+        autoAlpha: 0,
+        duration: 0.62,
+        ease: 'power2.out',
+        delay: index * 0.03,
+        clearProps: 'transform,opacity,visibility',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 88%',
+          once: true,
+        },
+      });
+    });
   }
 
   initGsapEnhancements();
