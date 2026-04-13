@@ -223,6 +223,7 @@
 
     const { gsap, ScrollTrigger } = window;
     gsap.registerPlugin(ScrollTrigger);
+    revealEls.forEach(el => el.classList.add('visible'));
 
     gsap.fromTo('#hero .fade-up',
       { y: 30, opacity: 0 },
