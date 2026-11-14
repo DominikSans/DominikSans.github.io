@@ -403,8 +403,8 @@
   <!-- Cinematic SkyBlock -->
   <div class="pc" data-category="typewriter">
     <div class="pc-imgs">
-      <div class="pc-a"><img src="./assets/portfolio/skyblock-a.webp" alt="Cinematic SkyBlock A" loading="lazy"></div>
-      <div class="pc-b"><img src="./assets/portfolio/skyblock-b.webp" alt="Cinematic SkyBlock B" loading="lazy"></div>
+      <div class="pc-a"><img src="./assets/portfolio/skyblock-a.webp" alt="Cinematic SkyBlock" loading="lazy"></div>
+      <div class="pc-b"><video class="pc-video" src="./assets/portfolio/skyblock-cinematic.mp4" poster="./assets/portfolio/skyblock-a.webp" muted loop playsinline preload="none" aria-label="Cinematic SkyBlock preview"></video></div>
     </div>
     <div class="pc-info">
       <div><div class="pc-name" data-i18n="pc4.name">Cinematic SkyBlock</div><div class="pc-type">Typewriter</div></div>
@@ -624,5 +624,15 @@
 <script src="./scene3d.js" defer></script>
 <script src="./particles.js" defer></script>
 <script src="./lang.js" defer></script>
+<script>
+document.querySelectorAll('.pc-video').forEach(function (v) {
+  var card = v.closest('.pc');
+  if (!card) return;
+  card.addEventListener('mouseenter', function () { v.play().catch(function () {}); });
+  card.addEventListener('mouseleave', function () { v.pause(); v.currentTime = 0; });
+  card.addEventListener('focusin', function () { v.play().catch(function () {}); });
+  card.addEventListener('focusout', function () { v.pause(); });
+});
+</script>
 </body>
 </html>
