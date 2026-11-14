@@ -630,8 +630,8 @@ section { padding:clamp(3.5rem,6vw,8rem) 3rem }
   background:linear-gradient(180deg,rgba(255,255,255,.024),rgba(255,255,255,.01));
   transition:transform .55s cubic-bezier(.22,1,.36,1),opacity .45s ease,filter .45s ease;
 }
-.pc:hover .pc-a     { transform:scale(1.04); filter:brightness(.72) saturate(.82) }
-.pc:hover .pc-b     { transform:scale(1); opacity:1 }
+.pc:hover .pc-a,.pc:focus-visible .pc-a,.pc.is-active .pc-a { transform:scale(1.04); filter:brightness(.72) saturate(.82) }
+.pc:hover .pc-b,.pc:focus-visible .pc-b,.pc.is-active .pc-b { transform:scale(1); opacity:1 }
 .pc-a img,.pc-b img,.pc-b video {
   position:absolute; inset:0; width:100%; height:100%;
   object-fit:cover; object-position:center; display:block; padding:0;
@@ -1022,3 +1022,16 @@ footer small    { font-family:var(--mono); font-size:.7rem; color:rgba(255,255,2
   .port-grid  { gap:.75rem }
   footer      { padding:1.25rem 1rem }
 }
+
+
+/* ── FOCUS (keyboard) ── */
+:where(a,button,summary,[tabindex]):focus-visible { outline:2px solid var(--amber); outline-offset:3px }
+.f-in:focus-visible,.f-sel:focus-visible,.f-ta:focus-visible { outline:2px solid var(--amber); outline-offset:2px }
+.pc:focus-visible { outline:2px solid var(--amber); outline-offset:3px }
+
+/* ── CONTACT FORM honeypot ── */
+.f-hp { position:absolute; left:-9999px; width:1px; height:1px; opacity:0; pointer-events:none }
+
+/* ── LANGUAGE: avoid flash of English for saved ES ── */
+html.i18n-pending body { visibility:hidden; animation:i18nReveal 0s 1.2s forwards }
+@keyframes i18nReveal { to { visibility:visible } }

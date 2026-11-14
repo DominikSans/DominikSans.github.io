@@ -372,6 +372,7 @@
     }
 
     document.documentElement.lang = lang;
+    document.documentElement.classList.remove('i18n-pending');
     updateUI();
   }
 

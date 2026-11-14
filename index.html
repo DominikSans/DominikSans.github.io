@@ -2,6 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script>
+(function () {
+  try {
+    var l = localStorage.getItem('arvo-lang');
+    if (l === 'es' || l === 'en') document.documentElement.lang = l;
+    if (l === 'es') document.documentElement.classList.add('i18n-pending');
+  } catch (e) {}
+})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ARVO Studio — Premium Minecraft Server Configuration & Design</title>
 <meta name="description" content="ARVO Studio: advanced configuration for Minecraft servers. MythicMobs, BetonQuest, Typewriter, server setups, optimization, and custom assets.">
@@ -34,7 +43,7 @@
 
 <nav id="mainNav">
   <a class="nav-logo" href="#hero" aria-label="Go to top">
-    <img src="logo_negative.svg" alt="ARVO" id="navLogo" style="height:48px;width:48px;object-fit:contain;display:block;">
+    <img src="logo_negative.svg" width="48" height="48" alt="ARVO" id="navLogo" style="height:48px;width:48px;object-fit:contain;display:block;">
   </a>
   <ul class="nav-links" id="navLinks">
     <li><a href="#servicios" data-i18n="nav.services">Services</a></li>
@@ -101,7 +110,7 @@
   </div>
   <div class="hero-right" id="scene3d-mount" data-i18n-aria="hero.aria" aria-label="3D studio preview">
     <!-- Static poster visible before any JS loads — best practice for Lighthouse -->
-    <img class="scene3d-poster" src="./assets/portfolio/aeloria-a.webp" alt="ARVO Studio preview" style="width:100%;height:100%;object-fit:cover;pointer-events:none;">
+    <img width="1920" height="1080" class="scene3d-poster" src="./assets/portfolio/aeloria-a.webp" alt="ARVO Studio preview" style="width:100%;height:100%;object-fit:cover;pointer-events:none;">
   </div>
 </section>
 
@@ -365,10 +374,10 @@
 <div class="port-grid fade-up" id="portfolioGrid">
 
   <!-- RPG World — Aeloria -->
-  <div class="pc sp2" data-category="mythicmobs betonquest typewriter">
+  <div tabindex="0" class="pc sp2" data-category="mythicmobs betonquest typewriter">
     <div class="pc-imgs">
-      <div class="pc-a"><img src="./assets/portfolio/aeloria-a.webp" alt="RPG Aeloria screenshot A" loading="lazy"></div>
-      <div class="pc-b"><img src="./assets/portfolio/aeloria-b.webp" alt="RPG Aeloria screenshot B" loading="lazy"></div>
+      <div class="pc-a"><img width="1920" height="1080" src="./assets/portfolio/aeloria-a.webp" alt="RPG Aeloria screenshot A" loading="lazy"></div>
+      <div class="pc-b"><img width="1920" height="1080" src="./assets/portfolio/aeloria-b.webp" alt="RPG Aeloria screenshot B" loading="lazy"></div>
     </div>
     <div class="pc-info">
       <div><div class="pc-name" data-i18n="pc1.name">RPG World — Aeloria</div><div class="pc-type">MythicMobs · BetonQuest · Typewriter</div></div>
@@ -377,10 +386,10 @@
   </div>
 
   <!-- Boss Dragón de Hielo -->
-  <div class="pc sp2v tall" data-category="mythicmobs texturas">
+  <div tabindex="0" class="pc sp2v tall" data-category="mythicmobs texturas">
     <div class="pc-imgs">
-      <div class="pc-a"><img src="./assets/portfolio/dragon-a.webp" alt="Ice Dragon Boss A" loading="lazy"></div>
-      <div class="pc-b"><img src="./assets/portfolio/dragon-b.webp" alt="Ice Dragon Boss B" loading="lazy"></div>
+      <div class="pc-a"><img width="1920" height="1080" src="./assets/portfolio/dragon-a.webp" alt="Ice Dragon Boss A" loading="lazy"></div>
+      <div class="pc-b"><img width="1280" height="720" src="./assets/portfolio/dragon-b.webp" alt="Ice Dragon Boss B" loading="lazy"></div>
     </div>
     <div class="pc-info">
       <div><div class="pc-name" data-i18n="pc2.name">Ice Dragon Boss</div><div class="pc-type">MythicMobs · ModelEngine</div></div>
@@ -389,10 +398,10 @@
   </div>
 
   <!-- Quest — Los Guardianes -->
-  <div class="pc" data-category="betonquest">
+  <div tabindex="0" class="pc" data-category="betonquest">
     <div class="pc-imgs">
-      <div class="pc-a"><img src="./assets/portfolio/guardianes-a.webp" alt="Quest Los Guardianes A" loading="lazy"></div>
-      <div class="pc-b"><img src="./assets/portfolio/guardianes-b.webp" alt="Quest Los Guardianes B" loading="lazy"></div>
+      <div class="pc-a"><img width="1920" height="1080" src="./assets/portfolio/guardianes-a.webp" alt="Quest Los Guardianes A" loading="lazy"></div>
+      <div class="pc-b"><img width="1920" height="1080" src="./assets/portfolio/guardianes-b.webp" alt="Quest Los Guardianes B" loading="lazy"></div>
     </div>
     <div class="pc-info">
       <div><div class="pc-name" data-i18n="pc3.name">Quest — The Guardians</div><div class="pc-type">BetonQuest</div></div>
@@ -401,9 +410,9 @@
   </div>
 
   <!-- Cinematic SkyBlock -->
-  <div class="pc" data-category="typewriter">
+  <div tabindex="0" class="pc" data-category="typewriter">
     <div class="pc-imgs">
-      <div class="pc-a"><img src="./assets/portfolio/skyblock-a.webp" alt="Cinematic SkyBlock" loading="lazy"></div>
+      <div class="pc-a"><img width="1920" height="1050" src="./assets/portfolio/skyblock-a.webp" alt="Cinematic SkyBlock" loading="lazy"></div>
       <div class="pc-b"><video class="pc-video" src="./assets/portfolio/skyblock-cinematic.mp4" poster="./assets/portfolio/skyblock-a.webp" muted loop playsinline preload="none" aria-label="Cinematic SkyBlock preview"></video></div>
     </div>
     <div class="pc-info">
@@ -413,10 +422,10 @@
   </div>
 
   <!-- Resource Pack Medieval -->
-  <div class="pc" data-category="texturas">
+  <div tabindex="0" class="pc" data-category="texturas">
     <div class="pc-imgs">
-      <div class="pc-a"><img src="./assets/portfolio/medieval-a.webp" alt="Resource Pack Medieval A" loading="lazy"></div>
-      <div class="pc-b"><img src="./assets/portfolio/medieval-b.webp" alt="Resource Pack Medieval B" loading="lazy"></div>
+      <div class="pc-a"><img width="635" height="668" src="./assets/portfolio/medieval-a.webp" alt="Resource Pack Medieval A" loading="lazy"></div>
+      <div class="pc-b"><img width="580" height="469" src="./assets/portfolio/medieval-b.webp" alt="Resource Pack Medieval B" loading="lazy"></div>
     </div>
     <div class="pc-info">
       <div><div class="pc-name" data-i18n="pc5.name">Medieval Resource Pack</div><div class="pc-type" data-i18n="pc5.type">Textures · OptiFine</div></div>
@@ -425,10 +434,10 @@
   </div>
 
   <!-- Mob 3D — Grassling Arcano -->
-  <div class="pc" data-category="texturas mythicmobs">
+  <div tabindex="0" class="pc" data-category="texturas mythicmobs">
     <div class="pc-imgs">
-      <div class="pc-a"><img src="./assets/portfolio/golem-a.webp" alt="Arcane Grassling A" loading="lazy"></div>
-      <div class="pc-b"><img src="./assets/portfolio/golem-b.webp" alt="Arcane Grassling B" loading="lazy"></div>
+      <div class="pc-a"><img width="1920" height="1080" src="./assets/portfolio/golem-a.webp" alt="Arcane Grassling A" loading="lazy"></div>
+      <div class="pc-b"><img width="1280" height="720" src="./assets/portfolio/golem-b.webp" alt="Arcane Grassling B" loading="lazy"></div>
     </div>
     <div class="pc-info">
       <div><div class="pc-name" data-i18n="pc6.name">3D Mob — Arcane Grassling</div><div class="pc-type">Blockbench · ModelEngine</div></div>
@@ -437,10 +446,10 @@
   </div>
 
   <!-- Red Survival + SkyBlock -->
-  <div class="pc" data-category="servidores">
+  <div tabindex="0" class="pc" data-category="servidores">
     <div class="pc-imgs">
-      <div class="pc-a"><img src="./assets/portfolio/survival-a.webp" alt="Survival SkyBlock A" loading="lazy"></div>
-      <div class="pc-b"><img src="./assets/portfolio/survival-b.webp" alt="Survival SkyBlock B" loading="lazy"></div>
+      <div class="pc-a"><img width="1899" height="1050" src="./assets/portfolio/survival-a.webp" alt="Survival SkyBlock A" loading="lazy"></div>
+      <div class="pc-b"><img width="1904" height="1064" src="./assets/portfolio/survival-b.webp" alt="Survival SkyBlock B" loading="lazy"></div>
     </div>
     <div class="pc-info">
       <div><div class="pc-name" data-i18n="pc7.name">Survival + SkyBlock Network</div><div class="pc-type" data-i18n="pc7.type">Velocity · Server Setup</div></div>
@@ -540,6 +549,7 @@
           <span class="form-meta-pill" data-i18n="form.meta3">English / Spanish</span>
         </div>
         <form class="c-form" action="https://formspree.io/f/xlgojdya" method="POST" id="contactForm">
+          <input class="f-hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
           <div class="f-row">
             <div>
               <label class="f-lbl" for="nombre" data-i18n="form.lbl.name">Name / Nick</label>
@@ -595,7 +605,7 @@
           </div>
 
           <button class="f-sub" type="submit" data-i18n="form.submit">Send message</button>
-          <p class="f-success" id="formSuccess" aria-live="polite"></p>
+          <p class="f-success" id="formSuccess" role="status" aria-live="polite"></p>
         </form>
       </div>
     </div>
@@ -603,7 +613,7 @@
 </section>
 <footer>
   <a class="f-brand" href="#hero" aria-label="Go to top">
-    <img src="logo_negative.svg" alt="ARVO" id="footerLogo" style="height:30px;width:30px;object-fit:contain;display:block;">
+    <img src="logo_negative.svg" width="30" height="30" alt="ARVO" id="footerLogo" style="height:30px;width:30px;object-fit:contain;display:block;">
   </a>
   <small data-i18n="footer.copy">© 2026 ARVO Studio · Premium configuration for Minecraft servers</small>
   <div class="f-links">
@@ -625,6 +635,17 @@
 <script src="./particles.js" defer></script>
 <script src="./lang.js" defer></script>
 <script>
+if (window.matchMedia('(hover: none)').matches && 'IntersectionObserver' in window) {
+  var cards = document.querySelectorAll('.pc');
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      e.target.classList.toggle('is-active', e.isIntersecting);
+      var v = e.target.querySelector('.pc-video');
+      if (v) { if (e.isIntersecting) v.play().catch(function () {}); else v.pause(); }
+    });
+  }, { threshold: 0.75 });
+  cards.forEach(function (c) { io.observe(c); });
+}
 document.querySelectorAll('.pc-video').forEach(function (v) {
   var card = v.closest('.pc');
   if (!card) return;
