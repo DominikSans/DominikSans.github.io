@@ -579,6 +579,8 @@
     event.preventDefault();
     if (!formSuccess) return;
     const lang = document.documentElement.lang || 'en';
+    const trap = form.querySelector('[name="_gotcha"]');
+    if (trap && trap.value) return;
 
     /* Disable button + show loading */
     if (submitBtn) { submitBtn.disabled = true; submitBtn.classList.add('is-loading'); }
@@ -586,11 +588,15 @@
     formSuccess.textContent = lang === 'es' ? 'Enviando mensaje…' : 'Sending message…';
 
     try {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 15000);
       const res = await fetch(form.action, {
         method: 'POST',
         body: new FormData(form),
         headers: { 'Accept': 'application/json' },
+        signal: ctrl.signal,
       });
+      clearTimeout(timer);
       if (res.ok) {
         formSuccess.classList.add('f-success--ok');
         formSuccess.textContent = lang === 'es' ? '¡Mensaje enviado! Te responderé pronto.' : "Message sent! I'll get back to you soon.";

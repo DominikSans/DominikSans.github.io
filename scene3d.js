@@ -25,7 +25,7 @@
 
     /* Remove static HTML poster — model-viewer takes over */
     const staticPoster = container.querySelector('.scene3d-poster');
-    if (staticPoster) staticPoster.remove();
+    if (staticPoster) Object.assign(staticPoster.style, { position: 'absolute', inset: '0', transition: 'opacity .8s ease' });
 
     const viewer = document.createElement('model-viewer');
     viewer.setAttribute('src',    MODEL_SRC);
@@ -59,14 +59,21 @@
       willChange:      'transform',
     });
 
+    const dropPoster = () => {
+      if (!staticPoster) return;
+      staticPoster.style.opacity = '0';
+      setTimeout(() => staticPoster.remove(), 900);
+    };
     viewer.addEventListener('load', () => {
       viewer.style.opacity = '1';
+      dropPoster();
       if (!prefersReducedMotion && typeof viewer.timeScale !== 'undefined') {
         viewer.timeScale = 0.5;
       }
     });
     viewer.addEventListener('error', () => { viewer.style.opacity = '1'; });
 
+    viewer.style.position = 'absolute'; viewer.style.inset = '0';
     container.appendChild(viewer);
 
     /* Pause animation + rendering when hero is off-screen */
