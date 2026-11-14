@@ -103,7 +103,7 @@
     'pc4.name':     'Cinematic SkyBlock',
     'pc5.name':     'Medieval Resource Pack',
     'pc5.type':     'Textures · OptiFine',
-    'pc6.name':     '3D Mob — Arcane Golem',
+    'pc6.name':     '3D Mob — Arcane Grassling',
     'pc7.name':     'Survival + SkyBlock Network',
     'pc7.type':     'Velocity · Server Setup',
 
@@ -264,7 +264,7 @@
     'pc4.name':     'Cinemática SkyBlock',
     'pc5.name':     'Paquete de texturas medieval',
     'pc5.type':     'Texturas · OptiFine',
-    'pc6.name':     'Mob 3D — Gólem Arcano',
+    'pc6.name':     'Mob 3D — Grassling Arcano',
     'pc7.name':     'Red Survival + SkyBlock',
     'pc7.type':     'Velocity · Configuración de servidor',
 
